@@ -1,4 +1,16 @@
+"""
+Hub de Criação - Lenon de Paula
+Arquivo de entrada principal para Streamlit Cloud
+"""
+
 import streamlit as st
+import sys
+from pathlib import Path
+
+# Adiciona o diretório src ao path para imports
+ROOT = Path(__file__).parent
+sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "src"))
 
 # ────────────────────────────────────────────────────────────────────────────────
 # CSS corporativo minimalista
@@ -93,13 +105,13 @@ APPS = [
         "title": "🔧 Previsão de Falhas",
         "desc": "Modelo de Machine Learning para manutenção preditiva de equipamentos industriais.",
         "status": "active",
-        "page": "1_Previsao_Falhas",
+        "page": "pages/1_Previsao_Falhas",
     },
     {
         "title": "📊 Análise de Sentimentos",
         "desc": "Monitor de reputação de marca com NLP para análise de menções em redes sociais.",
         "status": "active",
-        "page": "2_Analise_Sentimentos",
+        "page": "pages/2_Analise_Sentimentos",
     },
     {
         "title": "📈 App 3",
@@ -166,7 +178,7 @@ def main():
             unsafe_allow_html=True,
         )
         if app["status"] == "active" and app["page"]:
-            st.page_link(f"pages/{app['page']}.py", label="Abrir aplicação →", icon="▶️")
+            st.page_link(f"{app['page']}.py", label="Abrir aplicação →", icon="▶️")
 
     # ── Rodapé ──────────────────────────────────────────────────────────────────
     st.markdown("---")
@@ -183,3 +195,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
