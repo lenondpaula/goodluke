@@ -5,7 +5,8 @@ fastapi
 uvicorn
 streamlit
 joblib
-python-multipartplotly
+python-multipart
+plotly
 textblob
 faker
 nltk
