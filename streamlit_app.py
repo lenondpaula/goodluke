@@ -102,32 +102,32 @@ h1 {
 
 APPS = [
     {
-        "title": "🔧 Previsão de Falhas",
+        "title": "🔧 App 1 — Previsão de Falhas",
         "desc": "Modelo de Machine Learning para manutenção preditiva de equipamentos industriais.",
         "status": "active",
         "page": "pages/1_Previsao_Falhas",
     },
     {
-        "title": "📊 Análise de Sentimentos",
+        "title": "📊 App 2 — Analista de Marca (Sentimentos)",
         "desc": "Monitor de reputação de marca com NLP para análise de menções em redes sociais.",
         "status": "active",
         "page": "pages/2_Analise_Sentimentos",
     },
     {
-        "title": "📈 App 3",
-        "desc": "Em breve: nova funcionalidade em desenvolvimento.",
+        "title": "🛒 App 3 — Vendedor Automático (Recomendação)",
+        "desc": "Sistema de recomendação para e-commerce (filtragem colaborativa: quem comprou X também comprou Y).",
         "status": "dev",
         "page": None,
     },
     {
-        "title": "🤖 App 4",
-        "desc": "Em breve: nova funcionalidade em desenvolvimento.",
+        "title": "📈 App 4 — Oráculo de Vendas (BI Preditivo)",
+        "desc": "Dashboard que projeta vendas do próximo mês com modelos de séries temporais (Prophet/ARIMA).",
         "status": "dev",
         "page": None,
     },
     {
-        "title": "⚡ App 5",
-        "desc": "Em breve: nova funcionalidade em desenvolvimento.",
+        "title": "🤖 App 5 — Assistente Corporativo (RAG)",
+        "desc": "Chatbot que lê PDFs e responde perguntas usando RAG (LangChain + base vetorial).",
         "status": "dev",
         "page": None,
     },
