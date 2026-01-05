@@ -12,3 +12,11 @@ textblob
 faker
 nltk
 scikit-surprise
+prophet
+statsmodels
+langchain
+langchain-community
+langchain-huggingface
+pypdf
+chromadb
+sentence-transformers

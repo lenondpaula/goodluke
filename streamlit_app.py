@@ -40,6 +40,15 @@ h1 {
     padding: 2rem;
     margin-bottom: 2rem;
 }
+.profile-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #e2e8f0;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
 .profile-name {
     font-size: 2.5rem;
     font-weight: 700;
@@ -105,31 +114,31 @@ APPS = [
         "title": "🔧 App 1 — Sistema de Precaução Mecânica",
         "desc": "Modelo de Machine Learning para manutenção preditiva de equipamentos industriais.",
         "status": "active",
-        "page": "pages/1_Previsao_Falhas",
+        "page": "pages/1_Sistema_de_Precaucao_Mecanica",
     },
     {
         "title": "📊 App 2 — Gestor de Reputação de Marca",
         "desc": "Monitor de reputação de marca com NLP para análise de menções em redes sociais.",
         "status": "active",
-        "page": "pages/2_Analise_Sentimentos",
+        "page": "pages/2_Gestor_de_Reputacao_de_Marca",
     },
     {
-        "title": "🛒 App 3 — Que tal esse? (Sistema de Recomendação)",
+        "title": "🛒 App 3 — Que tal esse?",
         "desc": "Recomenda itens de nicho com filtragem colaborativa (SVD) para elevar ticket médio.",
         "status": "active",
         "page": "pages/3_Que_tal_esse",
     },
     {
-        "title": "📈 App 4 — O Oráculo de Vendas (BI Preditivo)",
-        "desc": "Dashboard que projeta vendas do próximo mês com modelos de séries temporais (Prophet/ARIMA).",
-        "status": "dev",
-        "page": None,
+        "title": "🔮 App 4 — O Oráculo de Vendas (BI Preditivo)",
+        "desc": "Dashboard que projeta vendas do próximo mês com modelos de séries temporais (Prophet).",
+        "status": "active",
+        "page": "pages/4_O_Oraculo_de_Vendas",
     },
     {
-        "title": "🤖 App 5 — O Assistente Corporativo (Chatbot NLP com RAG)",
-        "desc": "Chatbot que lê PDFs e responde perguntas usando RAG (LangChain + base vetorial).",
-        "status": "dev",
-        "page": None,
+        "title": "🤖 App 5 — O Assistente Corporativo",
+        "desc": "Chatbot que lê PDFs e responde perguntas usando RAG (LangChain + ChromaDB).",
+        "status": "active",
+        "page": "pages/5_O_Assistente_Corporativo",
     },
 ]
 
@@ -141,13 +150,13 @@ def main():
         layout="centered",
         initial_sidebar_state="collapsed",
     )
-    st.sidebar.title("Home")
     st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
     # ── Perfil ──────────────────────────────────────────────────────────────────
     st.markdown(
         """
         <div class="profile-card">
+            <img src="https://github.com/lenondpaula.png" alt="Lenon de Paula" class="profile-photo">
             <div class="profile-name">Lenon de Paula</div>
             <div class="profile-title">Engenharia de Dados · Machine Learning · Automação</div>
             <div class="profile-contact">

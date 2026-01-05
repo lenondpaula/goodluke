@@ -1,0 +1,29 @@
+[[pages]]
+path = "streamlit_app.py"
+name = "Home"
+icon = "🏠"
+
+[[pages]]
+path = "pages/1_Sistema_de_Precaucao_Mecanica.py"
+name = "1 — Sistema de Precaução Mecânica"
+icon = "🔧"
+
+[[pages]]
+path = "pages/2_Gestor_de_Reputacao_de_Marca.py"
+name = "2 — Gestor de Reputação de Marca"
+icon = "📊"
+
+[[pages]]
+path = "pages/3_Que_tal_esse.py"
+name = "3 — Que tal esse?"
+icon = "🛒"
+
+[[pages]]
+path = "pages/4_O_Oraculo_de_Vendas.py"
+name = "4 — O Oráculo de Vendas"
+icon = "🔮"
+
+[[pages]]
+path = "pages/5_O_Assistente_Corporativo.py"
+name = "5 — O Assistente Corporativo"
+icon = "🤖"
