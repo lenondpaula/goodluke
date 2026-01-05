@@ -90,32 +90,32 @@ h1 {
 
 APPS = [
     {
-        "title": "🔧 Previsão de Falhas",
+        "title": "🔧 Sistema de Precaução Mecânica",
         "desc": "Modelo de Machine Learning para manutenção preditiva de equipamentos industriais.",
         "status": "active",
         "page": "1_Previsao_Falhas",
     },
     {
-        "title": "📊 Análise de Sentimentos",
+        "title": "📊 Gestor de Reputação de Marca",
         "desc": "Monitor de reputação de marca com NLP para análise de menções em redes sociais.",
         "status": "active",
         "page": "2_Analise_Sentimentos",
     },
     {
-        "title": "📈 App 3",
-        "desc": "Em breve: nova funcionalidade em desenvolvimento.",
+        "title": "🛒 Que tal esse? (Sistema de Recomendação)",
+        "desc": "Recomenda itens de nicho com filtragem colaborativa (SVD) para elevar ticket médio.",
+        "status": "active",
+        "page": "3_Que_tal_esse",
+    },
+    {
+        "title": "📈 O Oráculo de Vendas (BI Preditivo)",
+        "desc": "Dashboard que projeta vendas do próximo mês com modelos de séries temporais (Prophet/ARIMA).",
         "status": "dev",
         "page": None,
     },
     {
-        "title": "🤖 App 4",
-        "desc": "Em breve: nova funcionalidade em desenvolvimento.",
-        "status": "dev",
-        "page": None,
-    },
-    {
-        "title": "⚡ App 5",
-        "desc": "Em breve: nova funcionalidade em desenvolvimento.",
+        "title": "🤖 O Assistente Corporativo (Chatbot NLP com RAG)",
+        "desc": "Chatbot que lê PDFs e responde perguntas usando RAG (LangChain + base vetorial).",
         "status": "dev",
         "page": None,
     },
@@ -129,6 +129,7 @@ def main():
         layout="centered",
         initial_sidebar_state="collapsed",
     )
+    st.sidebar.title("Home")
     st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
     # ── Perfil ──────────────────────────────────────────────────────────────────
