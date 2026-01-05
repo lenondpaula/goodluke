@@ -1,0 +1,501 @@
+product_id,nome,categoria,is_popular
+1,Gadget Pro 001,Eletrônicos,True
+2,Smartphone X 002,Casa Inteligente,True
+3,Gadget Pro 003,Áudio,True
+4,Smartphone X 004,Informática,True
+5,Gadget Pro 005,Informática,True
+6,Smartphone X 006,Casa Inteligente,True
+7,Gadget Pro 007,Eletrônicos,True
+8,Smartphone X 008,Áudio,True
+9,Gadget Pro 009,Eletrônicos,True
+10,Smartphone X 010,Eletrônicos,True
+11,Gadget Pro 011,Áudio,True
+12,Smartphone X 012,Casa Inteligente,True
+13,Gadget Pro 013,Áudio,True
+14,Smartphone X 014,Casa Inteligente,True
+15,Gadget Pro 015,Áudio,True
+16,Smartphone X 016,Casa Inteligente,True
+17,Gadget Pro 017,Áudio,True
+18,Smartphone X 018,Eletrônicos,True
+19,Gadget Pro 019,Casa Inteligente,True
+20,Smartphone X 020,Informática,True
+21,Gadget Pro 021,Áudio,True
+22,Smartphone X 022,Informática,True
+23,Gadget Pro 023,Eletrônicos,True
+24,Smartphone X 024,Casa Inteligente,True
+25,Gadget Pro 025,Casa Inteligente,True
+26,Smartphone X 026,Áudio,True
+27,Gadget Pro 027,Informática,True
+28,Smartphone X 028,Casa Inteligente,True
+29,Gadget Pro 029,Áudio,True
+30,Smartphone X 030,Informática,True
+31,Gadget Pro 031,Informática,True
+32,Smartphone X 032,Eletrônicos,True
+33,Gadget Pro 033,Eletrônicos,True
+34,Smartphone X 034,Áudio,True
+35,Gadget Pro 035,Casa Inteligente,True
+36,Smartphone X 036,Eletrônicos,True
+37,Gadget Pro 037,Casa Inteligente,True
+38,Smartphone X 038,Casa Inteligente,True
+39,Gadget Pro 039,Informática,True
+40,Smartphone X 040,Áudio,True
+41,Gadget Pro 041,Eletrônicos,True
+42,Smartphone X 042,Casa Inteligente,True
+43,Gadget Pro 043,Áudio,True
+44,Smartphone X 044,Informática,True
+45,Gadget Pro 045,Eletrônicos,True
+46,Smartphone X 046,Casa Inteligente,True
+47,Gadget Pro 047,Informática,True
+48,Smartphone X 048,Casa Inteligente,True
+49,Gadget Pro 049,Áudio,True
+50,Smartphone X 050,Casa Inteligente,True
+51,Gadget Pro 051,Casa Inteligente,True
+52,Smartphone X 052,Eletrônicos,True
+53,Gadget Pro 053,Informática,True
+54,Smartphone X 054,Informática,True
+55,Gadget Pro 055,Informática,True
+56,Smartphone X 056,Eletrônicos,True
+57,Gadget Pro 057,Áudio,True
+58,Smartphone X 058,Eletrônicos,True
+59,Gadget Pro 059,Áudio,True
+60,Smartphone X 060,Áudio,True
+61,Gadget Pro 061,Casa Inteligente,True
+62,Smartphone X 062,Áudio,True
+63,Gadget Pro 063,Informática,True
+64,Smartphone X 064,Casa Inteligente,True
+65,Gadget Pro 065,Informática,True
+66,Smartphone X 066,Informática,True
+67,Gadget Pro 067,Casa Inteligente,True
+68,Smartphone X 068,Informática,True
+69,Gadget Pro 069,Eletrônicos,True
+70,Smartphone X 070,Informática,True
+71,Gadget Pro 071,Casa Inteligente,True
+72,Smartphone X 072,Eletrônicos,True
+73,Gadget Pro 073,Informática,True
+74,Smartphone X 074,Eletrônicos,True
+75,Gadget Pro 075,Áudio,True
+76,Smartphone X 076,Informática,True
+77,Gadget Pro 077,Informática,True
+78,Smartphone X 078,Eletrônicos,True
+79,Gadget Pro 079,Áudio,True
+80,Smartphone X 080,Áudio,True
+81,Gadget Pro 081,Casa Inteligente,True
+82,Smartphone X 082,Informática,True
+83,Gadget Pro 083,Eletrônicos,True
+84,Smartphone X 084,Casa Inteligente,True
+85,Gadget Pro 085,Áudio,True
+86,Smartphone X 086,Áudio,True
+87,Gadget Pro 087,Eletrônicos,True
+88,Smartphone X 088,Informática,True
+89,Gadget Pro 089,Casa Inteligente,True
+90,Smartphone X 090,Casa Inteligente,True
+91,Gadget Pro 091,Informática,True
+92,Smartphone X 092,Casa Inteligente,True
+93,Gadget Pro 093,Casa Inteligente,True
+94,Smartphone X 094,Informática,True
+95,Gadget Pro 095,Casa Inteligente,True
+96,Smartphone X 096,Informática,True
+97,Gadget Pro 097,Eletrônicos,True
+98,Smartphone X 098,Áudio,True
+99,Gadget Pro 099,Áudio,True
+100,Smartphone X 100,Eletrônicos,True
+101,Acessório Criativo 101,Colecionáveis,False
+102,Cabo Vintage 102,Acessórios Vintage,False
+103,Acessório Criativo 103,Colecionáveis,False
+104,Cabo Vintage 104,Acessórios Vintage,False
+105,Acessório Criativo 105,Colecionáveis,False
+106,Cabo Vintage 106,Colecionáveis,False
+107,Acessório Criativo 107,Colecionáveis,False
+108,Cabo Vintage 108,Escritório Criativo,False
+109,Acessório Criativo 109,Casa & Lazer,False
+110,Cabo Vintage 110,Escritório Criativo,False
+111,Acessório Criativo 111,Casa & Lazer,False
+112,Cabo Vintage 112,Colecionáveis,False
+113,Acessório Criativo 113,Escritório Criativo,False
+114,Cabo Vintage 114,Casa & Lazer,False
+115,Acessório Criativo 115,Escritório Criativo,False
+116,Cabo Vintage 116,Escritório Criativo,False
+117,Acessório Criativo 117,Acessórios Vintage,False
+118,Cabo Vintage 118,Acessórios Vintage,False
+119,Acessório Criativo 119,Acessórios Vintage,False
+120,Cabo Vintage 120,Acessórios Vintage,False
+121,Acessório Criativo 121,Casa & Lazer,False
+122,Cabo Vintage 122,Escritório Criativo,False
+123,Acessório Criativo 123,Escritório Criativo,False
+124,Cabo Vintage 124,Casa & Lazer,False
+125,Acessório Criativo 125,Colecionáveis,False
+126,Cabo Vintage 126,Escritório Criativo,False
+127,Acessório Criativo 127,Acessórios Vintage,False
+128,Cabo Vintage 128,Colecionáveis,False
+129,Acessório Criativo 129,Escritório Criativo,False
+130,Cabo Vintage 130,Escritório Criativo,False
+131,Acessório Criativo 131,Escritório Criativo,False
+132,Cabo Vintage 132,Escritório Criativo,False
+133,Acessório Criativo 133,Acessórios Vintage,False
+134,Cabo Vintage 134,Escritório Criativo,False
+135,Acessório Criativo 135,Colecionáveis,False
+136,Cabo Vintage 136,Casa & Lazer,False
+137,Acessório Criativo 137,Escritório Criativo,False
+138,Cabo Vintage 138,Acessórios Vintage,False
+139,Acessório Criativo 139,Casa & Lazer,False
+140,Cabo Vintage 140,Casa & Lazer,False
+141,Acessório Criativo 141,Colecionáveis,False
+142,Cabo Vintage 142,Acessórios Vintage,False
+143,Acessório Criativo 143,Casa & Lazer,False
+144,Cabo Vintage 144,Casa & Lazer,False
+145,Acessório Criativo 145,Colecionáveis,False
+146,Cabo Vintage 146,Colecionáveis,False
+147,Acessório Criativo 147,Acessórios Vintage,False
+148,Cabo Vintage 148,Acessórios Vintage,False
+149,Acessório Criativo 149,Colecionáveis,False
+150,Cabo Vintage 150,Acessórios Vintage,False
+151,Acessório Criativo 151,Colecionáveis,False
+152,Cabo Vintage 152,Casa & Lazer,False
+153,Acessório Criativo 153,Colecionáveis,False
+154,Cabo Vintage 154,Casa & Lazer,False
+155,Acessório Criativo 155,Casa & Lazer,False
+156,Cabo Vintage 156,Escritório Criativo,False
+157,Acessório Criativo 157,Acessórios Vintage,False
+158,Cabo Vintage 158,Escritório Criativo,False
+159,Acessório Criativo 159,Escritório Criativo,False
+160,Cabo Vintage 160,Colecionáveis,False
+161,Acessório Criativo 161,Colecionáveis,False
+162,Cabo Vintage 162,Escritório Criativo,False
+163,Acessório Criativo 163,Casa & Lazer,False
+164,Cabo Vintage 164,Casa & Lazer,False
+165,Acessório Criativo 165,Casa & Lazer,False
+166,Cabo Vintage 166,Colecionáveis,False
+167,Acessório Criativo 167,Casa & Lazer,False
+168,Cabo Vintage 168,Acessórios Vintage,False
+169,Acessório Criativo 169,Casa & Lazer,False
+170,Cabo Vintage 170,Acessórios Vintage,False
+171,Acessório Criativo 171,Acessórios Vintage,False
+172,Cabo Vintage 172,Acessórios Vintage,False
+173,Acessório Criativo 173,Colecionáveis,False
+174,Cabo Vintage 174,Escritório Criativo,False
+175,Acessório Criativo 175,Escritório Criativo,False
+176,Cabo Vintage 176,Casa & Lazer,False
+177,Acessório Criativo 177,Escritório Criativo,False
+178,Cabo Vintage 178,Acessórios Vintage,False
+179,Acessório Criativo 179,Colecionáveis,False
+180,Cabo Vintage 180,Escritório Criativo,False
+181,Acessório Criativo 181,Colecionáveis,False
+182,Cabo Vintage 182,Acessórios Vintage,False
+183,Acessório Criativo 183,Casa & Lazer,False
+184,Cabo Vintage 184,Escritório Criativo,False
+185,Acessório Criativo 185,Casa & Lazer,False
+186,Cabo Vintage 186,Casa & Lazer,False
+187,Acessório Criativo 187,Acessórios Vintage,False
+188,Cabo Vintage 188,Casa & Lazer,False
+189,Acessório Criativo 189,Acessórios Vintage,False
+190,Cabo Vintage 190,Casa & Lazer,False
+191,Acessório Criativo 191,Escritório Criativo,False
+192,Cabo Vintage 192,Escritório Criativo,False
+193,Acessório Criativo 193,Escritório Criativo,False
+194,Cabo Vintage 194,Casa & Lazer,False
+195,Acessório Criativo 195,Colecionáveis,False
+196,Cabo Vintage 196,Acessórios Vintage,False
+197,Acessório Criativo 197,Casa & Lazer,False
+198,Cabo Vintage 198,Acessórios Vintage,False
+199,Acessório Criativo 199,Casa & Lazer,False
+200,Cabo Vintage 200,Colecionáveis,False
+201,Acessório Criativo 201,Casa & Lazer,False
+202,Cabo Vintage 202,Colecionáveis,False
+203,Acessório Criativo 203,Casa & Lazer,False
+204,Cabo Vintage 204,Escritório Criativo,False
+205,Acessório Criativo 205,Casa & Lazer,False
+206,Cabo Vintage 206,Casa & Lazer,False
+207,Acessório Criativo 207,Colecionáveis,False
+208,Cabo Vintage 208,Colecionáveis,False
+209,Acessório Criativo 209,Casa & Lazer,False
+210,Cabo Vintage 210,Colecionáveis,False
+211,Acessório Criativo 211,Casa & Lazer,False
+212,Cabo Vintage 212,Escritório Criativo,False
+213,Acessório Criativo 213,Colecionáveis,False
+214,Cabo Vintage 214,Casa & Lazer,False
+215,Acessório Criativo 215,Escritório Criativo,False
+216,Cabo Vintage 216,Casa & Lazer,False
+217,Acessório Criativo 217,Acessórios Vintage,False
+218,Cabo Vintage 218,Acessórios Vintage,False
+219,Acessório Criativo 219,Casa & Lazer,False
+220,Cabo Vintage 220,Colecionáveis,False
+221,Acessório Criativo 221,Acessórios Vintage,False
+222,Cabo Vintage 222,Casa & Lazer,False
+223,Acessório Criativo 223,Escritório Criativo,False
+224,Cabo Vintage 224,Acessórios Vintage,False
+225,Acessório Criativo 225,Escritório Criativo,False
+226,Cabo Vintage 226,Casa & Lazer,False
+227,Acessório Criativo 227,Colecionáveis,False
+228,Cabo Vintage 228,Escritório Criativo,False
+229,Acessório Criativo 229,Escritório Criativo,False
+230,Cabo Vintage 230,Acessórios Vintage,False
+231,Acessório Criativo 231,Casa & Lazer,False
+232,Cabo Vintage 232,Colecionáveis,False
+233,Acessório Criativo 233,Acessórios Vintage,False
+234,Cabo Vintage 234,Colecionáveis,False
+235,Acessório Criativo 235,Casa & Lazer,False
+236,Cabo Vintage 236,Escritório Criativo,False
+237,Acessório Criativo 237,Escritório Criativo,False
+238,Cabo Vintage 238,Casa & Lazer,False
+239,Acessório Criativo 239,Casa & Lazer,False
+240,Cabo Vintage 240,Escritório Criativo,False
+241,Acessório Criativo 241,Acessórios Vintage,False
+242,Cabo Vintage 242,Escritório Criativo,False
+243,Acessório Criativo 243,Acessórios Vintage,False
+244,Cabo Vintage 244,Escritório Criativo,False
+245,Acessório Criativo 245,Escritório Criativo,False
+246,Cabo Vintage 246,Acessórios Vintage,False
+247,Acessório Criativo 247,Colecionáveis,False
+248,Cabo Vintage 248,Casa & Lazer,False
+249,Acessório Criativo 249,Colecionáveis,False
+250,Cabo Vintage 250,Acessórios Vintage,False
+251,Acessório Criativo 251,Acessórios Vintage,False
+252,Cabo Vintage 252,Casa & Lazer,False
+253,Acessório Criativo 253,Acessórios Vintage,False
+254,Cabo Vintage 254,Casa & Lazer,False
+255,Acessório Criativo 255,Escritório Criativo,False
+256,Cabo Vintage 256,Acessórios Vintage,False
+257,Acessório Criativo 257,Escritório Criativo,False
+258,Cabo Vintage 258,Acessórios Vintage,False
+259,Acessório Criativo 259,Acessórios Vintage,False
+260,Cabo Vintage 260,Escritório Criativo,False
+261,Acessório Criativo 261,Colecionáveis,False
+262,Cabo Vintage 262,Acessórios Vintage,False
+263,Acessório Criativo 263,Casa & Lazer,False
+264,Cabo Vintage 264,Colecionáveis,False
+265,Acessório Criativo 265,Colecionáveis,False
+266,Cabo Vintage 266,Escritório Criativo,False
+267,Acessório Criativo 267,Casa & Lazer,False
+268,Cabo Vintage 268,Casa & Lazer,False
+269,Acessório Criativo 269,Escritório Criativo,False
+270,Cabo Vintage 270,Escritório Criativo,False
+271,Acessório Criativo 271,Casa & Lazer,False
+272,Cabo Vintage 272,Acessórios Vintage,False
+273,Acessório Criativo 273,Acessórios Vintage,False
+274,Cabo Vintage 274,Colecionáveis,False
+275,Acessório Criativo 275,Casa & Lazer,False
+276,Cabo Vintage 276,Casa & Lazer,False
+277,Acessório Criativo 277,Casa & Lazer,False
+278,Cabo Vintage 278,Colecionáveis,False
+279,Acessório Criativo 279,Acessórios Vintage,False
+280,Cabo Vintage 280,Acessórios Vintage,False
+281,Acessório Criativo 281,Casa & Lazer,False
+282,Cabo Vintage 282,Casa & Lazer,False
+283,Acessório Criativo 283,Escritório Criativo,False
+284,Cabo Vintage 284,Casa & Lazer,False
+285,Acessório Criativo 285,Casa & Lazer,False
+286,Cabo Vintage 286,Colecionáveis,False
+287,Acessório Criativo 287,Acessórios Vintage,False
+288,Cabo Vintage 288,Escritório Criativo,False
+289,Acessório Criativo 289,Escritório Criativo,False
+290,Cabo Vintage 290,Casa & Lazer,False
+291,Acessório Criativo 291,Colecionáveis,False
+292,Cabo Vintage 292,Casa & Lazer,False
+293,Acessório Criativo 293,Colecionáveis,False
+294,Cabo Vintage 294,Casa & Lazer,False
+295,Acessório Criativo 295,Escritório Criativo,False
+296,Cabo Vintage 296,Escritório Criativo,False
+297,Acessório Criativo 297,Colecionáveis,False
+298,Cabo Vintage 298,Casa & Lazer,False
+299,Acessório Criativo 299,Casa & Lazer,False
+300,Cabo Vintage 300,Acessórios Vintage,False
+301,Acessório Criativo 301,Casa & Lazer,False
+302,Cabo Vintage 302,Colecionáveis,False
+303,Acessório Criativo 303,Acessórios Vintage,False
+304,Cabo Vintage 304,Colecionáveis,False
+305,Acessório Criativo 305,Escritório Criativo,False
+306,Cabo Vintage 306,Acessórios Vintage,False
+307,Acessório Criativo 307,Casa & Lazer,False
+308,Cabo Vintage 308,Escritório Criativo,False
+309,Acessório Criativo 309,Casa & Lazer,False
+310,Cabo Vintage 310,Acessórios Vintage,False
+311,Acessório Criativo 311,Escritório Criativo,False
+312,Cabo Vintage 312,Escritório Criativo,False
+313,Acessório Criativo 313,Acessórios Vintage,False
+314,Cabo Vintage 314,Casa & Lazer,False
+315,Acessório Criativo 315,Acessórios Vintage,False
+316,Cabo Vintage 316,Escritório Criativo,False
+317,Acessório Criativo 317,Escritório Criativo,False
+318,Cabo Vintage 318,Escritório Criativo,False
+319,Acessório Criativo 319,Colecionáveis,False
+320,Cabo Vintage 320,Colecionáveis,False
+321,Acessório Criativo 321,Casa & Lazer,False
+322,Cabo Vintage 322,Acessórios Vintage,False
+323,Acessório Criativo 323,Escritório Criativo,False
+324,Cabo Vintage 324,Colecionáveis,False
+325,Acessório Criativo 325,Colecionáveis,False
+326,Cabo Vintage 326,Acessórios Vintage,False
+327,Acessório Criativo 327,Acessórios Vintage,False
+328,Cabo Vintage 328,Acessórios Vintage,False
+329,Acessório Criativo 329,Acessórios Vintage,False
+330,Cabo Vintage 330,Escritório Criativo,False
+331,Acessório Criativo 331,Escritório Criativo,False
+332,Cabo Vintage 332,Casa & Lazer,False
+333,Acessório Criativo 333,Casa & Lazer,False
+334,Cabo Vintage 334,Colecionáveis,False
+335,Acessório Criativo 335,Casa & Lazer,False
+336,Cabo Vintage 336,Colecionáveis,False
+337,Acessório Criativo 337,Colecionáveis,False
+338,Cabo Vintage 338,Casa & Lazer,False
+339,Acessório Criativo 339,Acessórios Vintage,False
+340,Cabo Vintage 340,Colecionáveis,False
+341,Acessório Criativo 341,Escritório Criativo,False
+342,Cabo Vintage 342,Casa & Lazer,False
+343,Acessório Criativo 343,Escritório Criativo,False
+344,Cabo Vintage 344,Escritório Criativo,False
+345,Acessório Criativo 345,Colecionáveis,False
+346,Cabo Vintage 346,Casa & Lazer,False
+347,Acessório Criativo 347,Colecionáveis,False
+348,Cabo Vintage 348,Colecionáveis,False
+349,Acessório Criativo 349,Acessórios Vintage,False
+350,Cabo Vintage 350,Acessórios Vintage,False
+351,Acessório Criativo 351,Escritório Criativo,False
+352,Cabo Vintage 352,Acessórios Vintage,False
+353,Acessório Criativo 353,Casa & Lazer,False
+354,Cabo Vintage 354,Casa & Lazer,False
+355,Acessório Criativo 355,Colecionáveis,False
+356,Cabo Vintage 356,Colecionáveis,False
+357,Acessório Criativo 357,Acessórios Vintage,False
+358,Cabo Vintage 358,Colecionáveis,False
+359,Acessório Criativo 359,Acessórios Vintage,False
+360,Cabo Vintage 360,Escritório Criativo,False
+361,Acessório Criativo 361,Colecionáveis,False
+362,Cabo Vintage 362,Colecionáveis,False
+363,Acessório Criativo 363,Acessórios Vintage,False
+364,Cabo Vintage 364,Colecionáveis,False
+365,Acessório Criativo 365,Acessórios Vintage,False
+366,Cabo Vintage 366,Escritório Criativo,False
+367,Acessório Criativo 367,Casa & Lazer,False
+368,Cabo Vintage 368,Casa & Lazer,False
+369,Acessório Criativo 369,Acessórios Vintage,False
+370,Cabo Vintage 370,Colecionáveis,False
+371,Acessório Criativo 371,Casa & Lazer,False
+372,Cabo Vintage 372,Escritório Criativo,False
+373,Acessório Criativo 373,Casa & Lazer,False
+374,Cabo Vintage 374,Casa & Lazer,False
+375,Acessório Criativo 375,Colecionáveis,False
+376,Cabo Vintage 376,Acessórios Vintage,False
+377,Acessório Criativo 377,Escritório Criativo,False
+378,Cabo Vintage 378,Escritório Criativo,False
+379,Acessório Criativo 379,Casa & Lazer,False
+380,Cabo Vintage 380,Casa & Lazer,False
+381,Acessório Criativo 381,Acessórios Vintage,False
+382,Cabo Vintage 382,Colecionáveis,False
+383,Acessório Criativo 383,Colecionáveis,False
+384,Cabo Vintage 384,Acessórios Vintage,False
+385,Acessório Criativo 385,Acessórios Vintage,False
+386,Cabo Vintage 386,Acessórios Vintage,False
+387,Acessório Criativo 387,Acessórios Vintage,False
+388,Cabo Vintage 388,Colecionáveis,False
+389,Acessório Criativo 389,Colecionáveis,False
+390,Cabo Vintage 390,Acessórios Vintage,False
+391,Acessório Criativo 391,Escritório Criativo,False
+392,Cabo Vintage 392,Acessórios Vintage,False
+393,Acessório Criativo 393,Casa & Lazer,False
+394,Cabo Vintage 394,Escritório Criativo,False
+395,Acessório Criativo 395,Escritório Criativo,False
+396,Cabo Vintage 396,Colecionáveis,False
+397,Acessório Criativo 397,Acessórios Vintage,False
+398,Cabo Vintage 398,Acessórios Vintage,False
+399,Acessório Criativo 399,Casa & Lazer,False
+400,Cabo Vintage 400,Casa & Lazer,False
+401,Acessório Criativo 401,Colecionáveis,False
+402,Cabo Vintage 402,Colecionáveis,False
+403,Acessório Criativo 403,Casa & Lazer,False
+404,Cabo Vintage 404,Colecionáveis,False
+405,Acessório Criativo 405,Casa & Lazer,False
+406,Cabo Vintage 406,Escritório Criativo,False
+407,Acessório Criativo 407,Casa & Lazer,False
+408,Cabo Vintage 408,Acessórios Vintage,False
+409,Acessório Criativo 409,Colecionáveis,False
+410,Cabo Vintage 410,Acessórios Vintage,False
+411,Acessório Criativo 411,Acessórios Vintage,False
+412,Cabo Vintage 412,Acessórios Vintage,False
+413,Acessório Criativo 413,Casa & Lazer,False
+414,Cabo Vintage 414,Acessórios Vintage,False
+415,Acessório Criativo 415,Acessórios Vintage,False
+416,Cabo Vintage 416,Escritório Criativo,False
+417,Acessório Criativo 417,Colecionáveis,False
+418,Cabo Vintage 418,Acessórios Vintage,False
+419,Acessório Criativo 419,Casa & Lazer,False
+420,Cabo Vintage 420,Escritório Criativo,False
+421,Acessório Criativo 421,Colecionáveis,False
+422,Cabo Vintage 422,Escritório Criativo,False
+423,Acessório Criativo 423,Colecionáveis,False
+424,Cabo Vintage 424,Escritório Criativo,False
+425,Acessório Criativo 425,Casa & Lazer,False
+426,Cabo Vintage 426,Acessórios Vintage,False
+427,Acessório Criativo 427,Colecionáveis,False
+428,Cabo Vintage 428,Colecionáveis,False
+429,Acessório Criativo 429,Acessórios Vintage,False
+430,Cabo Vintage 430,Escritório Criativo,False
+431,Acessório Criativo 431,Acessórios Vintage,False
+432,Cabo Vintage 432,Escritório Criativo,False
+433,Acessório Criativo 433,Colecionáveis,False
+434,Cabo Vintage 434,Acessórios Vintage,False
+435,Acessório Criativo 435,Casa & Lazer,False
+436,Cabo Vintage 436,Acessórios Vintage,False
+437,Acessório Criativo 437,Escritório Criativo,False
+438,Cabo Vintage 438,Colecionáveis,False
+439,Acessório Criativo 439,Acessórios Vintage,False
+440,Cabo Vintage 440,Casa & Lazer,False
+441,Acessório Criativo 441,Colecionáveis,False
+442,Cabo Vintage 442,Casa & Lazer,False
+443,Acessório Criativo 443,Acessórios Vintage,False
+444,Cabo Vintage 444,Casa & Lazer,False
+445,Acessório Criativo 445,Escritório Criativo,False
+446,Cabo Vintage 446,Escritório Criativo,False
+447,Acessório Criativo 447,Casa & Lazer,False
+448,Cabo Vintage 448,Colecionáveis,False
+449,Acessório Criativo 449,Escritório Criativo,False
+450,Cabo Vintage 450,Casa & Lazer,False
+451,Acessório Criativo 451,Colecionáveis,False
+452,Cabo Vintage 452,Colecionáveis,False
+453,Acessório Criativo 453,Casa & Lazer,False
+454,Cabo Vintage 454,Acessórios Vintage,False
+455,Acessório Criativo 455,Escritório Criativo,False
+456,Cabo Vintage 456,Escritório Criativo,False
+457,Acessório Criativo 457,Acessórios Vintage,False
+458,Cabo Vintage 458,Escritório Criativo,False
+459,Acessório Criativo 459,Colecionáveis,False
+460,Cabo Vintage 460,Acessórios Vintage,False
+461,Acessório Criativo 461,Escritório Criativo,False
+462,Cabo Vintage 462,Acessórios Vintage,False
+463,Acessório Criativo 463,Escritório Criativo,False
+464,Cabo Vintage 464,Casa & Lazer,False
+465,Acessório Criativo 465,Acessórios Vintage,False
+466,Cabo Vintage 466,Colecionáveis,False
+467,Acessório Criativo 467,Acessórios Vintage,False
+468,Cabo Vintage 468,Escritório Criativo,False
+469,Acessório Criativo 469,Acessórios Vintage,False
+470,Cabo Vintage 470,Colecionáveis,False
+471,Acessório Criativo 471,Escritório Criativo,False
+472,Cabo Vintage 472,Colecionáveis,False
+473,Acessório Criativo 473,Casa & Lazer,False
+474,Cabo Vintage 474,Casa & Lazer,False
+475,Acessório Criativo 475,Escritório Criativo,False
+476,Cabo Vintage 476,Colecionáveis,False
+477,Acessório Criativo 477,Colecionáveis,False
+478,Cabo Vintage 478,Acessórios Vintage,False
+479,Acessório Criativo 479,Escritório Criativo,False
+480,Cabo Vintage 480,Acessórios Vintage,False
+481,Acessório Criativo 481,Casa & Lazer,False
+482,Cabo Vintage 482,Colecionáveis,False
+483,Acessório Criativo 483,Casa & Lazer,False
+484,Cabo Vintage 484,Colecionáveis,False
+485,Acessório Criativo 485,Casa & Lazer,False
+486,Cabo Vintage 486,Acessórios Vintage,False
+487,Acessório Criativo 487,Casa & Lazer,False
+488,Cabo Vintage 488,Escritório Criativo,False
+489,Acessório Criativo 489,Colecionáveis,False
+490,Cabo Vintage 490,Escritório Criativo,False
+491,Acessório Criativo 491,Colecionáveis,False
+492,Cabo Vintage 492,Colecionáveis,False
+493,Acessório Criativo 493,Colecionáveis,False
+494,Cabo Vintage 494,Escritório Criativo,False
+495,Acessório Criativo 495,Casa & Lazer,False
+496,Cabo Vintage 496,Casa & Lazer,False
+497,Acessório Criativo 497,Acessórios Vintage,False
+498,Cabo Vintage 498,Casa & Lazer,False
+499,Acessório Criativo 499,Colecionáveis,False
+500,Cabo Vintage 500,Casa & Lazer,False

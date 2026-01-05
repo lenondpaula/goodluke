@@ -84,14 +84,14 @@ def load_model():
 
 def layout():
     st.set_page_config(
-        page_title="Previsão de Falhas",
+        page_title="Sistema de Precaução Mecânica",
         page_icon="🔧",
         layout="centered",
         initial_sidebar_state="expanded",
     )
     st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
-    st.title("🔧 Previsão de Falhas")
+    st.title("🔧 Sistema de Precaução Mecânica")
     st.markdown(
         "Ajuste os parâmetros na barra lateral para simular o estado atual do equipamento.",
     )

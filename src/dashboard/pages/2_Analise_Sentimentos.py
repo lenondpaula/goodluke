@@ -467,14 +467,14 @@ def render_saude_marca(polaridade_media: float):
 def layout():
     """Configura o layout da página."""
     st.set_page_config(
-        page_title="Análise de Sentimentos - TechNova",
+        page_title="Gestor de Reputação de Marca",
         page_icon="📊",
         layout="wide",
         initial_sidebar_state="expanded",
     )
     st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
-    st.title("📊 Monitor de Reputação de Marca")
+    st.title("📊 Gestor de Reputação de Marca")
     st.markdown("Análise de sentimentos em tempo real para a marca **TechNova**.")
 
     # Apresentação (mesmo estilo do App 1)

@@ -51,20 +51,20 @@ Como **Desenvolvedor de Soluções Avançadas**, meus projetos focam em:
 
 ## 🧩 Protótipos do Hub (5 Apps)
 
-### 1) 🔧 Previsão de Falhas (Manutenção Preditiva) — **Disponível**
+### 1) 🔧 Sistema de Precaução Mecânica (Manutenção Preditiva) — **Disponível**
 - **O que é:** um protótipo de manutenção preditiva com **Machine Learning** para estimar risco de falha com base em variáveis operacionais.
 - **Objetivo:** antecipar falhas e apoiar decisões de manutenção.
 - **Stack:** Python, Pandas, Scikit-learn, Streamlit.
 
-### 2) 📊 Analista de Marca (Análise de Sentimentos) — **Disponível**
+### 2) 📊 Gestor de Reputação de Marca — **Disponível**
 - **O que é:** um monitor de reputação de marca que classifica menções (positivo/negativo/neutro) usando NLP.
 - **Diferencial:** geração de dados sintéticos para demonstração e painéis com KPIs + gráficos interativos.
 - **Stack:** Python, Streamlit, Plotly, TextBlob, NLTK.
 
-### 3) O “Vendedor Automático” (Sistema de Recomendação) — **Planejado**
-- **O que é:** um motor de recomendação simples para e-commerce usando filtragem colaborativa ("quem comprou X também comprou Y").
-- **Tech Stack:** Python, Surprise (biblioteca de recomendação) ou Pandas.
-- **Diferencial:** foco na **cauda longa** (produtos de nicho) para mostrar impacto em **ticket médio**.
+### 3) Que tal esse? (Sistema de Recomendação) — **Disponível**
+- **O que é:** um motor de recomendação para e-commerce usando filtragem colaborativa com SVD.
+- **Tech Stack:** Python, Streamlit, Plotly, Surprise.
+- **Diferencial:** ativa a **cauda longa** (produtos de nicho) para elevar **ticket médio** e giro de estoque.
 
 ### 4) O “Oráculo de Vendas” (BI Preditivo) — **Planejado**
 - **O que é:** um painel que mostra vendas passadas e projeta as vendas do próximo mês.
@@ -105,7 +105,7 @@ streamlit run streamlit_app.py
 
 ## 📫 Vamos nos conectar?
 
-[![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/lenonmp/)
+[![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/lenonmpaula/)
 [![Email](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:lenondpaula@gmail.com)
 
 ---
