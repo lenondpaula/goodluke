@@ -19,3 +19,23 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Environments and secrets - NUNCA commitar!
+.env
+*.pem
+*.key
+secrets/
+cookies.json
+config/settings.json
+
+# Project specific outputs
+data/*.pdf
+output/*.txt
+output/*.json
+output/*.log
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+

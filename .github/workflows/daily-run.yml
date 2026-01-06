@@ -1,0 +1,129 @@
+# Jornal-Agent - Workflow de execução diária
+#
+# Este workflow executa o agente automaticamente às 06:00 BRT (09:00 UTC)
+# todos os dias. Também pode ser executado manualmente.
+#
+# IMPORTANTE: Configure os seguintes secrets no repositório:
+#   - JORNAL_USER: Usuário para login no jornal
+#   - JORNAL_PASS: Senha para login no jornal
+#   - LLM_API_KEY: Chave da API do LLM
+#   - WHATSAPP_TOKEN: Token da WhatsApp Cloud API
+#   - WHATSAPP_PHONE_ID: ID do telefone WhatsApp Business
+#
+# Opcionais (para fallback por e-mail):
+#   - SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS
+#   - EMAIL_FROM, EMAIL_TO
+
+name: Daily Jornal Agent
+
+on:
+  # Execução agendada: 09:00 UTC = 06:00 BRT
+  schedule:
+    - cron: '0 9 * * *'
+  
+  # Permite execução manual via GitHub UI
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Executar em modo de teste (dry-run)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+
+# Permissões mínimas necessárias
+permissions:
+  contents: read
+
+jobs:
+  run-agent:
+    name: Executar Jornal-Agent
+    runs-on: ubuntu-latest
+    
+    # Timeout de 30 minutos para evitar jobs pendurados
+    timeout-minutes: 30
+    
+    steps:
+      - name: 📥 Checkout do repositório
+        uses: actions/checkout@v4
+      
+      - name: 🐍 Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: 📦 Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: 🎭 Instalar Playwright
+        run: |
+          playwright install chromium
+          playwright install-deps chromium
+      
+      - name: 🔧 Instalar Tesseract OCR
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr tesseract-ocr-por
+      
+      - name: 📂 Criar diretórios
+        run: |
+          mkdir -p data output
+      
+      - name: 🚀 Executar Jornal-Agent
+        env:
+          # Credenciais do Jornal
+          JORNAL_USER: ${{ secrets.JORNAL_USER }}
+          JORNAL_PASS: ${{ secrets.JORNAL_PASS }}
+          JORNAL_LOGIN_URL: ${{ secrets.JORNAL_LOGIN_URL }}
+          JORNAL_PDF_URL: ${{ secrets.JORNAL_PDF_URL }}
+          
+          # LLM
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_MODEL: ${{ secrets.LLM_MODEL }}
+          LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
+          
+          # WhatsApp
+          WHATSAPP_TOKEN: ${{ secrets.WHATSAPP_TOKEN }}
+          WHATSAPP_PHONE_ID: ${{ secrets.WHATSAPP_PHONE_ID }}
+          WHATSAPP_RECIPIENT: ${{ secrets.WHATSAPP_RECIPIENT }}
+          
+          # SMTP (fallback)
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            echo "🧪 Executando em modo DRY-RUN..."
+            python -m src.main --dry-run --verbose
+          else
+            echo "🚀 Executando em modo PRODUÇÃO..."
+            python -m src.main --verbose
+          fi
+      
+      - name: 📤 Upload de artefatos
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jornal-agent-output-${{ github.run_number }}
+          path: |
+            output/
+            data/*.pdf
+          retention-days: 7
+      
+      - name: 📋 Exibir status
+        if: always()
+        run: |
+          echo "📋 Status da execução:"
+          if [ -f output/last-run-status.json ]; then
+            cat output/last-run-status.json
+          else
+            echo "Arquivo de status não encontrado"
+          fi

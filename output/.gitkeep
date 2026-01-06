@@ -1,0 +1,6 @@
+# Este diretório armazena os arquivos de saída
+# - clipagem-YYYYMMDD.txt
+# - clipagem-YYYYMMDD.json
+# - verification-YYYYMMDD.txt
+# - last-run-status.json
+# - jornal-agent.log

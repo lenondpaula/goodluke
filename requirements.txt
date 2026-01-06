@@ -1,3 +1,4 @@
+# Dependências originais do projeto
 pandas
 numpy
 scikit-learn
@@ -6,3 +7,35 @@ uvicorn
 streamlit
 joblib
 python-multipart
+
+# Jornal-Agent - Dependências adicionais
+# Automação e scraping
+playwright>=1.40.0
+requests>=2.31.0
+
+# Configuração e ambiente
+python-dotenv>=1.0.0
+
+# Processamento de PDF
+PyMuPDF>=1.23.0
+pdf2image>=1.16.3
+pytesseract>=0.3.10
+Pillow>=10.0.0
+
+# LLM e IA
+openai>=1.6.0
+
+# WhatsApp/Comunicação
+twilio>=8.10.0
+
+# Logging
+loguru>=0.7.2
+
+# Testes
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-mock>=3.12.0
+
+# Utilitários
+aiohttp>=3.9.0
+tenacity>=8.2.0
