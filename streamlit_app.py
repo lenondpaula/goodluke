@@ -123,10 +123,10 @@ APPS = [
         "page": "pages/2_Gestor_de_Reputacao_de_Marca",
     },
     {
-        "title": "🛒 App 3 — Que tal esse?",
+        "title": "🛒 App 3 — Sugestão de compra",
         "desc": "Recomenda itens de nicho com filtragem colaborativa (SVD) para elevar ticket médio.",
         "status": "active",
-        "page": "pages/3_Que_tal_esse",
+        "page": "pages/3_Sugestao_de_compra",
     },
     {
         "title": "🔮 App 4 — O Oráculo de Vendas (BI Preditivo)",

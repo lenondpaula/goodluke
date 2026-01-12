@@ -22,6 +22,17 @@ from indexador import (
     contar_documentos,
 )
 
+
+def eh_streamlit_cloud() -> bool:
+    """Detecta se está executando no Streamlit Cloud."""
+    import os
+    return (
+        "STREAMLIT_RUNTIME_ENV" in os.environ 
+        or "STREAMLIT_SERVER_HEADLESS" in os.environ
+        or os.path.exists("/.dockerenv")
+    )
+
+
 # ────────────────────────────────────────────────────────────────────────────────
 # CSS corporativo minimalista (padrão do Hub)
 # ────────────────────────────────────────────────────────────────────────────────
@@ -523,36 +534,55 @@ def render_app():
         # Ollama config
         st.subheader("🦙 Ollama (LLM Local)")
         
-        ollama_online = verificar_ollama()
-        
-        if ollama_online:
-            st.markdown('<div class="ollama-status ollama-online">✅ Online</div>', unsafe_allow_html=True)
-            
-            st.session_state.usar_ollama = st.checkbox(
-                "Usar Ollama",
-                value=st.session_state.usar_ollama,
+        # ⚠️ AVISO IMPORTANTE PARA STREAMLIT CLOUD
+        if eh_streamlit_cloud():
+            st.info(
+                """
+                🌐 **Usando Streamlit Cloud**
+                
+                O Ollama requer um ambiente local com capacidade de executar binários.
+                
+                **Alternativas:**
+                - 🖥️ Execute localmente: `streamlit run app.py`
+                - ☁️ Use Ollama em VPS/servidor próprio
+                - 🔗 Integre com API remota (Replicate, Together.ai)
+                
+                Enquanto isso, você pode buscar documentos sem IA generativa.
+                """
             )
-            
-            if st.session_state.usar_ollama:
-                modelos = listar_modelos_ollama()
-                if modelos:
-                    idx = modelos.index(st.session_state.modelo_ollama) if st.session_state.modelo_ollama in modelos else 0
-                    st.session_state.modelo_ollama = st.selectbox("Modelo", modelos, index=idx)
-        else:
-            st.markdown('<div class="ollama-status ollama-offline">❌ Offline</div>', unsafe_allow_html=True)
-            
-            # Verifica se está instalado para mostrar texto apropriado
-            if ollama_instalado():
-                st.caption("Serviço não está rodando.")
-                btn_label = "🚀 Iniciar Ollama"
-            else:
-                st.caption("Ollama não instalado.")
-                btn_label = "📥 Instalar e Iniciar Ollama"
-            
-            if st.button(btn_label, use_container_width=True, key="btn_start_ollama"):
-                iniciar_ollama()
-            
             st.session_state.usar_ollama = False
+        else:
+            # Modo local - comportamento padrão
+            ollama_online = verificar_ollama()
+            
+            if ollama_online:
+                st.markdown('<div class="ollama-status ollama-online">✅ Online</div>', unsafe_allow_html=True)
+                
+                st.session_state.usar_ollama = st.checkbox(
+                    "Usar Ollama",
+                    value=st.session_state.usar_ollama,
+                )
+                
+                if st.session_state.usar_ollama:
+                    modelos = listar_modelos_ollama()
+                    if modelos:
+                        idx = modelos.index(st.session_state.modelo_ollama) if st.session_state.modelo_ollama in modelos else 0
+                        st.session_state.modelo_ollama = st.selectbox("Modelo", modelos, index=idx)
+            else:
+                st.markdown('<div class="ollama-status ollama-offline">❌ Offline</div>', unsafe_allow_html=True)
+                
+                # Verifica se está instalado para mostrar texto apropriado
+                if ollama_instalado():
+                    st.caption("Serviço não está rodando.")
+                    btn_label = "🚀 Iniciar Ollama"
+                else:
+                    st.caption("Ollama não instalado.")
+                    btn_label = "📥 Instalar e Iniciar Ollama"
+                
+                if st.button(btn_label, use_container_width=True, key="btn_start_ollama"):
+                    iniciar_ollama()
+                
+                st.session_state.usar_ollama = False
         
         st.markdown("---")
         

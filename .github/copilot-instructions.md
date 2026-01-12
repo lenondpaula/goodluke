@@ -125,6 +125,160 @@ Layout em cards HTML customizados com gradientes CSS:
 st.markdown(f'<div class="status-ok">✅ Sistema Saudável</div>', unsafe_allow_html=True)
 ```
 
+## Detalhes dos Apps 4 e 5
+
+### App 4: O Oráculo de Vendas (BI Preditivo com Prophet)
+
+**Estrutura**:
+```
+oraculo-vendas/
+├── app/
+│   └── dashboard_vendas.py      # Dashboard principal com KPIs
+├── data/
+│   └── vendas_historico.csv     # 3 anos de histórico sintético (1096 dias)
+├── models/
+│   └── prophet_model.pkl         # Modelo Prophet treinado
+├── src/
+│   ├── gerar_vendas.py          # Geração de dados com tendência + sazonalidade
+│   └── treinar_oraculo.py       # Treino do modelo Prophet
+└── requirements.txt
+```
+
+**Workflow de Treino**:
+```bash
+cd oraculo-vendas
+python src/gerar_vendas.py              # Gera data/vendas_historico.csv
+python src/treinar_oraculo.py           # Treina e salva models/prophet_model.pkl
+streamlit run ../pages/4_O_Oraculo_de_Vendas.py
+```
+
+**Características Técnicas**:
+- **Dados sintéticos**: 3 anos de vendas diárias com padrões realistas:
+  - Tendência linear (crescimento suave)
+  - Sazonalidade multiplicativa (7 dias, 365 dias)
+  - Pico de Black Friday (~40% acima da média)
+  - Ruído gaussiano (±5%)
+- **Configuração Prophet**:
+  - `interval_width=0.95` para intervalos de confiança (IC 95%)
+  - Multiplicative seasonality (mais realista para dados de vendas)
+  - Feriados brasileiros registrados (e.g., Black Friday em Nov)
+  - `yearly_seasonality=True`, `weekly_seasonality=True`, `daily_seasonality=False`
+- **Dashboard**:
+  - KPIs: Próximo mês estimado, variação vs histórico, confiabilidade IC
+  - Gráficos Plotly: Série histórica + forecast, decomposição de componentes, resíduos
+  - Export: CSV com forecast (com IC inferior/superior) e parâmetros do modelo
+  - Slider para ajustar períodos de forecast (7 a 90 dias)
+
+**Imports Críticos**:
+```python
+from prophet import Prophet
+from pathlib import Path
+import joblib
+import plotly.graph_objects as go
+```
+
+**Checklist de Deploy**:
+- [ ] Dados gerados com seed=42 para reproducibilidade
+- [ ] Modelo pickleado em `models/prophet_model.pkl`
+- [ ] CSS corporativo aplicado no dashboard
+- [ ] Cache Streamlit para dados (`@st.cache_data`)
+- [ ] Conversor de forecast DataFrame para CSV
+
+---
+
+### App 5: O Assistente Corporativo (RAG com Ollama)
+
+**Estrutura**:
+```
+assistente-rag/
+├── app/
+│   └── chatbot_rag.py               # Interface RAG + Ollama
+├── data/
+│   └── (PDFs do usuário)
+├── src/
+│   ├── processador_pdf.py           # Extração de texto com PyPDF
+│   └── indexador.py                 # Indexação ChromaDB
+├── models/
+│   └── (ChromaDB vectors)
+└── requirements.txt
+```
+
+**Workflow de Setup**:
+```bash
+cd assistente-rag
+# Local: Instalar Ollama manualmente (https://ollama.ai)
+ollama pull llama3.2                 # ~2.3GB
+
+# Streamlit Cloud: Automático via detectar_streamlit_cloud()
+streamlit run ../pages/5_O_Assistente_Corporativo.py
+```
+
+**Arquitetura RAG**:
+1. **Ingestão (PDF)**:
+   - PyPDF2 extrai texto bruto de PDFs
+   - RecursiveCharacterTextSplitter divide em chunks (600 chars, 200 overlap)
+   - Embedding: sentence-transformers/all-MiniLM-L6-v2 (384-dim, CPU)
+
+2. **Indexação (ChromaDB)**:
+   - Vector store em disco (`chroma_vectordb/`)
+   - Similaridade cosine para recuperação
+   - Scoring automático per chunk (0-1)
+
+3. **Geração (Ollama LLM)**:
+   - Endpoint local: `http://localhost:11434`
+   - Modelo default: `llama3.2` (Ollama auto-seleciona)
+   - Context window: até 2048 tokens
+   - Temperature: 0.7 (balanceado)
+
+**Funções Principais** (em `chatbot_rag.py`):
+```python
+def detectar_streamlit_cloud() -> bool:
+    """Detecta se está rodando em Streamlit Cloud"""
+    return os.getenv("STREAMLIT_SERVER_HEADLESS") == "true"
+
+def verificar_ollama() -> bool:
+    """Verifica se Ollama está instalado e rodando"""
+    # shutil.which("ollama") + HTTP health check em :11434
+
+def listar_modelos_ollama() -> list[str]:
+    """List: GET /api/tags"""
+
+def instalar_ollama_cloud() -> bool:
+    """subprocess + apt para Cloud (detecta ubuntu/debian)"""
+
+def gerar_resposta_ollama(prompt: str, contexto: str) -> str:
+    """LLM inference com contexto do RAG"""
+```
+
+**Imports Críticos** (v0.3+ LangChain):
+```python
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_core.documents import Document
+from langchain_community.vectorstores import Chroma
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_ollama import ChatOllama
+```
+
+**Comportamento Offline**:
+- Ollama offline → Mostra chunks relevantes do PDF (fallback gracioso)
+- Interrupção de conexão → Tenta reconectar, depois fallback
+- Streamlit Cloud sem Docker → Oferece botão "📥 Instalar Ollama"
+
+**Checklist de Deploy**:
+- [ ] ChromaDB persiste em `chroma_vectordb/` na raiz do submódulo
+- [ ] Ollama health check em `/proc/pid` ou HTTP
+- [ ] Environment detection para Streamlit Cloud
+- [ ] Auto-install subprocess com quoting seguro
+- [ ] Cache Streamlit para embeddings (`@st.cache_resource`)
+- [ ] Tratamento de PDFs inválidos/vazio
+- [ ] Sidebar com upload + histórico de chat
+
+**Notas para Streamlit Cloud**:
+- Ollama requer Docker ou sistema Unix (WSL em Windows)
+- Instalação via apt-get em primeiro boot (~5-10 min)
+- Modelo `llama3.2` baixa ~2.3GB (cache via `/root/.ollama`)
+- Recursos: ~2GB RAM + 500MB CPU suficientes para llama3.2
+
 ## Como Adicionar um Novo App ao Hub
 
 ### Opção 1: App Simples (Tudo em `pages/`)

@@ -14,8 +14,8 @@ name = "2 — Gestor de Reputação de Marca"
 icon = "📊"
 
 [[pages]]
-path = "pages/3_Que_tal_esse.py"
-name = "3 — Que tal esse?"
+path = "pages/3_Sugestao_de_compra.py"
+name = "3 — Sugestão de compra"
 icon = "🛒"
 
 [[pages]]
