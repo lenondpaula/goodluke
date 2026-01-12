@@ -17,6 +17,8 @@ statsmodels
 langchain
 langchain-community
 langchain-huggingface
+langchain-groq
+langchain-ollama
 pypdf
 chromadb
 sentence-transformers

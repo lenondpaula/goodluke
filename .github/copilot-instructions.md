@@ -206,10 +206,17 @@ assistente-rag/
 **Workflow de Setup**:
 ```bash
 cd assistente-rag
-# Local: Instalar Ollama manualmente (https://ollama.ai)
+
+# Opção 1: Groq API (Recomendado para Cloud)
+# 1. Criar conta em https://console.groq.com (grátis)
+# 2. Gerar API key
+# 3. Adicionar ao .streamlit/secrets.toml:
+echo 'GROQ_API_KEY = "gsk_..."' > .streamlit/secrets.toml
+
+# Opção 2: Ollama Local
 ollama pull llama3.2                 # ~2.3GB
 
-# Streamlit Cloud: Automático via detectar_streamlit_cloud()
+# Executar
 streamlit run ../pages/5_O_Assistente_Corporativo.py
 ```
 
@@ -224,30 +231,34 @@ streamlit run ../pages/5_O_Assistente_Corporativo.py
    - Similaridade cosine para recuperação
    - Scoring automático per chunk (0-1)
 
-3. **Geração (Ollama LLM)**:
-   - Endpoint local: `http://localhost:11434`
-   - Modelo default: `llama3.2` (Ollama auto-seleciona)
-   - Context window: até 2048 tokens
-   - Temperature: 0.7 (balanceado)
+3. **Geração (LLM com Fallback)**:
+   - **Primário: Groq API** (Cloud, grátis, 70-100 tokens/s)
+     - Modelos: `llama-3.1-70b-versatile`, `llama-3.1-8b-instant`, `mixtral-8x7b-32768`
+     - API compatível com OpenAI
+     - Rate limits generosos no tier gratuito
+   - **Secundário: Ollama** (Local, `http://localhost:11434`)
+     - Modelo default: `llama3.2`
+     - Context window: até 2048 tokens
+   - **Fallback: Chunks PDF** (sem LLM)
+     - Mostra trechos relevantes encontrados
 
 **Funções Principais** (em `chatbot_rag.py`):
 ```python
-def detectar_streamlit_cloud() -> bool:
-    """Detecta se está rodando em Streamlit Cloud"""
-    return os.getenv("STREAMLIT_SERVER_HEADLESS") == "true"
+def verificar_groq() -> bool:
+    """Verifica se API key do Groq está configurada"""
+
+def gerar_resposta_groq(prompt: str, contextos: list, modelo: str) -> str:
+    """LLM inference com Groq API (primário)"""
 
 def verificar_ollama() -> bool:
     """Verifica se Ollama está instalado e rodando"""
-    # shutil.which("ollama") + HTTP health check em :11434
 
-def listar_modelos_ollama() -> list[str]:
-    """List: GET /api/tags"""
+def gerar_resposta_ollama(prompt: str, contextos: list, modelo: str) -> str:
+    """LLM inference com Ollama local (fallback)"""
 
-def instalar_ollama_cloud() -> bool:
-    """subprocess + apt para Cloud (detecta ubuntu/debian)"""
-
-def gerar_resposta_ollama(prompt: str, contexto: str) -> str:
-    """LLM inference com contexto do RAG"""
+def processar_pergunta(pergunta: str, modo_llm: str, modelo: str):
+    """Sistema de fallback: Groq → Ollama → Chunks PDF"""
+```
 ```
 
 **Imports Críticos** (v0.3+ LangChain):
@@ -256,28 +267,43 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.documents import Document
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_ollama import ChatOllama
+from langchain_groq import ChatGroq  # Primário
+from langchain_ollama import OllamaLLM  # Fallback
 ```
 
-**Comportamento Offline**:
-- Ollama offline → Mostra chunks relevantes do PDF (fallback gracioso)
-- Interrupção de conexão → Tenta reconectar, depois fallback
-- Streamlit Cloud sem Docker → Oferece botão "📥 Instalar Ollama"
+**Sistema de Fallback Inteligente**:
+1. **Groq API** (primário):
+   - ✅ Funciona 100% em Streamlit Cloud
+   - ✅ Gratuito com rate limits generosos
+   - ✅ Ultra rápido (70-100 tokens/s)
+   - ⚙️ Configuração via `GROQ_API_KEY` em secrets
+   
+2. **Ollama** (secundário):
+   - ✅ Funciona localmente sem internet
+   - ✅ Privacidade total (modelos locais)
+   - ❌ Não funciona em Streamlit Cloud
+   - ⚙️ Requer instalação manual
+
+3. **Chunks PDF** (fallback final):
+   - ✅ Sempre funciona
+   - ℹ️ Mostra trechos relevantes sem LLM
+   - ⚙️ Sem configuração necessária
 
 **Checklist de Deploy**:
+- [ ] Groq API key configurada em secrets (recomendado para Cloud)
 - [ ] ChromaDB persiste em `chroma_vectordb/` na raiz do submódulo
-- [ ] Ollama health check em `/proc/pid` ou HTTP
-- [ ] Environment detection para Streamlit Cloud
-- [ ] Auto-install subprocess com quoting seguro
+- [ ] Ollama health check em HTTP (fallback local)
+- [ ] Sistema de fallback automático implementado
 - [ ] Cache Streamlit para embeddings (`@st.cache_resource`)
 - [ ] Tratamento de PDFs inválidos/vazio
 - [ ] Sidebar com upload + histórico de chat
+- [ ] Seletor de modo: Auto/Groq/Ollama/Sem LLM
 
 **Notas para Streamlit Cloud**:
-- Ollama requer Docker ou sistema Unix (WSL em Windows)
-- Instalação via apt-get em primeiro boot (~5-10 min)
-- Modelo `llama3.2` baixa ~2.3GB (cache via `/root/.ollama`)
-- Recursos: ~2GB RAM + 500MB CPU suficientes para llama3.2
+- ✅ **Groq funciona perfeitamente** - basta adicionar API key aos secrets
+- ❌ **Ollama não é possível** (requer Docker + sistema Unix)
+- ✅ **Fallback automático** garante que o app sempre funciona
+- 💡 **Recomendação**: Use Groq no Cloud, Ollama em dev local
 
 ## Como Adicionar um Novo App ao Hub
 
@@ -381,8 +407,8 @@ Para apps com lógica complexa ou múltiplos arquivos:
 
 2. **Segredos e Variáveis** (App Settings → Secrets):
    ```toml
-   # Nenhum segredo necessário para demo
-   # Todos os dados são sintéticos
+   # Para App 5 (Assistente Corporativo)
+   GROQ_API_KEY = "gsk_..."  # Obtenha em https://console.groq.com
    ```
 
 3. **Recursos NLTK** (App 2):
@@ -400,29 +426,33 @@ Para apps com lógica complexa ou múltiplos arquivos:
    - Tempo de startup: ~5-10 segundos
 
 5. **Deploy App 5 (Assistente Corporativo - Crítico)**:
-   - **Ollama em Streamlit Cloud**:
-     - ❌ **NÃO é possível instalar Ollama diretamente** (requer Docker + sistema Unix)
-     - ✅ **Fallback automático**: Mostra chunks PDF relevantes quando Ollama está offline
-     - Função `eh_streamlit_cloud()` detecta ambiente headless
-     - Botão "📥 Instalar Ollama" oferece instruções para local
+   - **Groq API (Recomendado para Cloud)**:
+     - ✅ Funciona 100% em Streamlit Cloud
+     - ✅ Gratuito: [console.groq.com](https://console.groq.com)
+     - ✅ Muito rápido: 70-100 tokens/s
+     - ⚙️ Adicione `GROQ_API_KEY` aos secrets do Streamlit
    
    - **Comportamento em Cloud**:
      ```python
-     if eh_streamlit_cloud():
-         st.warning("⚠️ Ollama não disponível em Streamlit Cloud")
-         st.info("💡 Use localmente com: ollama pull llama3.2")
-         # Fallback: mostrar chunks PDF
+     # Modo "Auto" tenta Groq → Ollama → Chunks PDF
+     if verificar_groq():
+         resposta = gerar_resposta_groq(pergunta, contextos)
+     elif verificar_ollama():
+         resposta = gerar_resposta_ollama(pergunta, contextos)
+     else:
+         # Fallback: mostra chunks relevantes
+         resposta = gerar_resposta_sem_llm(pergunta, contextos)
      ```
    
    - **ChromaDB Persiste**:
      - Vector store em `assistente-rag/chroma_vectordb/`
-     - Incluso no git (para demo, embeddings pré-calculados)
+     - Incluso no git (embeddings pré-calculados para demo)
      - Usuários podem upload novos PDFs → novo ChromaDB criado
    
-   - **Para Production com Ollama**:
-     - Usar servidor Ollama externo (VPS/Render)
-     - Mudar `OLLAMA_URL` para endpoint remoto
-     - Exemplo: `OLLAMA_URL = "https://ollama.seu-servidor.com"`
+   - **Para Production**:
+     - Groq API (grátis, sem servidor)
+     - Ollama em VPS separado (se necessário)
+     - OpenAI/Anthropic (alternativa paga)
 
 ### Testes Pré-Deploy
 

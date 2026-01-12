@@ -162,6 +162,15 @@ section[data-testid="stSidebar"] button:hover {
 OLLAMA_URL = "http://localhost:11434"
 OLLAMA_MODEL = "llama3.2"
 
+# Configuração do Groq (primário)
+GROQ_MODEL_DEFAULT = "llama-3.1-70b-versatile"
+GROQ_MODELS = [
+    "llama-3.1-70b-versatile",
+    "llama-3.1-8b-instant",
+    "mixtral-8x7b-32768",
+    "gemma2-9b-it",
+]
+
 
 def ollama_instalado() -> bool:
     """Verifica se o Ollama está instalado no sistema."""
@@ -326,9 +335,71 @@ def listar_modelos_ollama() -> list:
     return []
 
 
+def obter_groq_api_key() -> str:
+    """Obtém chave API do Groq de secrets ou variável de ambiente."""
+    import os
+    
+    # Tenta pegar de secrets do Streamlit primeiro
+    try:
+        if hasattr(st, 'secrets') and 'GROQ_API_KEY' in st.secrets:
+            return st.secrets['GROQ_API_KEY']
+    except Exception:
+        pass
+    
+    # Fallback para variável de ambiente
+    return os.getenv('GROQ_API_KEY', '')
+
+
+def verificar_groq() -> bool:
+    """Verifica se a API do Groq está configurada."""
+    api_key = obter_groq_api_key()
+    return bool(api_key and api_key.strip())
+
+
+def gerar_resposta_groq(pergunta: str, contextos: list, modelo: str = GROQ_MODEL_DEFAULT) -> str:
+    """
+    Gera resposta usando Groq API (primário).
+    """
+    try:
+        from langchain_groq import ChatGroq
+        
+        api_key = obter_groq_api_key()
+        if not api_key:
+            return "❌ Chave API do Groq não configurada."
+        
+        # Monta o contexto
+        contexto_texto = "\n\n".join([
+            f"Trecho {i+1} (de {doc.metadata.get('fonte', 'documento')}):\n{doc.page_content}"
+            for i, (doc, score) in enumerate(contextos)
+        ])
+        
+        # Prompt otimizado para RAG
+        prompt = f"""Você é um assistente corporativo inteligente. Use APENAS as informações do contexto abaixo para responder à pergunta. Se a informação não estiver no contexto, diga que não encontrou a informação nos documentos.
+
+CONTEXTO:
+{contexto_texto}
+
+PERGUNTA: {pergunta}
+
+RESPOSTA (seja conciso e objetivo):"""
+
+        llm = ChatGroq(
+            api_key=api_key,
+            model=modelo,
+            temperature=0.3,
+            max_tokens=1024,
+        )
+        
+        resposta = llm.invoke(prompt)
+        return resposta.content.strip()
+        
+    except Exception as e:
+        return f"❌ Erro ao gerar resposta com Groq: {str(e)}"
+
+
 def gerar_resposta_ollama(pergunta: str, contextos: list, modelo: str = OLLAMA_MODEL) -> str:
     """
-    Gera resposta usando Ollama com os contextos encontrados.
+    Gera resposta usando Ollama local (fallback secundário).
     """
     try:
         from langchain_ollama import OllamaLLM
@@ -385,8 +456,10 @@ def inicializar_sessao():
         st.session_state.vectorstore = None
     if "fontes_ultima_resposta" not in st.session_state:
         st.session_state.fontes_ultima_resposta = []
-    if "usar_ollama" not in st.session_state:
-        st.session_state.usar_ollama = False
+    if "modo_llm" not in st.session_state:
+        st.session_state.modo_llm = "auto"
+    if "modelo_groq" not in st.session_state:
+        st.session_state.modelo_groq = GROQ_MODEL_DEFAULT
     if "modelo_ollama" not in st.session_state:
         st.session_state.modelo_ollama = OLLAMA_MODEL
 
@@ -415,8 +488,14 @@ def processar_upload(arquivo_pdf):
         st.success(f"✅ {len(chunks)} trechos indexados de '{arquivo_pdf.name}'!")
 
 
-def processar_pergunta(pergunta: str, usar_ollama: bool = False, modelo: str = OLLAMA_MODEL):
-    """Processa pergunta do usuário e gera resposta."""
+def processar_pergunta(pergunta: str, modo_llm: str = "auto", modelo: str = None):
+    """Processa pergunta do usuário e gera resposta.
+    
+    Args:
+        pergunta: Pergunta do usuário
+        modo_llm: "groq", "ollama", "sem_llm", ou "auto" (tenta Groq → Ollama → sem LLM)
+        modelo: Nome do modelo (para Groq ou Ollama)
+    """
     vectorstore = carregar_vectorstore()
     
     num_docs = contar_documentos(vectorstore)
@@ -429,9 +508,32 @@ def processar_pergunta(pergunta: str, usar_ollama: bool = False, modelo: str = O
     if not resultados:
         return "Não encontrei informações relevantes para sua pergunta.", []
     
-    if usar_ollama and verificar_ollama():
-        with st.spinner(f"🤖 Gerando resposta com {modelo}..."):
-            resposta = gerar_resposta_ollama(pergunta, resultados, modelo)
+    # Sistema de fallback inteligente
+    if modo_llm == "auto":
+        # Prioridade: Groq (rápido e grátis) → Ollama (local) → Sem LLM
+        if verificar_groq():
+            with st.spinner(f"⚡ Gerando resposta com Groq ({modelo or GROQ_MODEL_DEFAULT})..."):
+                resposta = gerar_resposta_groq(pergunta, resultados, modelo or GROQ_MODEL_DEFAULT)
+                if not resposta.startswith("❌"):
+                    return resposta, resultados
+        
+        if verificar_ollama():
+            with st.spinner(f"🦙 Gerando resposta com Ollama ({modelo or OLLAMA_MODEL})..."):
+                resposta = gerar_resposta_ollama(pergunta, resultados, modelo or OLLAMA_MODEL)
+                if not resposta.startswith("❌"):
+                    return resposta, resultados
+        
+        # Fallback final: sem LLM
+        return gerar_resposta_sem_llm(pergunta, resultados), resultados
+    
+    elif modo_llm == "groq" and verificar_groq():
+        with st.spinner(f"⚡ Gerando resposta com Groq ({modelo or GROQ_MODEL_DEFAULT})..."):
+            resposta = gerar_resposta_groq(pergunta, resultados, modelo or GROQ_MODEL_DEFAULT)
+    
+    elif modo_llm == "ollama" and verificar_ollama():
+        with st.spinner(f"🦙 Gerando resposta com Ollama ({modelo or OLLAMA_MODEL})..."):
+            resposta = gerar_resposta_ollama(pergunta, resultados, modelo or OLLAMA_MODEL)
+    
     else:
         resposta = gerar_resposta_sem_llm(pergunta, resultados)
     
@@ -531,58 +633,82 @@ def render_app():
         
         st.markdown("---")
         
-        # Ollama config
-        st.subheader("🦙 Ollama (LLM Local)")
+        # Configuração de LLM
+        st.subheader("🤖 Modelo de Linguagem")
         
-        # ⚠️ AVISO IMPORTANTE PARA STREAMLIT CLOUD
-        if eh_streamlit_cloud():
-            st.info(
-                """
-                🌐 **Usando Streamlit Cloud**
-                
-                O Ollama requer um ambiente local com capacidade de executar binários.
-                
-                **Alternativas:**
-                - 🖥️ Execute localmente: `streamlit run app.py`
-                - ☁️ Use Ollama em VPS/servidor próprio
-                - 🔗 Integre com API remota (Replicate, Together.ai)
-                
-                Enquanto isso, você pode buscar documentos sem IA generativa.
-                """
-            )
-            st.session_state.usar_ollama = False
-        else:
-            # Modo local - comportamento padrão
-            ollama_online = verificar_ollama()
-            
-            if ollama_online:
-                st.markdown('<div class="ollama-status ollama-online">✅ Online</div>', unsafe_allow_html=True)
-                
-                st.session_state.usar_ollama = st.checkbox(
-                    "Usar Ollama",
-                    value=st.session_state.usar_ollama,
-                )
-                
-                if st.session_state.usar_ollama:
-                    modelos = listar_modelos_ollama()
-                    if modelos:
-                        idx = modelos.index(st.session_state.modelo_ollama) if st.session_state.modelo_ollama in modelos else 0
-                        st.session_state.modelo_ollama = st.selectbox("Modelo", modelos, index=idx)
+        # Status dos provedores
+        groq_disponivel = verificar_groq()
+        ollama_disponivel = verificar_ollama()
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            if groq_disponivel:
+                st.markdown('<div class="ollama-status ollama-online">⚡ Groq OK</div>', unsafe_allow_html=True)
             else:
-                st.markdown('<div class="ollama-status ollama-offline">❌ Offline</div>', unsafe_allow_html=True)
-                
-                # Verifica se está instalado para mostrar texto apropriado
+                st.markdown('<div class="ollama-status ollama-offline">⚡ Groq -</div>', unsafe_allow_html=True)
+        with col2:
+            if ollama_disponivel:
+                st.markdown('<div class="ollama-status ollama-online">🦙 Ollama OK</div>', unsafe_allow_html=True)
+            else:
+                st.markdown('<div class="ollama-status ollama-offline">🦙 Ollama -</div>', unsafe_allow_html=True)
+        
+        st.markdown("")
+        
+        # Seletor de modo
+        opcoes_modo = {
+            "🎯 Automático (Groq → Ollama)": "auto",
+            "⚡ Groq API (Cloud)": "groq",
+            "🦙 Ollama (Local)": "ollama",
+            "📚 Sem LLM (apenas chunks)": "sem_llm",
+        }
+        
+        modo_label = st.selectbox(
+            "Modo de resposta",
+            options=list(opcoes_modo.keys()),
+            index=0,
+        )
+        st.session_state.modo_llm = opcoes_modo[modo_label]
+        
+        # Configuração específica por modo
+        if st.session_state.modo_llm in ["auto", "groq"]:
+            if groq_disponivel:
+                idx = GROQ_MODELS.index(st.session_state.modelo_groq) if st.session_state.modelo_groq in GROQ_MODELS else 0
+                st.session_state.modelo_groq = st.selectbox(
+                    "Modelo Groq",
+                    GROQ_MODELS,
+                    index=idx,
+                    help="llama-3.1-70b é o mais capaz, 8b é o mais rápido"
+                )
+            else:
+                st.info(
+                    """
+                    ⚡ **Groq não configurado**
+                    
+                    Para usar Groq (grátis e rápido):
+                    1. Crie conta em [console.groq.com](https://console.groq.com)
+                    2. Gere uma API key
+                    3. Adicione ao `.streamlit/secrets.toml`:
+                    ```toml
+                    GROQ_API_KEY = "sua_chave_aqui"
+                    ```
+                    """
+                )
+        
+        if st.session_state.modo_llm in ["auto", "ollama"]:
+            if ollama_disponivel:
+                modelos = listar_modelos_ollama()
+                if modelos:
+                    idx = modelos.index(st.session_state.modelo_ollama) if st.session_state.modelo_ollama in modelos else 0
+                    st.session_state.modelo_ollama = st.selectbox("Modelo Ollama", modelos, index=idx)
+            elif not eh_streamlit_cloud():
+                st.caption("Ollama offline")
                 if ollama_instalado():
-                    st.caption("Serviço não está rodando.")
                     btn_label = "🚀 Iniciar Ollama"
                 else:
-                    st.caption("Ollama não instalado.")
-                    btn_label = "📥 Instalar e Iniciar Ollama"
+                    btn_label = "📥 Instalar Ollama"
                 
                 if st.button(btn_label, use_container_width=True, key="btn_start_ollama"):
                     iniciar_ollama()
-                
-                st.session_state.usar_ollama = False
         
         st.markdown("---")
         
@@ -605,10 +731,17 @@ def render_app():
     if pergunta:
         st.session_state.mensagens.append({"role": "user", "content": pergunta})
         
+        # Determina qual modelo usar baseado no modo
+        modelo_usado = None
+        if st.session_state.modo_llm in ["auto", "groq"]:
+            modelo_usado = st.session_state.modelo_groq
+        elif st.session_state.modo_llm == "ollama":
+            modelo_usado = st.session_state.modelo_ollama
+        
         resposta, fontes = processar_pergunta(
             pergunta,
-            usar_ollama=st.session_state.usar_ollama,
-            modelo=st.session_state.modelo_ollama
+            modo_llm=st.session_state.modo_llm,
+            modelo=modelo_usado
         )
         
         st.session_state.mensagens.append({"role": "assistant", "content": resposta})
