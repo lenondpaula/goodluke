@@ -363,6 +363,96 @@ Para apps com lógica complexa ou múltiplos arquivos:
 
 ## Deploy no Streamlit Cloud
 
+### Configuração Geral
 - **Entrypoint**: `streamlit_app.py` (definir no painel do Streamlit Cloud)
-- **Python Version**: Especificado em [runtime.txt](../runtime.txt)
-- **Recursos NLTK**: Rodar `analise-sentimentos/setup_nltk.py` no primeiro boot (adicionar ao script de inicialização se necessário)
+- **Python Version**: `3.11.9` (em [runtime.txt](../runtime.txt))
+- **Requisitos Específicos**: 
+  - `numpy<2.0` e `cython<3.0` (compatibilidade scikit-surprise)
+  - `prophet` para App 4
+  - `langchain*`, `chromadb`, `sentence-transformers` para App 5
+
+### Deploy Steps (via Streamlit Cloud Dashboard)
+
+1. **Configuração Inicial**:
+   - Conectar repositório GitHub: `lenondpaula/goodluke`
+   - Branch: `main`
+   - Main file path: `streamlit_app.py`
+   - Python version: `3.11.9`
+
+2. **Segredos e Variáveis** (App Settings → Secrets):
+   ```toml
+   # Nenhum segredo necessário para demo
+   # Todos os dados são sintéticos
+   ```
+
+3. **Recursos NLTK** (App 2):
+   - Script de setup em [analise-sentimentos/setup_nltk.py](../analise-sentimentos/setup_nltk.py)
+   - Executar localmente antes do deploy:
+     ```bash
+     python analise-sentimentos/setup_nltk.py
+     ```
+   - Dados NLTK cacheados no `nltk_data/` (incluído no repo)
+
+4. **Deploy App 4 (Oráculo de Vendas)**:
+   - Dados pré-gerados em `oraculo-vendas/data/vendas_historico.csv`
+   - Modelo pré-treinado em `oraculo-vendas/models/prophet_model.pkl`
+   - ✅ Sem dependências externas (Prophet é CPU-only)
+   - Tempo de startup: ~5-10 segundos
+
+5. **Deploy App 5 (Assistente Corporativo - Crítico)**:
+   - **Ollama em Streamlit Cloud**:
+     - ❌ **NÃO é possível instalar Ollama diretamente** (requer Docker + sistema Unix)
+     - ✅ **Fallback automático**: Mostra chunks PDF relevantes quando Ollama está offline
+     - Função `eh_streamlit_cloud()` detecta ambiente headless
+     - Botão "📥 Instalar Ollama" oferece instruções para local
+   
+   - **Comportamento em Cloud**:
+     ```python
+     if eh_streamlit_cloud():
+         st.warning("⚠️ Ollama não disponível em Streamlit Cloud")
+         st.info("💡 Use localmente com: ollama pull llama3.2")
+         # Fallback: mostrar chunks PDF
+     ```
+   
+   - **ChromaDB Persiste**:
+     - Vector store em `assistente-rag/chroma_vectordb/`
+     - Incluso no git (para demo, embeddings pré-calculados)
+     - Usuários podem upload novos PDFs → novo ChromaDB criado
+   
+   - **Para Production com Ollama**:
+     - Usar servidor Ollama externo (VPS/Render)
+     - Mudar `OLLAMA_URL` para endpoint remoto
+     - Exemplo: `OLLAMA_URL = "https://ollama.seu-servidor.com"`
+
+### Testes Pré-Deploy
+
+```bash
+# 1. Testar localmente
+streamlit run streamlit_app.py
+
+# 2. Verificar cada app
+# App 1: Tela de upload de dados + previsões
+# App 2: Load comentários + análise de sentimentos
+# App 3: Load produtos + recomendações
+# App 4: Load forecast Prophet com gráficos
+# App 5: Upload PDF + chat (com fallback)
+
+# 3. Validar imports e dependências
+python -c "from prophet import Prophet; print('✓ Prophet')"
+python -c "from langchain_ollama import ChatOllama; print('✓ LangChain')"
+python -c "import chromadb; print('✓ ChromaDB')"
+```
+
+### Monitoramento em Produção
+
+- **Logs**: Acesso via Streamlit Cloud dashboard → View logs
+- **Erros Comuns**:
+  - App 2 sem dados NLTK → Execute `setup_nltk.py` localmente
+  - App 5 com ChromaDB corrompido → Delete `chroma_vectordb/` e reupload PDF
+  - Out of memory → Aumentar RAM (Streamlit Free: ~800MB, Pro: >2GB)
+
+### Links Úteis
+- [Streamlit Cloud Docs](https://docs.streamlit.io/deploy/streamlit-cloud)
+- [Streamlit Secrets Management](https://docs.streamlit.io/deploy/streamlit-cloud/manage-your-app/secrets-management)
+- [Ollama Installation](https://ollama.ai)
+- [LangChain Documentation](https://python.langchain.com)
