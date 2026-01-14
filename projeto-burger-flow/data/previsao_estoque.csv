@@ -1,0 +1,22 @@
+data,previsao,limite_inferior,limite_superior,produto
+2026-01-14,39,17,60,Burger Clássico
+2026-01-15,36,13,58,Burger Clássico
+2026-01-16,61,40,83,Burger Clássico
+2026-01-17,60,39,82,Burger Clássico
+2026-01-18,44,23,67,Burger Clássico
+2026-01-19,39,18,61,Burger Clássico
+2026-01-20,37,14,60,Burger Clássico
+2026-01-14,21,4,37,Burger Gourmet
+2026-01-15,21,5,36,Burger Gourmet
+2026-01-16,32,17,47,Burger Gourmet
+2026-01-17,33,18,48,Burger Gourmet
+2026-01-18,26,10,41,Burger Gourmet
+2026-01-19,20,5,35,Burger Gourmet
+2026-01-20,19,4,34,Burger Gourmet
+2026-01-14,46,19,73,Batata Frita
+2026-01-15,45,17,74,Batata Frita
+2026-01-16,77,49,106,Batata Frita
+2026-01-17,78,49,107,Batata Frita
+2026-01-18,62,33,90,Batata Frita
+2026-01-19,47,17,76,Batata Frita
+2026-01-20,48,19,76,Batata Frita

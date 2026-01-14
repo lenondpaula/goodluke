@@ -140,6 +140,30 @@ APPS = [
         "status": "active",
         "page": "pages/5_O_Assistente_Corporativo",
     },
+    {
+        "title": "🎸 App 6 — GIG-Master AI",
+        "desc": "Planejamento inteligente de turnês com análise preditiva + marketing automatizado.",
+        "status": "active",
+        "page": "pages/6_GIG_Master_AI",
+    },
+    {
+        "title": "🍔 App 7 — Burger-Flow Intelligence",
+        "desc": "Gestão inteligente para hamburguerias com previsão de estoque e engenharia de menu (BCG).",
+        "status": "active",
+        "page": "pages/7_Burger_Flow_Intelligence",
+    },
+    {
+        "title": "🗺️ App 8 — PoA-Insight Explorer",
+        "desc": "Turismo inteligente em Porto Alegre com mapa interativo e recomendações contextuais.",
+        "status": "active",
+        "page": "pages/8_PoA_Insight_Explorer",
+    },
+    {
+        "title": "📸 App 9 — Visual-On-Demand",
+        "desc": "Marketplace visual de fotógrafos com match por IA. O 'Shazam' para encontrar o olhar certo.",
+        "status": "active",
+        "page": "pages/9_Visual_On_Demand",
+    },
 ]
 
 

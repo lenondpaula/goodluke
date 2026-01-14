@@ -2,6 +2,7 @@ pandas
 numpy<2.0
 cython<3.0
 scikit-learn
+Pillow
 fastapi
 uvicorn
 streamlit
@@ -22,3 +23,7 @@ langchain-ollama
 pypdf
 chromadb
 sentence-transformers
+folium
+streamlit-folium
+geopy
+branca

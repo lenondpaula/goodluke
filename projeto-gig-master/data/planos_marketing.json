@@ -1,0 +1,1250 @@
+[
+  {
+    "cidade": "São Paulo",
+    "mes": 1,
+    "mes_nome": "Janeiro",
+    "data_show": "15/01/2027",
+    "cronograma": [
+      {
+        "fase": "Aquecimento",
+        "semanas_antes": 12,
+        "atividades": [
+          "Teasers misteriosos nas redes sociais",
+          "Anúncio da cidade no perfil oficial",
+          "Parcerias com influenciadores locais"
+        ],
+        "canais": [
+          "Instagram",
+          "TikTok",
+          "Twitter/X"
+        ],
+        "investimento_sugerido": "15%",
+        "data_inicio": "23/10/2026"
+      },
+      {
+        "fase": "Pré-Venda",
+        "semanas_antes": 8,
+        "atividades": [
+          "Abertura de pré-venda para fã-clube",
+          "Lote 1 com desconto especial",
+          "Email marketing para base de leads"
+        ],
+        "canais": [
+          "Email",
+          "WhatsApp",
+          "Site Oficial"
+        ],
+        "investimento_sugerido": "20%",
+        "data_inicio": "20/11/2026"
+      },
+      {
+        "fase": "Venda Geral",
+        "semanas_antes": 6,
+        "atividades": [
+          "Lançamento do Lote 2",
+          "Anúncios pagos em massa",
+          "Parcerias com rádios locais"
+        ],
+        "canais": [
+          "Facebook Ads",
+          "Google Ads",
+          "Rádio"
+        ],
+        "investimento_sugerido": "35%",
+        "data_inicio": "04/12/2026"
+      },
+      {
+        "fase": "Engajamento",
+        "semanas_antes": 4,
+        "atividades": [
+          "Conteúdo de bastidores",
+          "Lives com o artista",
+          "Contagem regressiva"
+        ],
+        "canais": [
+          "Instagram Stories",
+          "YouTube",
+          "TikTok"
+        ],
+        "investimento_sugerido": "15%",
+        "data_inicio": "18/12/2026"
+      },
+      {
+        "fase": "Última Chamada",
+        "semanas_antes": 1,
+        "atividades": [
+          "Últimos ingressos disponíveis",
+          "Remarketing intensivo",
+          "Cobertura de imprensa local"
+        ],
+        "canais": [
+          "Todos os canais",
+          "Imprensa",
+          "OOH Local"
+        ],
+        "investimento_sugerido": "10%",
+        "data_inicio": "08/01/2027"
+      },
+      {
+        "fase": "Pós-Show",
+        "semanas_antes": -1,
+        "atividades": [
+          "Publicação de fotos e vídeos",
+          "Agradecimento aos fãs",
+          "Captação de leads para próximas datas"
+        ],
+        "canais": [
+          "Instagram",
+          "YouTube",
+          "Email"
+        ],
+        "investimento_sugerido": "5%",
+        "data_inicio": "22/01/2027"
+      }
+    ]
+  },
+  {
+    "cidade": "Salvador",
+    "mes": 2,
+    "mes_nome": "Fevereiro",
+    "data_show": "15/02/2027",
+    "cronograma": [
+      {
+        "fase": "Aquecimento",
+        "semanas_antes": 12,
+        "atividades": [
+          "Teasers misteriosos nas redes sociais",
+          "Anúncio da cidade no perfil oficial",
+          "Parcerias com influenciadores locais"
+        ],
+        "canais": [
+          "Instagram",
+          "TikTok",
+          "Twitter/X"
+        ],
+        "investimento_sugerido": "15%",
+        "data_inicio": "23/11/2026"
+      },
+      {
+        "fase": "Pré-Venda",
+        "semanas_antes": 8,
+        "atividades": [
+          "Abertura de pré-venda para fã-clube",
+          "Lote 1 com desconto especial",
+          "Email marketing para base de leads"
+        ],
+        "canais": [
+          "Email",
+          "WhatsApp",
+          "Site Oficial"
+        ],
+        "investimento_sugerido": "20%",
+        "data_inicio": "21/12/2026"
+      },
+      {
+        "fase": "Venda Geral",
+        "semanas_antes": 6,
+        "atividades": [
+          "Lançamento do Lote 2",
+          "Anúncios pagos em massa",
+          "Parcerias com rádios locais"
+        ],
+        "canais": [
+          "Facebook Ads",
+          "Google Ads",
+          "Rádio"
+        ],
+        "investimento_sugerido": "35%",
+        "data_inicio": "04/01/2027"
+      },
+      {
+        "fase": "Engajamento",
+        "semanas_antes": 4,
+        "atividades": [
+          "Conteúdo de bastidores",
+          "Lives com o artista",
+          "Contagem regressiva"
+        ],
+        "canais": [
+          "Instagram Stories",
+          "YouTube",
+          "TikTok"
+        ],
+        "investimento_sugerido": "15%",
+        "data_inicio": "18/01/2027"
+      },
+      {
+        "fase": "Última Chamada",
+        "semanas_antes": 1,
+        "atividades": [
+          "Últimos ingressos disponíveis",
+          "Remarketing intensivo",
+          "Cobertura de imprensa local"
+        ],
+        "canais": [
+          "Todos os canais",
+          "Imprensa",
+          "OOH Local"
+        ],
+        "investimento_sugerido": "10%",
+        "data_inicio": "08/02/2027"
+      },
+      {
+        "fase": "Pós-Show",
+        "semanas_antes": -1,
+        "atividades": [
+          "Publicação de fotos e vídeos",
+          "Agradecimento aos fãs",
+          "Captação de leads para próximas datas"
+        ],
+        "canais": [
+          "Instagram",
+          "YouTube",
+          "Email"
+        ],
+        "investimento_sugerido": "5%",
+        "data_inicio": "22/02/2027"
+      }
+    ]
+  },
+  {
+    "cidade": "Curitiba",
+    "mes": 3,
+    "mes_nome": "Março",
+    "data_show": "15/03/2027",
+    "cronograma": [
+      {
+        "fase": "Aquecimento",
+        "semanas_antes": 12,
+        "atividades": [
+          "Teasers misteriosos nas redes sociais",
+          "Anúncio da cidade no perfil oficial",
+          "Parcerias com influenciadores locais"
+        ],
+        "canais": [
+          "Instagram",
+          "TikTok",
+          "Twitter/X"
+        ],
+        "investimento_sugerido": "15%",
+        "data_inicio": "21/12/2026"
+      },
+      {
+        "fase": "Pré-Venda",
+        "semanas_antes": 8,
+        "atividades": [
+          "Abertura de pré-venda para fã-clube",
+          "Lote 1 com desconto especial",
+          "Email marketing para base de leads"
+        ],
+        "canais": [
+          "Email",
+          "WhatsApp",
+          "Site Oficial"
+        ],
+        "investimento_sugerido": "20%",
+        "data_inicio": "18/01/2027"
+      },
+      {
+        "fase": "Venda Geral",
+        "semanas_antes": 6,
+        "atividades": [
+          "Lançamento do Lote 2",
+          "Anúncios pagos em massa",
+          "Parcerias com rádios locais"
+        ],
+        "canais": [
+          "Facebook Ads",
+          "Google Ads",
+          "Rádio"
+        ],
+        "investimento_sugerido": "35%",
+        "data_inicio": "01/02/2027"
+      },
+      {
+        "fase": "Engajamento",
+        "semanas_antes": 4,
+        "atividades": [
+          "Conteúdo de bastidores",
+          "Lives com o artista",
+          "Contagem regressiva"
+        ],
+        "canais": [
+          "Instagram Stories",
+          "YouTube",
+          "TikTok"
+        ],
+        "investimento_sugerido": "15%",
+        "data_inicio": "15/02/2027"
+      },
+      {
+        "fase": "Última Chamada",
+        "semanas_antes": 1,
+        "atividades": [
+          "Últimos ingressos disponíveis",
+          "Remarketing intensivo",
+          "Cobertura de imprensa local"
+        ],
+        "canais": [
+          "Todos os canais",
+          "Imprensa",
+          "OOH Local"
+        ],
+        "investimento_sugerido": "10%",
+        "data_inicio": "08/03/2027"
+      },
+      {
+        "fase": "Pós-Show",
+        "semanas_antes": -1,
+        "atividades": [
+          "Publicação de fotos e vídeos",
+          "Agradecimento aos fãs",
+          "Captação de leads para próximas datas"
+        ],
+        "canais": [
+          "Instagram",
+          "YouTube",
+          "Email"
+        ],
+        "investimento_sugerido": "5%",
+        "data_inicio": "22/03/2027"
+      }
+    ]
+  },
+  {
+    "cidade": "Brasília",
+    "mes": 4,
+    "mes_nome": "Abril",
+    "data_show": "15/04/2027",
+    "cronograma": [
+      {
+        "fase": "Aquecimento",
+        "semanas_antes": 12,
+        "atividades": [
+          "Teasers misteriosos nas redes sociais",
+          "Anúncio da cidade no perfil oficial",
+          "Parcerias com influenciadores locais"
+        ],
+        "canais": [
+          "Instagram",
+          "TikTok",
+          "Twitter/X"
+        ],
+        "investimento_sugerido": "15%",
+        "data_inicio": "21/01/2027"
+      },
+      {
+        "fase": "Pré-Venda",
+        "semanas_antes": 8,
+        "atividades": [
+          "Abertura de pré-venda para fã-clube",
+          "Lote 1 com desconto especial",
+          "Email marketing para base de leads"
+        ],
+        "canais": [
+          "Email",
+          "WhatsApp",
+          "Site Oficial"
+        ],
+        "investimento_sugerido": "20%",
+        "data_inicio": "18/02/2027"
+      },
+      {
+        "fase": "Venda Geral",
+        "semanas_antes": 6,
+        "atividades": [
+          "Lançamento do Lote 2",
+          "Anúncios pagos em massa",
+          "Parcerias com rádios locais"
+        ],
+        "canais": [
+          "Facebook Ads",
+          "Google Ads",
+          "Rádio"
+        ],
+        "investimento_sugerido": "35%",
+        "data_inicio": "04/03/2027"
+      },
+      {
+        "fase": "Engajamento",
+        "semanas_antes": 4,
+        "atividades": [
+          "Conteúdo de bastidores",
+          "Lives com o artista",
+          "Contagem regressiva"
+        ],
+        "canais": [
+          "Instagram Stories",
+          "YouTube",
+          "TikTok"
+        ],
+        "investimento_sugerido": "15%",
+        "data_inicio": "18/03/2027"
+      },
+      {
+        "fase": "Última Chamada",
+        "semanas_antes": 1,
+        "atividades": [
+          "Últimos ingressos disponíveis",
+          "Remarketing intensivo",
+          "Cobertura de imprensa local"
+        ],
+        "canais": [
+          "Todos os canais",
+          "Imprensa",
+          "OOH Local"
+        ],
+        "investimento_sugerido": "10%",
+        "data_inicio": "08/04/2027"
+      },
+      {
+        "fase": "Pós-Show",
+        "semanas_antes": -1,
+        "atividades": [
+          "Publicação de fotos e vídeos",
+          "Agradecimento aos fãs",
+          "Captação de leads para próximas datas"
+        ],
+        "canais": [
+          "Instagram",
+          "YouTube",
+          "Email"
+        ],
+        "investimento_sugerido": "5%",
+        "data_inicio": "22/04/2027"
+      }
+    ]
+  },
+  {
+    "cidade": "Rio de Janeiro",
+    "mes": 5,
+    "mes_nome": "Maio",
+    "data_show": "15/05/2027",
+    "cronograma": [
+      {
+        "fase": "Aquecimento",
+        "semanas_antes": 12,
+        "atividades": [
+          "Teasers misteriosos nas redes sociais",
+          "Anúncio da cidade no perfil oficial",
+          "Parcerias com influenciadores locais"
+        ],
+        "canais": [
+          "Instagram",
+          "TikTok",
+          "Twitter/X"
+        ],
+        "investimento_sugerido": "15%",
+        "data_inicio": "20/02/2027"
+      },
+      {
+        "fase": "Pré-Venda",
+        "semanas_antes": 8,
+        "atividades": [
+          "Abertura de pré-venda para fã-clube",
+          "Lote 1 com desconto especial",
+          "Email marketing para base de leads"
+        ],
+        "canais": [
+          "Email",
+          "WhatsApp",
+          "Site Oficial"
+        ],
+        "investimento_sugerido": "20%",
+        "data_inicio": "20/03/2027"
+      },
+      {
+        "fase": "Venda Geral",
+        "semanas_antes": 6,
+        "atividades": [
+          "Lançamento do Lote 2",
+          "Anúncios pagos em massa",
+          "Parcerias com rádios locais"
+        ],
+        "canais": [
+          "Facebook Ads",
+          "Google Ads",
+          "Rádio"
+        ],
+        "investimento_sugerido": "35%",
+        "data_inicio": "03/04/2027"
+      },
+      {
+        "fase": "Engajamento",
+        "semanas_antes": 4,
+        "atividades": [
+          "Conteúdo de bastidores",
+          "Lives com o artista",
+          "Contagem regressiva"
+        ],
+        "canais": [
+          "Instagram Stories",
+          "YouTube",
+          "TikTok"
+        ],
+        "investimento_sugerido": "15%",
+        "data_inicio": "17/04/2027"
+      },
+      {
+        "fase": "Última Chamada",
+        "semanas_antes": 1,
+        "atividades": [
+          "Últimos ingressos disponíveis",
+          "Remarketing intensivo",
+          "Cobertura de imprensa local"
+        ],
+        "canais": [
+          "Todos os canais",
+          "Imprensa",
+          "OOH Local"
+        ],
+        "investimento_sugerido": "10%",
+        "data_inicio": "08/05/2027"
+      },
+      {
+        "fase": "Pós-Show",
+        "semanas_antes": -1,
+        "atividades": [
+          "Publicação de fotos e vídeos",
+          "Agradecimento aos fãs",
+          "Captação de leads para próximas datas"
+        ],
+        "canais": [
+          "Instagram",
+          "YouTube",
+          "Email"
+        ],
+        "investimento_sugerido": "5%",
+        "data_inicio": "22/05/2027"
+      }
+    ]
+  },
+  {
+    "cidade": "Manaus",
+    "mes": 6,
+    "mes_nome": "Junho",
+    "data_show": "15/06/2027",
+    "cronograma": [
+      {
+        "fase": "Aquecimento",
+        "semanas_antes": 12,
+        "atividades": [
+          "Teasers misteriosos nas redes sociais",
+          "Anúncio da cidade no perfil oficial",
+          "Parcerias com influenciadores locais"
+        ],
+        "canais": [
+          "Instagram",
+          "TikTok",
+          "Twitter/X"
+        ],
+        "investimento_sugerido": "15%",
+        "data_inicio": "23/03/2027"
+      },
+      {
+        "fase": "Pré-Venda",
+        "semanas_antes": 8,
+        "atividades": [
+          "Abertura de pré-venda para fã-clube",
+          "Lote 1 com desconto especial",
+          "Email marketing para base de leads"
+        ],
+        "canais": [
+          "Email",
+          "WhatsApp",
+          "Site Oficial"
+        ],
+        "investimento_sugerido": "20%",
+        "data_inicio": "20/04/2027"
+      },
+      {
+        "fase": "Venda Geral",
+        "semanas_antes": 6,
+        "atividades": [
+          "Lançamento do Lote 2",
+          "Anúncios pagos em massa",
+          "Parcerias com rádios locais"
+        ],
+        "canais": [
+          "Facebook Ads",
+          "Google Ads",
+          "Rádio"
+        ],
+        "investimento_sugerido": "35%",
+        "data_inicio": "04/05/2027"
+      },
+      {
+        "fase": "Engajamento",
+        "semanas_antes": 4,
+        "atividades": [
+          "Conteúdo de bastidores",
+          "Lives com o artista",
+          "Contagem regressiva"
+        ],
+        "canais": [
+          "Instagram Stories",
+          "YouTube",
+          "TikTok"
+        ],
+        "investimento_sugerido": "15%",
+        "data_inicio": "18/05/2027"
+      },
+      {
+        "fase": "Última Chamada",
+        "semanas_antes": 1,
+        "atividades": [
+          "Últimos ingressos disponíveis",
+          "Remarketing intensivo",
+          "Cobertura de imprensa local"
+        ],
+        "canais": [
+          "Todos os canais",
+          "Imprensa",
+          "OOH Local"
+        ],
+        "investimento_sugerido": "10%",
+        "data_inicio": "08/06/2027"
+      },
+      {
+        "fase": "Pós-Show",
+        "semanas_antes": -1,
+        "atividades": [
+          "Publicação de fotos e vídeos",
+          "Agradecimento aos fãs",
+          "Captação de leads para próximas datas"
+        ],
+        "canais": [
+          "Instagram",
+          "YouTube",
+          "Email"
+        ],
+        "investimento_sugerido": "5%",
+        "data_inicio": "22/06/2027"
+      }
+    ]
+  },
+  {
+    "cidade": "Diadema",
+    "mes": 7,
+    "mes_nome": "Julho",
+    "data_show": "15/07/2027",
+    "cronograma": [
+      {
+        "fase": "Aquecimento",
+        "semanas_antes": 12,
+        "atividades": [
+          "Teasers misteriosos nas redes sociais",
+          "Anúncio da cidade no perfil oficial",
+          "Parcerias com influenciadores locais"
+        ],
+        "canais": [
+          "Instagram",
+          "TikTok",
+          "Twitter/X"
+        ],
+        "investimento_sugerido": "15%",
+        "data_inicio": "22/04/2027"
+      },
+      {
+        "fase": "Pré-Venda",
+        "semanas_antes": 8,
+        "atividades": [
+          "Abertura de pré-venda para fã-clube",
+          "Lote 1 com desconto especial",
+          "Email marketing para base de leads"
+        ],
+        "canais": [
+          "Email",
+          "WhatsApp",
+          "Site Oficial"
+        ],
+        "investimento_sugerido": "20%",
+        "data_inicio": "20/05/2027"
+      },
+      {
+        "fase": "Venda Geral",
+        "semanas_antes": 6,
+        "atividades": [
+          "Lançamento do Lote 2",
+          "Anúncios pagos em massa",
+          "Parcerias com rádios locais"
+        ],
+        "canais": [
+          "Facebook Ads",
+          "Google Ads",
+          "Rádio"
+        ],
+        "investimento_sugerido": "35%",
+        "data_inicio": "03/06/2027"
+      },
+      {
+        "fase": "Engajamento",
+        "semanas_antes": 4,
+        "atividades": [
+          "Conteúdo de bastidores",
+          "Lives com o artista",
+          "Contagem regressiva"
+        ],
+        "canais": [
+          "Instagram Stories",
+          "YouTube",
+          "TikTok"
+        ],
+        "investimento_sugerido": "15%",
+        "data_inicio": "17/06/2027"
+      },
+      {
+        "fase": "Última Chamada",
+        "semanas_antes": 1,
+        "atividades": [
+          "Últimos ingressos disponíveis",
+          "Remarketing intensivo",
+          "Cobertura de imprensa local"
+        ],
+        "canais": [
+          "Todos os canais",
+          "Imprensa",
+          "OOH Local"
+        ],
+        "investimento_sugerido": "10%",
+        "data_inicio": "08/07/2027"
+      },
+      {
+        "fase": "Pós-Show",
+        "semanas_antes": -1,
+        "atividades": [
+          "Publicação de fotos e vídeos",
+          "Agradecimento aos fãs",
+          "Captação de leads para próximas datas"
+        ],
+        "canais": [
+          "Instagram",
+          "YouTube",
+          "Email"
+        ],
+        "investimento_sugerido": "5%",
+        "data_inicio": "22/07/2027"
+      }
+    ]
+  },
+  {
+    "cidade": "Santos",
+    "mes": 8,
+    "mes_nome": "Agosto",
+    "data_show": "15/08/2027",
+    "cronograma": [
+      {
+        "fase": "Aquecimento",
+        "semanas_antes": 12,
+        "atividades": [
+          "Teasers misteriosos nas redes sociais",
+          "Anúncio da cidade no perfil oficial",
+          "Parcerias com influenciadores locais"
+        ],
+        "canais": [
+          "Instagram",
+          "TikTok",
+          "Twitter/X"
+        ],
+        "investimento_sugerido": "15%",
+        "data_inicio": "23/05/2027"
+      },
+      {
+        "fase": "Pré-Venda",
+        "semanas_antes": 8,
+        "atividades": [
+          "Abertura de pré-venda para fã-clube",
+          "Lote 1 com desconto especial",
+          "Email marketing para base de leads"
+        ],
+        "canais": [
+          "Email",
+          "WhatsApp",
+          "Site Oficial"
+        ],
+        "investimento_sugerido": "20%",
+        "data_inicio": "20/06/2027"
+      },
+      {
+        "fase": "Venda Geral",
+        "semanas_antes": 6,
+        "atividades": [
+          "Lançamento do Lote 2",
+          "Anúncios pagos em massa",
+          "Parcerias com rádios locais"
+        ],
+        "canais": [
+          "Facebook Ads",
+          "Google Ads",
+          "Rádio"
+        ],
+        "investimento_sugerido": "35%",
+        "data_inicio": "04/07/2027"
+      },
+      {
+        "fase": "Engajamento",
+        "semanas_antes": 4,
+        "atividades": [
+          "Conteúdo de bastidores",
+          "Lives com o artista",
+          "Contagem regressiva"
+        ],
+        "canais": [
+          "Instagram Stories",
+          "YouTube",
+          "TikTok"
+        ],
+        "investimento_sugerido": "15%",
+        "data_inicio": "18/07/2027"
+      },
+      {
+        "fase": "Última Chamada",
+        "semanas_antes": 1,
+        "atividades": [
+          "Últimos ingressos disponíveis",
+          "Remarketing intensivo",
+          "Cobertura de imprensa local"
+        ],
+        "canais": [
+          "Todos os canais",
+          "Imprensa",
+          "OOH Local"
+        ],
+        "investimento_sugerido": "10%",
+        "data_inicio": "08/08/2027"
+      },
+      {
+        "fase": "Pós-Show",
+        "semanas_antes": -1,
+        "atividades": [
+          "Publicação de fotos e vídeos",
+          "Agradecimento aos fãs",
+          "Captação de leads para próximas datas"
+        ],
+        "canais": [
+          "Instagram",
+          "YouTube",
+          "Email"
+        ],
+        "investimento_sugerido": "5%",
+        "data_inicio": "22/08/2027"
+      }
+    ]
+  },
+  {
+    "cidade": "São Bernardo do Campo",
+    "mes": 9,
+    "mes_nome": "Setembro",
+    "data_show": "15/09/2027",
+    "cronograma": [
+      {
+        "fase": "Aquecimento",
+        "semanas_antes": 12,
+        "atividades": [
+          "Teasers misteriosos nas redes sociais",
+          "Anúncio da cidade no perfil oficial",
+          "Parcerias com influenciadores locais"
+        ],
+        "canais": [
+          "Instagram",
+          "TikTok",
+          "Twitter/X"
+        ],
+        "investimento_sugerido": "15%",
+        "data_inicio": "23/06/2027"
+      },
+      {
+        "fase": "Pré-Venda",
+        "semanas_antes": 8,
+        "atividades": [
+          "Abertura de pré-venda para fã-clube",
+          "Lote 1 com desconto especial",
+          "Email marketing para base de leads"
+        ],
+        "canais": [
+          "Email",
+          "WhatsApp",
+          "Site Oficial"
+        ],
+        "investimento_sugerido": "20%",
+        "data_inicio": "21/07/2027"
+      },
+      {
+        "fase": "Venda Geral",
+        "semanas_antes": 6,
+        "atividades": [
+          "Lançamento do Lote 2",
+          "Anúncios pagos em massa",
+          "Parcerias com rádios locais"
+        ],
+        "canais": [
+          "Facebook Ads",
+          "Google Ads",
+          "Rádio"
+        ],
+        "investimento_sugerido": "35%",
+        "data_inicio": "04/08/2027"
+      },
+      {
+        "fase": "Engajamento",
+        "semanas_antes": 4,
+        "atividades": [
+          "Conteúdo de bastidores",
+          "Lives com o artista",
+          "Contagem regressiva"
+        ],
+        "canais": [
+          "Instagram Stories",
+          "YouTube",
+          "TikTok"
+        ],
+        "investimento_sugerido": "15%",
+        "data_inicio": "18/08/2027"
+      },
+      {
+        "fase": "Última Chamada",
+        "semanas_antes": 1,
+        "atividades": [
+          "Últimos ingressos disponíveis",
+          "Remarketing intensivo",
+          "Cobertura de imprensa local"
+        ],
+        "canais": [
+          "Todos os canais",
+          "Imprensa",
+          "OOH Local"
+        ],
+        "investimento_sugerido": "10%",
+        "data_inicio": "08/09/2027"
+      },
+      {
+        "fase": "Pós-Show",
+        "semanas_antes": -1,
+        "atividades": [
+          "Publicação de fotos e vídeos",
+          "Agradecimento aos fãs",
+          "Captação de leads para próximas datas"
+        ],
+        "canais": [
+          "Instagram",
+          "YouTube",
+          "Email"
+        ],
+        "investimento_sugerido": "5%",
+        "data_inicio": "22/09/2027"
+      }
+    ]
+  },
+  {
+    "cidade": "Mogi das Cruzes",
+    "mes": 10,
+    "mes_nome": "Outubro",
+    "data_show": "15/10/2027",
+    "cronograma": [
+      {
+        "fase": "Aquecimento",
+        "semanas_antes": 12,
+        "atividades": [
+          "Teasers misteriosos nas redes sociais",
+          "Anúncio da cidade no perfil oficial",
+          "Parcerias com influenciadores locais"
+        ],
+        "canais": [
+          "Instagram",
+          "TikTok",
+          "Twitter/X"
+        ],
+        "investimento_sugerido": "15%",
+        "data_inicio": "23/07/2027"
+      },
+      {
+        "fase": "Pré-Venda",
+        "semanas_antes": 8,
+        "atividades": [
+          "Abertura de pré-venda para fã-clube",
+          "Lote 1 com desconto especial",
+          "Email marketing para base de leads"
+        ],
+        "canais": [
+          "Email",
+          "WhatsApp",
+          "Site Oficial"
+        ],
+        "investimento_sugerido": "20%",
+        "data_inicio": "20/08/2027"
+      },
+      {
+        "fase": "Venda Geral",
+        "semanas_antes": 6,
+        "atividades": [
+          "Lançamento do Lote 2",
+          "Anúncios pagos em massa",
+          "Parcerias com rádios locais"
+        ],
+        "canais": [
+          "Facebook Ads",
+          "Google Ads",
+          "Rádio"
+        ],
+        "investimento_sugerido": "35%",
+        "data_inicio": "03/09/2027"
+      },
+      {
+        "fase": "Engajamento",
+        "semanas_antes": 4,
+        "atividades": [
+          "Conteúdo de bastidores",
+          "Lives com o artista",
+          "Contagem regressiva"
+        ],
+        "canais": [
+          "Instagram Stories",
+          "YouTube",
+          "TikTok"
+        ],
+        "investimento_sugerido": "15%",
+        "data_inicio": "17/09/2027"
+      },
+      {
+        "fase": "Última Chamada",
+        "semanas_antes": 1,
+        "atividades": [
+          "Últimos ingressos disponíveis",
+          "Remarketing intensivo",
+          "Cobertura de imprensa local"
+        ],
+        "canais": [
+          "Todos os canais",
+          "Imprensa",
+          "OOH Local"
+        ],
+        "investimento_sugerido": "10%",
+        "data_inicio": "08/10/2027"
+      },
+      {
+        "fase": "Pós-Show",
+        "semanas_antes": -1,
+        "atividades": [
+          "Publicação de fotos e vídeos",
+          "Agradecimento aos fãs",
+          "Captação de leads para próximas datas"
+        ],
+        "canais": [
+          "Instagram",
+          "YouTube",
+          "Email"
+        ],
+        "investimento_sugerido": "5%",
+        "data_inicio": "22/10/2027"
+      }
+    ]
+  },
+  {
+    "cidade": "Osasco",
+    "mes": 11,
+    "mes_nome": "Novembro",
+    "data_show": "15/11/2027",
+    "cronograma": [
+      {
+        "fase": "Aquecimento",
+        "semanas_antes": 12,
+        "atividades": [
+          "Teasers misteriosos nas redes sociais",
+          "Anúncio da cidade no perfil oficial",
+          "Parcerias com influenciadores locais"
+        ],
+        "canais": [
+          "Instagram",
+          "TikTok",
+          "Twitter/X"
+        ],
+        "investimento_sugerido": "15%",
+        "data_inicio": "23/08/2027"
+      },
+      {
+        "fase": "Pré-Venda",
+        "semanas_antes": 8,
+        "atividades": [
+          "Abertura de pré-venda para fã-clube",
+          "Lote 1 com desconto especial",
+          "Email marketing para base de leads"
+        ],
+        "canais": [
+          "Email",
+          "WhatsApp",
+          "Site Oficial"
+        ],
+        "investimento_sugerido": "20%",
+        "data_inicio": "20/09/2027"
+      },
+      {
+        "fase": "Venda Geral",
+        "semanas_antes": 6,
+        "atividades": [
+          "Lançamento do Lote 2",
+          "Anúncios pagos em massa",
+          "Parcerias com rádios locais"
+        ],
+        "canais": [
+          "Facebook Ads",
+          "Google Ads",
+          "Rádio"
+        ],
+        "investimento_sugerido": "35%",
+        "data_inicio": "04/10/2027"
+      },
+      {
+        "fase": "Engajamento",
+        "semanas_antes": 4,
+        "atividades": [
+          "Conteúdo de bastidores",
+          "Lives com o artista",
+          "Contagem regressiva"
+        ],
+        "canais": [
+          "Instagram Stories",
+          "YouTube",
+          "TikTok"
+        ],
+        "investimento_sugerido": "15%",
+        "data_inicio": "18/10/2027"
+      },
+      {
+        "fase": "Última Chamada",
+        "semanas_antes": 1,
+        "atividades": [
+          "Últimos ingressos disponíveis",
+          "Remarketing intensivo",
+          "Cobertura de imprensa local"
+        ],
+        "canais": [
+          "Todos os canais",
+          "Imprensa",
+          "OOH Local"
+        ],
+        "investimento_sugerido": "10%",
+        "data_inicio": "08/11/2027"
+      },
+      {
+        "fase": "Pós-Show",
+        "semanas_antes": -1,
+        "atividades": [
+          "Publicação de fotos e vídeos",
+          "Agradecimento aos fãs",
+          "Captação de leads para próximas datas"
+        ],
+        "canais": [
+          "Instagram",
+          "YouTube",
+          "Email"
+        ],
+        "investimento_sugerido": "5%",
+        "data_inicio": "22/11/2027"
+      }
+    ]
+  },
+  {
+    "cidade": "Joinville",
+    "mes": 12,
+    "mes_nome": "Dezembro",
+    "data_show": "15/12/2027",
+    "cronograma": [
+      {
+        "fase": "Aquecimento",
+        "semanas_antes": 12,
+        "atividades": [
+          "Teasers misteriosos nas redes sociais",
+          "Anúncio da cidade no perfil oficial",
+          "Parcerias com influenciadores locais"
+        ],
+        "canais": [
+          "Instagram",
+          "TikTok",
+          "Twitter/X"
+        ],
+        "investimento_sugerido": "15%",
+        "data_inicio": "22/09/2027"
+      },
+      {
+        "fase": "Pré-Venda",
+        "semanas_antes": 8,
+        "atividades": [
+          "Abertura de pré-venda para fã-clube",
+          "Lote 1 com desconto especial",
+          "Email marketing para base de leads"
+        ],
+        "canais": [
+          "Email",
+          "WhatsApp",
+          "Site Oficial"
+        ],
+        "investimento_sugerido": "20%",
+        "data_inicio": "20/10/2027"
+      },
+      {
+        "fase": "Venda Geral",
+        "semanas_antes": 6,
+        "atividades": [
+          "Lançamento do Lote 2",
+          "Anúncios pagos em massa",
+          "Parcerias com rádios locais"
+        ],
+        "canais": [
+          "Facebook Ads",
+          "Google Ads",
+          "Rádio"
+        ],
+        "investimento_sugerido": "35%",
+        "data_inicio": "03/11/2027"
+      },
+      {
+        "fase": "Engajamento",
+        "semanas_antes": 4,
+        "atividades": [
+          "Conteúdo de bastidores",
+          "Lives com o artista",
+          "Contagem regressiva"
+        ],
+        "canais": [
+          "Instagram Stories",
+          "YouTube",
+          "TikTok"
+        ],
+        "investimento_sugerido": "15%",
+        "data_inicio": "17/11/2027"
+      },
+      {
+        "fase": "Última Chamada",
+        "semanas_antes": 1,
+        "atividades": [
+          "Últimos ingressos disponíveis",
+          "Remarketing intensivo",
+          "Cobertura de imprensa local"
+        ],
+        "canais": [
+          "Todos os canais",
+          "Imprensa",
+          "OOH Local"
+        ],
+        "investimento_sugerido": "10%",
+        "data_inicio": "08/12/2027"
+      },
+      {
+        "fase": "Pós-Show",
+        "semanas_antes": -1,
+        "atividades": [
+          "Publicação de fotos e vídeos",
+          "Agradecimento aos fãs",
+          "Captação de leads para próximas datas"
+        ],
+        "canais": [
+          "Instagram",
+          "YouTube",
+          "Email"
+        ],
+        "investimento_sugerido": "5%",
+        "data_inicio": "22/12/2027"
+      }
+    ]
+  }
+]

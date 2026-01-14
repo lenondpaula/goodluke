@@ -1,488 +1,83 @@
 # Copilot Instructions - Hub de Criação
 
-## Visão Geral da Arquitetura
+Portfolio multi-aplicação Streamlit com 8 apps de ML/NLP independentes. O `streamlit_app.py` serve como homepage-índice.
 
-Este é um **portfolio multi-aplicação** com Streamlit que hospeda 3+ apps de ML/NLP independentes em um único projeto. O arquivo [streamlit_app.py](../streamlit_app.py) serve como **homepage-índice**, enquanto cada app reside em `pages/` ou como submódulo próprio.
+## Arquitetura
 
-### Estrutura de Apps
-- **App 1 (Previsão de Falhas)**: Manutenção preditiva com RandomForest → [pages/1_Previsao_Falhas.py](../pages/1_Previsao_Falhas.py)
-- **App 2 (Análise de Sentimentos)**: NLP com TextBlob → [pages/2_Analise_Sentimentos.py](../pages/2_Analise_Sentimentos.py), módulo completo em [analise-sentimentos/](../analise-sentimentos/)
-- **App 3 (Recomendação)**: SVD com Surprise → [pages/3_Que_tal_esse.py](../pages/3_Que_tal_esse.py), módulo em [sistema-recomendacao/](../sistema-recomendacao/)
-
-## Convenções do Projeto
-
-### Estrutura de Módulos Independentes
-Cada app segue o padrão:
+### Padrão de Submódulos
+Cada app possui estrutura isolada:
 ```
 <nome-app>/
-├── app/          # Dashboard principal (ex: dashboard.py, loja.py)
-├── data/         # CSVs gerados/processados
-├── src/          # Lógica de negócio (geração de dados, treino)
-├── models/       # Modelos .pkl treinados
-└── requirements.txt
+├── app/          # Dashboard (render_app())
+├── data/         # CSVs gerados
+├── src/          # Geração de dados + treino
+└── models/       # Modelos .pkl
 ```
 
-### Sistema de Paths
-**CRÍTICO**: Use `Path(__file__).resolve().parents[N]` para navegação:
-- Apps em `pages/`: `parents[1]` para raiz, `parents[1] / "sistema-recomendacao"` para submódulos
-- Apps em submódulos: `parents[1]` já está na raiz do submódulo
-- Exemplo: [pages/3_Que_tal_esse.py#L9](../pages/3_Que_tal_esse.py#L9) importa de `sistema-recomendacao/app/`
-
-### CSS Corporativo Consistente
-Todos os apps compartilham o mesmo tema minimalista:
+**Páginas ponte** em `pages/` importam via:
 ```python
-CUSTOM_CSS = """<style>
-:root {
-    --primary: #0f172a;
-    --accent: #3b82f6;
-    --success: #22c55e;
-    --danger: #ef4444;
-}
-"""
-```
-Ver [streamlit_app.py#L18-L100](../streamlit_app.py#L18-L100) para template completo.
-
-## Workflows de Desenvolvimento
-
-### 1. Treinar Modelo de Previsão de Falhas
-```bash
-python gerar_dados.py              # Gera data/raw/sensor_data.csv
-python src/train_model.py          # Treina e salva models/modelo_preditivo.pkl
-streamlit run pages/1_Previsao_Falhas.py
-```
-
-### 2. Setup Análise de Sentimentos
-```bash
-cd analise-sentimentos
-python setup_nltk.py               # Download de recursos NLTK
-python src/gerador_dados.py        # Gera dados sintéticos
-python src/analise_motor.py        # Analisa sentimentos
-# Execução via página do hub: streamlit run streamlit_app.py
-```
-
-### 3. Treinar Sistema de Recomendação
-```bash
-cd sistema-recomendacao
-python src/gerar_dataset.py        # Cria produtos.csv e avaliacoes.csv
-python src/treinar_modelo.py       # Treina SVD e salva models/recommender.pkl
-```
-
-### 4. Executar Hub Completo
-```bash
-streamlit run streamlit_app.py     # Homepage em http://localhost:8501
-```
-
-## Detalhes Técnicos Importantes
-
-### Geração de Dados Sintéticos
-Todos os apps usam **dados simulados** com Faker/NumPy para demonstração:
-- **Sensores industriais**: [gerar_dados.py](../gerar_dados.py) - balanceamento de classes 30/70
-- **Comentários sociais**: [analise-sentimentos/src/gerador_dados.py](../analise-sentimentos/src/gerador_dados.py)
-- **Avaliações e-commerce**: [sistema-recomendacao/src/gerar_dataset.py](../sistema-recomendacao/src/gerar_dataset.py)
-
-### Cache de Recursos
-Use decoradores Streamlit para performance:
-```python
-@st.cache_data(show_spinner=False)  # Para DataFrames
-def carregar_dados(): ...
-
-@st.cache_resource(show_spinner=False)  # Para modelos
-def carregar_modelo(): ...
-```
-
-### Integração NLTK
-TextBlob requer downloads prévios - sempre inclua fallback:
-```python
-import nltk
-try:
-    nltk.data.find('tokenizers/punkt')
-except LookupError:
-    nltk.download('punkt', quiet=True)
-```
-
-### Constraints de Dependências
-- `numpy<2.0` e `cython<3.0` por compatibilidade com scikit-surprise
-- Ver [requirements.txt](../requirements.txt) na raiz para versões específicas
-
-## Padrões de Código
-
-### Imports de Submódulos
-```python
-# Em pages/X.py, para importar de submódulo:
 APP_DIR = Path(__file__).resolve().parents[1] / "sistema-recomendacao" / "app"
 sys.path.insert(0, str(APP_DIR))
 from loja import render_app  # noqa: E402
 ```
 
-### Modelos Scikit-learn
-- Salvos com `joblib.dump()` em `models/`
-- RandomForest com `class_weight="balanced"` para classes desbalanceadas
-- Sempre imprima F1-score, não apenas acurácia
+### Apps Ativos
+| App | Stack | Submódulo |
+|-----|-------|-----------|
+| 1 - Precaução Mecânica | RandomForest, joblib | `src/train_model.py` |
+| 2 - Reputação de Marca | TextBlob, NLTK | `analise-sentimentos/` |
+| 3 - Sugestão de Compra | SVD (Surprise) | `sistema-recomendacao/` |
+| 4 - Oráculo de Vendas | Prophet | `oraculo-vendas/` |
+| 5 - Assistente RAG | LangChain, ChromaDB, Groq/Ollama | `assistente-rag/` |
+| 6 - GIG-Master AI | Otimização greedy, Plotly | `projeto-gig-master/` |
+| 7 - Burger-Flow Intelligence | Prophet, Clustering BCG, Plotly | `projeto-burger-flow/` |
+| 8 - PoA-Insight Explorer | Folium, streamlit-folium, geopy | `projeto-poa-explorer/` |
 
-### Dashboard KPIs
-Layout em cards HTML customizados com gradientes CSS:
-```python
-st.markdown(f'<div class="status-ok">✅ Sistema Saudável</div>', unsafe_allow_html=True)
-```
-
-## Detalhes dos Apps 4 e 5
-
-### App 4: O Oráculo de Vendas (BI Preditivo com Prophet)
-
-**Estrutura**:
-```
-oraculo-vendas/
-├── app/
-│   └── dashboard_vendas.py      # Dashboard principal com KPIs
-├── data/
-│   └── vendas_historico.csv     # 3 anos de histórico sintético (1096 dias)
-├── models/
-│   └── prophet_model.pkl         # Modelo Prophet treinado
-├── src/
-│   ├── gerar_vendas.py          # Geração de dados com tendência + sazonalidade
-│   └── treinar_oraculo.py       # Treino do modelo Prophet
-└── requirements.txt
-```
-
-**Workflow de Treino**:
-```bash
-cd oraculo-vendas
-python src/gerar_vendas.py              # Gera data/vendas_historico.csv
-python src/treinar_oraculo.py           # Treina e salva models/prophet_model.pkl
-streamlit run ../pages/4_O_Oraculo_de_Vendas.py
-```
-
-**Características Técnicas**:
-- **Dados sintéticos**: 3 anos de vendas diárias com padrões realistas:
-  - Tendência linear (crescimento suave)
-  - Sazonalidade multiplicativa (7 dias, 365 dias)
-  - Pico de Black Friday (~40% acima da média)
-  - Ruído gaussiano (±5%)
-- **Configuração Prophet**:
-  - `interval_width=0.95` para intervalos de confiança (IC 95%)
-  - Multiplicative seasonality (mais realista para dados de vendas)
-  - Feriados brasileiros registrados (e.g., Black Friday em Nov)
-  - `yearly_seasonality=True`, `weekly_seasonality=True`, `daily_seasonality=False`
-- **Dashboard**:
-  - KPIs: Próximo mês estimado, variação vs histórico, confiabilidade IC
-  - Gráficos Plotly: Série histórica + forecast, decomposição de componentes, resíduos
-  - Export: CSV com forecast (com IC inferior/superior) e parâmetros do modelo
-  - Slider para ajustar períodos de forecast (7 a 90 dias)
-
-**Imports Críticos**:
-```python
-from prophet import Prophet
-from pathlib import Path
-import joblib
-import plotly.graph_objects as go
-```
-
-**Checklist de Deploy**:
-- [ ] Dados gerados com seed=42 para reproducibilidade
-- [ ] Modelo pickleado em `models/prophet_model.pkl`
-- [ ] CSS corporativo aplicado no dashboard
-- [ ] Cache Streamlit para dados (`@st.cache_data`)
-- [ ] Conversor de forecast DataFrame para CSV
-
----
-
-### App 5: O Assistente Corporativo (RAG com Ollama)
-
-**Estrutura**:
-```
-assistente-rag/
-├── app/
-│   └── chatbot_rag.py               # Interface RAG + Ollama
-├── data/
-│   └── (PDFs do usuário)
-├── src/
-│   ├── processador_pdf.py           # Extração de texto com PyPDF
-│   └── indexador.py                 # Indexação ChromaDB
-├── models/
-│   └── (ChromaDB vectors)
-└── requirements.txt
-```
-
-**Workflow de Setup**:
-```bash
-cd assistente-rag
-
-# Opção 1: Groq API (Recomendado para Cloud)
-# 1. Criar conta em https://console.groq.com (grátis)
-# 2. Gerar API key
-# 3. Adicionar ao .streamlit/secrets.toml:
-echo 'GROQ_API_KEY = "gsk_..."' > .streamlit/secrets.toml
-
-# Opção 2: Ollama Local
-ollama pull llama3.2                 # ~2.3GB
-
-# Executar
-streamlit run ../pages/5_O_Assistente_Corporativo.py
-```
-
-**Arquitetura RAG**:
-1. **Ingestão (PDF)**:
-   - PyPDF2 extrai texto bruto de PDFs
-   - RecursiveCharacterTextSplitter divide em chunks (600 chars, 200 overlap)
-   - Embedding: sentence-transformers/all-MiniLM-L6-v2 (384-dim, CPU)
-
-2. **Indexação (ChromaDB)**:
-   - Vector store em disco (`chroma_vectordb/`)
-   - Similaridade cosine para recuperação
-   - Scoring automático per chunk (0-1)
-
-3. **Geração (LLM com Fallback)**:
-   - **Primário: Groq API** (Cloud, grátis, 70-100 tokens/s)
-     - Modelos: `llama-3.1-70b-versatile`, `llama-3.1-8b-instant`, `mixtral-8x7b-32768`
-     - API compatível com OpenAI
-     - Rate limits generosos no tier gratuito
-   - **Secundário: Ollama** (Local, `http://localhost:11434`)
-     - Modelo default: `llama3.2`
-     - Context window: até 2048 tokens
-   - **Fallback: Chunks PDF** (sem LLM)
-     - Mostra trechos relevantes encontrados
-
-**Funções Principais** (em `chatbot_rag.py`):
-```python
-def verificar_groq() -> bool:
-    """Verifica se API key do Groq está configurada"""
-
-def gerar_resposta_groq(prompt: str, contextos: list, modelo: str) -> str:
-    """LLM inference com Groq API (primário)"""
-
-def verificar_ollama() -> bool:
-    """Verifica se Ollama está instalado e rodando"""
-
-def gerar_resposta_ollama(prompt: str, contextos: list, modelo: str) -> str:
-    """LLM inference com Ollama local (fallback)"""
-
-def processar_pergunta(pergunta: str, modo_llm: str, modelo: str):
-    """Sistema de fallback: Groq → Ollama → Chunks PDF"""
-```
-```
-
-**Imports Críticos** (v0.3+ LangChain):
-```python
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_core.documents import Document
-from langchain_community.vectorstores import Chroma
-from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_groq import ChatGroq  # Primário
-from langchain_ollama import OllamaLLM  # Fallback
-```
-
-**Sistema de Fallback Inteligente**:
-1. **Groq API** (primário):
-   - ✅ Funciona 100% em Streamlit Cloud
-   - ✅ Gratuito com rate limits generosos
-   - ✅ Ultra rápido (70-100 tokens/s)
-   - ⚙️ Configuração via `GROQ_API_KEY` em secrets
-   
-2. **Ollama** (secundário):
-   - ✅ Funciona localmente sem internet
-   - ✅ Privacidade total (modelos locais)
-   - ❌ Não funciona em Streamlit Cloud
-   - ⚙️ Requer instalação manual
-
-3. **Chunks PDF** (fallback final):
-   - ✅ Sempre funciona
-   - ℹ️ Mostra trechos relevantes sem LLM
-   - ⚙️ Sem configuração necessária
-
-**Checklist de Deploy**:
-- [ ] Groq API key configurada em secrets (recomendado para Cloud)
-- [ ] ChromaDB persiste em `chroma_vectordb/` na raiz do submódulo
-- [ ] Ollama health check em HTTP (fallback local)
-- [ ] Sistema de fallback automático implementado
-- [ ] Cache Streamlit para embeddings (`@st.cache_resource`)
-- [ ] Tratamento de PDFs inválidos/vazio
-- [ ] Sidebar com upload + histórico de chat
-- [ ] Seletor de modo: Auto/Groq/Ollama/Sem LLM
-
-**Notas para Streamlit Cloud**:
-- ✅ **Groq funciona perfeitamente** - basta adicionar API key aos secrets
-- ❌ **Ollama não é possível** (requer Docker + sistema Unix)
-- ✅ **Fallback automático** garante que o app sempre funciona
-- 💡 **Recomendação**: Use Groq no Cloud, Ollama em dev local
-
-## Como Adicionar um Novo App ao Hub
-
-### Opção 1: App Simples (Tudo em `pages/`)
-Para apps autocontidos sem módulos complexos:
-
-1. **Criar página em `pages/`**:
-   ```python
-   # pages/4_Novo_App.py
-   from pathlib import Path
-   import streamlit as st
-   
-   MODEL_PATH = Path(__file__).resolve().parents[1] / "models" / "novo_modelo.pkl"
-   DATA_PATH = Path(__file__).resolve().parents[1] / "data" / "novo_dataset.csv"
-   ```
-
-2. **Adicionar CSS padrão**: Copie o bloco `CUSTOM_CSS` de [pages/1_Previsao_Falhas.py#L12-L74](../pages/1_Previsao_Falhas.py#L12-L74)
-
-3. **Registrar no hub**: Adicione entrada em `streamlit_app.py`:
-   ```python
-   APPS = [
-       # ... apps existentes ...
-       {
-           "title": "📈 App 4 — Novo App",
-           "desc": "Descrição concisa do que o app faz.",
-           "status": "active",  # ou "dev"
-           "page": "pages/4_Novo_App",
-       },
-   ]
-   ```
-
-### Opção 2: App Modular (Com Submódulo)
-Para apps com lógica complexa ou múltiplos arquivos:
-
-1. **Criar estrutura de submódulo**:
-   ```bash
-   mkdir -p novo-app/{app,data,models,src}
-   touch novo-app/requirements.txt
-   ```
-
-2. **Implementar lógica no submódulo**:
-   ```python
-   # novo-app/app/dashboard.py
-   from pathlib import Path
-   
-   BASE_DIR = Path(__file__).resolve().parents[1]
-   
-   def render_app():
-       st.title("Novo App")
-       # Lógica do dashboard aqui
-   ```
-
-3. **Criar página ponte em `pages/`**:
-   ```python
-   # pages/4_Novo_App.py
-   from pathlib import Path
-   import sys
-   import streamlit as st
-   
-   APP_DIR = Path(__file__).resolve().parents[1] / "novo-app" / "app"
-   sys.path.insert(0, str(APP_DIR))
-   from dashboard import render_app  # noqa: E402
-   
-   st.set_page_config(page_title="Novo App", page_icon="📈", layout="wide")
-   render_app()
-   ```
-
-4. **Adicionar scripts auxiliares**:
-   - `novo-app/src/gerar_dados.py` - Geração de dados sintéticos
-   - `novo-app/src/treinar_modelo.py` - Treino de modelos
-   - `novo-app/requirements.txt` - Dependências específicas
-
-5. **Registrar no hub** (mesmo processo da Opção 1)
-
-### Checklist de Qualidade
-- [ ] CSS corporativo aplicado (cores, cards, badges)
-- [ ] Cache Streamlit configurado (`@st.cache_data`, `@st.cache_resource`)
-- [ ] Paths relativos usando `Path(__file__).resolve().parents[N]`
-- [ ] Dados sintéticos gerados com seed fixo (`random.seed(42)`)
-- [ ] Modelos salvos em `models/*.pkl` com `joblib`
-- [ ] Status badge correto no hub ("active" ou "dev")
-- [ ] README específico em `<submódulo>/README.md` (se aplicável)
-
-## Deploy no Streamlit Cloud
-
-### Configuração Geral
-- **Entrypoint**: `streamlit_app.py` (definir no painel do Streamlit Cloud)
-- **Python Version**: `3.11.9` (em [runtime.txt](../runtime.txt))
-- **Requisitos Específicos**: 
-  - `numpy<2.0` e `cython<3.0` (compatibilidade scikit-surprise)
-  - `prophet` para App 4
-  - `langchain*`, `chromadb`, `sentence-transformers` para App 5
-
-### Deploy Steps (via Streamlit Cloud Dashboard)
-
-1. **Configuração Inicial**:
-   - Conectar repositório GitHub: `lenondpaula/goodluke`
-   - Branch: `main`
-   - Main file path: `streamlit_app.py`
-   - Python version: `3.11.9`
-
-2. **Segredos e Variáveis** (App Settings → Secrets):
-   ```toml
-   # Para App 5 (Assistente Corporativo)
-   GROQ_API_KEY = "gsk_..."  # Obtenha em https://console.groq.com
-   ```
-
-3. **Recursos NLTK** (App 2):
-   - Script de setup em [analise-sentimentos/setup_nltk.py](../analise-sentimentos/setup_nltk.py)
-   - Executar localmente antes do deploy:
-     ```bash
-     python analise-sentimentos/setup_nltk.py
-     ```
-   - Dados NLTK cacheados no `nltk_data/` (incluído no repo)
-
-4. **Deploy App 4 (Oráculo de Vendas)**:
-   - Dados pré-gerados em `oraculo-vendas/data/vendas_historico.csv`
-   - Modelo pré-treinado em `oraculo-vendas/models/prophet_model.pkl`
-   - ✅ Sem dependências externas (Prophet é CPU-only)
-   - Tempo de startup: ~5-10 segundos
-
-5. **Deploy App 5 (Assistente Corporativo - Crítico)**:
-   - **Groq API (Recomendado para Cloud)**:
-     - ✅ Funciona 100% em Streamlit Cloud
-     - ✅ Gratuito: [console.groq.com](https://console.groq.com)
-     - ✅ Muito rápido: 70-100 tokens/s
-     - ⚙️ Adicione `GROQ_API_KEY` aos secrets do Streamlit
-   
-   - **Comportamento em Cloud**:
-     ```python
-     # Modo "Auto" tenta Groq → Ollama → Chunks PDF
-     if verificar_groq():
-         resposta = gerar_resposta_groq(pergunta, contextos)
-     elif verificar_ollama():
-         resposta = gerar_resposta_ollama(pergunta, contextos)
-     else:
-         # Fallback: mostra chunks relevantes
-         resposta = gerar_resposta_sem_llm(pergunta, contextos)
-     ```
-   
-   - **ChromaDB Persiste**:
-     - Vector store em `assistente-rag/chroma_vectordb/`
-     - Incluso no git (embeddings pré-calculados para demo)
-     - Usuários podem upload novos PDFs → novo ChromaDB criado
-   
-   - **Para Production**:
-     - Groq API (grátis, sem servidor)
-     - Ollama em VPS separado (se necessário)
-     - OpenAI/Anthropic (alternativa paga)
-
-### Testes Pré-Deploy
+## Workflows Essenciais
 
 ```bash
-# 1. Testar localmente
+# Hub completo
 streamlit run streamlit_app.py
 
-# 2. Verificar cada app
-# App 1: Tela de upload de dados + previsões
-# App 2: Load comentários + análise de sentimentos
-# App 3: Load produtos + recomendações
-# App 4: Load forecast Prophet com gráficos
-# App 5: Upload PDF + chat (com fallback)
-
-# 3. Validar imports e dependências
-python -c "from prophet import Prophet; print('✓ Prophet')"
-python -c "from langchain_ollama import ChatOllama; print('✓ LangChain')"
-python -c "import chromadb; print('✓ ChromaDB')"
+# Treinar modelos (cada app)
+python gerar_dados.py && python src/train_model.py          # App 1
+cd sistema-recomendacao && python src/gerar_dataset.py && python src/treinar_modelo.py  # App 3
+cd oraculo-vendas && python src/gerar_vendas.py && python src/treinar_oraculo.py        # App 4
+cd projeto-gig-master && python src/gerar_mercado.py && python src/motor_logistica.py   # App 6
+cd projeto-burger-flow && python src/gerar_dados_burger.py && python src/previsao_estoque.py  # App 7
+cd projeto-poa-explorer && python src/gerar_locais_poa.py                                    # App 8
 ```
 
-### Monitoramento em Produção
+## Convenções Críticas
 
-- **Logs**: Acesso via Streamlit Cloud dashboard → View logs
-- **Erros Comuns**:
-  - App 2 sem dados NLTK → Execute `setup_nltk.py` localmente
-  - App 5 com ChromaDB corrompido → Delete `chroma_vectordb/` e reupload PDF
-  - Out of memory → Aumentar RAM (Streamlit Free: ~800MB, Pro: >2GB)
+### Paths (OBRIGATÓRIO)
+```python
+BASE_DIR = Path(__file__).resolve().parents[1]  # Sobe 1 nível para submódulo
+MODEL_PATH = BASE_DIR / "models" / "modelo.pkl"
+```
 
-### Links Úteis
-- [Streamlit Cloud Docs](https://docs.streamlit.io/deploy/streamlit-cloud)
-- [Streamlit Secrets Management](https://docs.streamlit.io/deploy/streamlit-cloud/manage-your-app/secrets-management)
-- [Ollama Installation](https://ollama.ai)
-- [LangChain Documentation](https://python.langchain.com)
+### CSS Corporativo
+Todas as páginas usam `CUSTOM_CSS` com variáveis:
+- `--primary: #0f172a`, `--accent: #3b82f6`, `--success: #22c55e`, `--danger: #ef4444`
+
+### Cache Streamlit
+```python
+@st.cache_data(show_spinner=False)     # DataFrames
+@st.cache_resource(show_spinner=False)  # Modelos
+```
+
+### Dados Sintéticos
+Sempre use `seed=42` para reprodutibilidade (NumPy, Faker, random).
+
+## Dependências Especiais
+
+- `numpy<2.0`, `cython<3.0` — compatibilidade scikit-surprise
+- App 5: Groq API (Cloud) ou Ollama (local) com fallback automático
+
+## Adicionar Novo App
+
+1. Criar submódulo em `<nome>/` com estrutura padrão
+2. Criar página ponte em `pages/N_Nome_App.py`
+3. Registrar em `APPS` no `streamlit_app.py`
+
+Ver exemplos: [pages/5_O_Assistente_Corporativo.py](pages/5_O_Assistente_Corporativo.py), [pages/6_GIG_Master_AI.py](pages/6_GIG_Master_AI.py)

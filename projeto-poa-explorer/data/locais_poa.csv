@@ -1,0 +1,31 @@
+ID,Nome,Categoria,Lat,Lon,Preco_Medio,Tipo,Popularidade_Base,Horario_Pico,Descricao
+1,Parque da Redenção (Farroupilha),Parque,-30.0392,-51.2172,1,Outdoor,95,Tarde,"Principal parque urbano, com lago, Brique aos domingos"
+2,Orla do Guaíba (Gasômetro),Parque,-30.0345,-51.242,1,Outdoor,98,Tarde,"Pôr do sol mais famoso de POA, vista para o Guaíba"
+3,Parque Moinhos de Vento (Parcão),Parque,-30.0275,-51.2005,1,Outdoor,88,Tarde,"Parque nobre com lago, patos e área para pets"
+4,Parque Marinha do Brasil,Parque,-30.0505,-51.234,1,Outdoor,75,Manhã,Extenso parque com pistas de caminhada e ciclismo
+5,Jardim Botânico,Parque,-30.054,-51.177,1,Outdoor,82,Manhã,Jardim científico com mata nativa e trilhas
+6,Fundação Iberê Camargo,Museu,-30.071,-51.258,2,Indoor,90,Tarde,"Arquitetura icônica de Álvaro Siza, arte contemporânea"
+7,MARGS - Museu de Arte do RS,Museu,-30.0329,-51.229,1,Indoor,85,Tarde,Acervo de arte gaúcha e brasileira na Praça da Alfândega
+8,Museu de Ciências e Tecnologia (PUCRS),Museu,-30.0595,-51.174,3,Indoor,92,Tarde,Maior museu interativo da América Latina
+9,Memorial do RS,Museu,-30.035,-51.2305,1,Indoor,70,Tarde,História e cultura gaúcha no centro histórico
+10,Museu Júlio de Castilhos,Museu,-30.034,-51.222,1,Indoor,65,Manhã,Museu histórico mais antigo do estado
+11,Mercado Público,Gastronomia,-30.028,-51.228,2,Indoor,95,Manhã,"Mercado histórico, bancas tradicionais e Banca 40"
+12,Rua Padre Chagas,Gastronomia,-30.0265,-51.2025,4,Outdoor,88,Noite,Corredor gastronômico de Moinhos de Vento
+13,Gambrinus (Cidade Baixa),Gastronomia,-30.0435,-51.2155,2,Indoor,80,Noite,Bar tradicional com cerveja artesanal e petiscos
+14,Chalé da Praça XV,Gastronomia,-30.0295,-51.2295,2,Indoor,75,Tarde,"Café histórico no centro, arquitetura de 1885"
+15,Banca 40 (Mercado Público),Gastronomia,-30.028,-51.2282,1,Indoor,85,Manhã,Lendária banca de temperos e simpatias
+16,Oliva Restaurante,Gastronomia,-30.025,-51.204,5,Indoor,78,Noite,Alta gastronomia com ingredientes locais
+17,Cidade Baixa (Polo Gastronômico),Vida Noturna,-30.042,-51.218,2,Indoor,98,Noite,"Boemia porto-alegrense, dezenas de bares"
+18,Ocidente Bar,Vida Noturna,-30.041,-51.219,2,Indoor,85,Noite,Bar cult com shows ao vivo e ambiente alternativo
+19,Opinião (Casa de Shows),Vida Noturna,-30.0415,-51.217,3,Indoor,88,Noite,Palco histórico da música gaúcha e nacional
+20,Beco do Espelho,Vida Noturna,-30.0425,-51.2165,2,Indoor,75,Noite,Bar descolado em beco decorado com espelhos
+21,Agulha Bar,Vida Noturna,-30.043,-51.2155,2,Indoor,82,Noite,DJ sets e ambiente jovem na Cidade Baixa
+22,Casa de Cultura Mario Quintana,Cultura,-30.033,-51.226,1,Indoor,92,Tarde,Centro cultural no antigo Hotel Majestic
+23,Theatro São Pedro,Cultura,-30.0318,-51.227,3,Indoor,85,Noite,"Teatro histórico de 1858, óperas e concertos"
+24,Santander Cultural,Cultura,-30.029,-51.2295,1,Indoor,88,Tarde,Exposições de arte em prédio art déco
+25,Catedral Metropolitana,Cultura,-30.0305,-51.2275,1,Indoor,80,Manhã,"Arquitetura renascentista, vista panorâmica do mirante"
+26,Usina do Gasômetro,Cultura,-30.034,-51.2425,1,Indoor,90,Tarde,"Centro cultural na antiga usina, cinema e exposições"
+27,Praça da Alfândega,Cultura,-30.03,-51.229,1,Outdoor,85,Tarde,"Praça histórica, Feira do Livro anual"
+28,Centro Histórico,Cultura,-30.032,-51.228,1,Outdoor,82,Manhã,Caminhada por prédios históricos e ruas antigas
+29,Biblioteca Pública do Estado,Cultura,-30.0335,-51.2255,1,Indoor,68,Manhã,Acervo histórico e arquitetura neoclássica
+30,Cinemateca Capitólio,Cultura,-30.041,-51.2215,2,Indoor,78,Noite,Cinema de arte e festivais de filmes

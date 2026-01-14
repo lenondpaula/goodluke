@@ -1,0 +1,11 @@
+Item,Custo_Producao,Preco_Venda,Volume_Vendas,Margem_Bruta,Margem_Percentual,Receita_Total,Lucro_Total,Classificacao_BCG
+Burger Clássico,8.5,24.9,1250,16.4,65.9,31125.0,20500.0,⭐ Estrela
+Combo Família,35.0,89.9,380,54.900000000000006,61.1,34162.0,20862.000000000004,🐄 Vaca Leiteira
+Batata Frita,4.5,12.9,1800,8.4,65.1,23220.0,15120.0,⭐ Estrela
+Refrigerante,2.8,7.9,2100,5.1000000000000005,64.6,16590.0,10710.000000000002,🐄 Vaca Leiteira
+Burger Gourmet,15.0,42.9,180,27.9,65.0,7722.0,5022.0,⭐ Estrela
+Milkshake Premium,6.0,22.9,95,16.9,73.8,2175.5,1605.4999999999998,🎯 Oportunidade
+Burger Vegano,12.0,36.9,65,24.9,67.5,2398.5,1618.5,🎯 Oportunidade
+Salada Caesar,9.0,18.9,45,9.899999999999999,52.4,850.4999999999999,445.49999999999994,🐕 Cão/Retirar
+Wrap Light,10.0,19.9,30,9.899999999999999,49.7,597.0,296.99999999999994,🐕 Cão/Retirar
+Suco Natural,5.5,11.9,55,6.4,53.8,654.5,352.0,🐕 Cão/Retirar
