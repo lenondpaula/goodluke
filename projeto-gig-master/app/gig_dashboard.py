@@ -18,11 +18,20 @@ import streamlit as st
 
 # Configuração de paths
 BASE_DIR = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = BASE_DIR.parent
 DATA_DIR = BASE_DIR / "data"
 SRC_DIR = BASE_DIR / "src"
 
 # Adicionar src ao path para imports
 sys.path.insert(0, str(SRC_DIR))
+sys.path.insert(0, str(PROJECT_ROOT))
+
+from shared.components import (  # noqa: E402
+    SHARED_SIDEBAR_CSS,
+    render_sidebar_navegacao,
+    render_rodape,
+    render_instrucoes_uso,
+)
 
 # CSS corporativo consistente com o hub - adaptável a tema claro/escuro
 CUSTOM_CSS = """
@@ -550,10 +559,25 @@ def render_app():
     )
     
     st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
+    st.markdown(SHARED_SIDEBAR_CSS, unsafe_allow_html=True)
     
     # Header
     st.markdown('<p class="main-header">🎸 GIG-Master AI</p>', unsafe_allow_html=True)
     st.markdown('<p class="sub-header">Planejamento Inteligente de Turnês Musicais • Análise Preditiva + Marketing</p>', unsafe_allow_html=True)
+    
+    # Instruções de uso
+    render_instrucoes_uso(
+        instrucoes=[
+            "Explore o cronograma otimizado de shows",
+            "Analise o ROI por cidade e região",
+            "Baixe o plano de marketing integrado",
+        ],
+        ferramentas_sidebar=[
+            "**Cidade**: Selecione para ver plano de marketing",
+            "**Exportar HTML**: Plano anual completo",
+            "**Exportar CSV**: Cronograma para Excel",
+        ]
+    )
     
     # Gerar dados se necessário
     try:
@@ -741,12 +765,14 @@ def render_app():
         else:
             st.warning("Planos de marketing não encontrados.")
     
+    # Menu de navegação
+    render_sidebar_navegacao(app_atual=6)
+
     # Footer
-    st.markdown("---")
-    st.markdown(
-        '<p style="text-align: center; color: #94a3b8;">GIG-Master AI © 2024 • '
-        'Desenvolvido para otimização de turnês musicais</p>',
-        unsafe_allow_html=True
+    render_rodape(
+        titulo_app="🎸 GIG-Master AI",
+        subtitulo="Otimização de turnês musicais com algoritmos inteligentes",
+        tecnologias="Otimização Greedy + Plotly + Streamlit"
     )
 
 

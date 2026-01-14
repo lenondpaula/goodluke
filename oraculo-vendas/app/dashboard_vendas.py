@@ -6,6 +6,7 @@ Painel interativo que mostra vendas históricas e previsão para próximos 30 di
 """
 
 from pathlib import Path
+import sys
 import pickle
 from datetime import datetime, timedelta
 
@@ -16,8 +17,18 @@ from plotly.subplots import make_subplots
 import streamlit as st
 
 BASE_DIR = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = BASE_DIR.parent
 DATA_PATH = BASE_DIR / "data" / "vendas_historico.csv"
 MODEL_PATH = BASE_DIR / "models" / "prophet_model.pkl"
+
+# Importa componentes compartilhados
+sys.path.insert(0, str(PROJECT_ROOT))
+from shared.components import (  # noqa: E402
+    SHARED_SIDEBAR_CSS,
+    render_sidebar_navegacao,
+    render_rodape,
+    render_instrucoes_uso,
+)
 
 # ────────────────────────────────────────────────────────────────────────────────
 # CSS corporativo minimalista (padrão do Hub)
@@ -348,9 +359,24 @@ def render_app():
     """Função principal do dashboard - chamada pela página do hub."""
     
     st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
+    st.markdown(SHARED_SIDEBAR_CSS, unsafe_allow_html=True)
     
     st.title("🔮 O Oráculo de Vendas")
     st.markdown("Previsão inteligente de vendas com análise de séries temporais (Prophet)")
+    
+    # Instruções de uso
+    render_instrucoes_uso(
+        instrucoes=[
+            "Configure o horizonte de previsão na sidebar",
+            "Analise os KPIs de crescimento previsto",
+            "Explore a decomposição da série temporal",
+        ],
+        ferramentas_sidebar=[
+            "**Dias de previsão**: Ajuste de 7 a 90 dias",
+            "**Decomposição**: Tendência e sazonalidade semanal",
+            "**Exportar**: Download da previsão em CSV",
+        ]
+    )
     
     # Apresentação
     with st.container():
@@ -451,16 +477,14 @@ python src/treinar_oraculo.py   # Treina o modelo
             use_container_width=True
         )
     
+    # Menu de navegação
+    render_sidebar_navegacao(app_atual=4)
+
     # Rodapé
-    st.markdown("---")
-    st.markdown(
-        """
-        <div style="text-align:center; color:#64748b; font-size:0.85rem;">
-            Desenvolvido por <strong>Lenon de Paula</strong> · 
-            <a href="mailto:lenondpaula@gmail.com" style="color:#3b82f6;">lenondpaula@gmail.com</a>
-        </div>
-        """,
-        unsafe_allow_html=True,
+    render_rodape(
+        titulo_app="🔮 O Oráculo de Vendas",
+        subtitulo="Previsão de vendas com séries temporais e machine learning",
+        tecnologias="Prophet (Meta) + Plotly + Streamlit"
     )
 
 

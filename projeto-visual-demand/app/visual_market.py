@@ -17,17 +17,25 @@ from PIL import Image
 
 # Configuração de paths
 BASE_DIR = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = BASE_DIR.parent
 SRC_DIR = BASE_DIR / "src"
 DATA_DIR = BASE_DIR / "data"
 ASSETS_DIR = BASE_DIR / "assets"
 
 sys.path.insert(0, str(SRC_DIR))
+sys.path.insert(0, str(PROJECT_ROOT))
 
 from motor_match import (  # noqa: E402
     analisar_estilo_imagem,
     encontrar_fotografos,
     obter_insights_estilo,
     carregar_fotografos,
+)
+from shared.components import (  # noqa: E402
+    SHARED_SIDEBAR_CSS,
+    render_sidebar_navegacao,
+    render_rodape,
+    render_instrucoes_uso,
 )
 
 # ============================================================================
@@ -380,6 +388,8 @@ def render_app():
         initial_sidebar_state="collapsed"
     )
     
+    st.markdown(SHARED_SIDEBAR_CSS, unsafe_allow_html=True)
+    
     # Inicializar estado
     if "contratado" not in st.session_state:
         st.session_state.contratado = None
@@ -387,6 +397,21 @@ def render_app():
         st.session_state.resultados = None
     if "estilo_detectado" not in st.session_state:
         st.session_state.estilo_detectado = None
+    
+    # Instruções de uso
+    render_instrucoes_uso(
+        instrucoes=[
+            "Envie uma foto de inspiração (Pinterest, Instagram)",
+            "A IA analisa cores, luz e atmosfera",
+            "Receba fotógrafos com portfólio similar",
+        ],
+        ferramentas_sidebar=[
+            "**Upload**: Arraste uma imagem de referência",
+            "**Orçamento**: Defina seu limite de preço",
+            "**Data**: Selecione a data do evento",
+            "**Especialidade**: Filtre por tipo de fotografia",
+        ]
+    )
     
     # Header
     render_header()
@@ -558,14 +583,15 @@ def render_app():
                     </div>
                 """, unsafe_allow_html=True)
     
+    # Menu de navegação
+    render_sidebar_navegacao(app_atual=9)
+
     # Footer
-    st.markdown("---")
-    st.markdown("""
-        <p style='text-align: center; color: #64748b; font-size: 0.9rem;'>
-        📸 Visual-On-Demand • Conectando talentos visuais a momentos únicos<br>
-        <em>Tecnologia de matching visual inspirada em embeddings de imagem</em>
-        </p>
-    """, unsafe_allow_html=True)
+    render_rodape(
+        titulo_app="📸 Visual-On-Demand",
+        subtitulo="Conectando talentos visuais a momentos únicos",
+        tecnologias="Análise de Imagem + Match por IA + Streamlit"
+    )
 
 
 # Ponto de entrada direto

@@ -7,6 +7,7 @@ Integrado ao Hub de Criação
 """
 
 from pathlib import Path
+import sys
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -30,6 +31,14 @@ from textblob import TextBlob
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 ANALISE_PATH = PROJECT_ROOT / "analise-sentimentos"
 DATA_PATH = ANALISE_PATH / "data" / "comentarios_classificados.csv"
+sys.path.insert(0, str(PROJECT_ROOT))
+
+from shared.components import (  # noqa: E402
+    SHARED_SIDEBAR_CSS,
+    render_sidebar_navegacao,
+    render_rodape,
+    render_instrucoes_uso,
+)
 
 # ────────────────────────────────────────────────────────────────────────────────
 # CSS corporativo minimalista (mesmo padrão do App 1)
@@ -472,9 +481,25 @@ def layout():
         initial_sidebar_state="expanded",
     )
     st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
+    st.markdown(SHARED_SIDEBAR_CSS, unsafe_allow_html=True)
 
     st.title("📊 Gestor de Reputação de Marca")
     st.markdown("Análise de sentimentos em tempo real para a marca **TechNova**.")
+
+    # Instruções de uso
+    render_instrucoes_uso(
+        instrucoes=[
+            "Use os filtros na sidebar para refinar a análise",
+            "Acompanhe os KPIs de sentimento no topo",
+            "Identifique comentários críticos na tabela de destaque",
+        ],
+        ferramentas_sidebar=[
+            "**Plataforma**: Filtre por rede social",
+            "**Classificação**: Positivo, Negativo ou Neutro",
+            "**Período**: Defina intervalo de datas",
+            "**Regenerar**: Crie novo dataset sintético",
+        ]
+    )
 
     # Apresentação (mesmo estilo do App 1)
     with st.container():
@@ -618,16 +643,14 @@ def main():
             use_container_width=True
         )
     
-    # Rodapé
-    st.markdown("---")
-    st.markdown(
-        """
-        <div style="text-align:center; color:#64748b; font-size:0.85rem;">
-            Desenvolvido por <strong>Lenon de Paula</strong> · 
-            <a href="mailto:lenondpaula@gmail.com" style="color:#3b82f6;">lenondpaula@gmail.com</a>
-        </div>
-        """,
-        unsafe_allow_html=True,
+    # ── Menu de navegação ───────────────────────────────────────────────────────
+    render_sidebar_navegacao(app_atual=2)
+
+    # ── Rodapé ──────────────────────────────────────────────────────────────────
+    render_rodape(
+        titulo_app="📊 Gestor de Reputação de Marca",
+        subtitulo="Monitoramento de sentimentos em redes sociais com NLP",
+        tecnologias="TextBlob + NLTK + Plotly + Streamlit"
     )
 
 

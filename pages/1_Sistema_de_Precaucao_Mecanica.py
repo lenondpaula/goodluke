@@ -1,12 +1,22 @@
 # SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
 # Copyright (c) 2026 Lenon de Paula - https://github.com/lenondpaula
 from pathlib import Path
+import sys
 import joblib
 import pandas as pd
 import streamlit as st
 
-# Caminho para o modelo - ajustado para a raiz do projeto
-MODEL_PATH = Path(__file__).resolve().parents[1] / "models" / "modelo_preditivo.pkl"
+# Caminho para o modelo e componentes compartilhados
+BASE_DIR = Path(__file__).resolve().parents[1]
+MODEL_PATH = BASE_DIR / "models" / "modelo_preditivo.pkl"
+sys.path.insert(0, str(BASE_DIR))
+
+from shared.components import (  # noqa: E402
+    SHARED_SIDEBAR_CSS,
+    render_sidebar_navegacao,
+    render_rodape,
+    render_instrucoes_uso,
+)
 
 # ────────────────────────────────────────────────────────────────────────────────
 # CSS corporativo minimalista
@@ -93,10 +103,26 @@ def layout():
         initial_sidebar_state="expanded",
     )
     st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
+    st.markdown(SHARED_SIDEBAR_CSS, unsafe_allow_html=True)
 
     st.title("🔧 Sistema de Precaução Mecânica")
     st.markdown(
         "Ajuste os parâmetros na barra lateral para simular o estado atual do equipamento.",
+    )
+
+    # ── Instruções de uso ───────────────────────────────────────────────────────
+    render_instrucoes_uso(
+        instrucoes=[
+            "Ajuste os parâmetros de sensor na barra lateral",
+            "Observe a probabilidade de falha no indicador central",
+            "Receba alertas de risco em tempo real",
+        ],
+        ferramentas_sidebar=[
+            "**Temperatura**: Ajuste a temperatura em °C",
+            "**Rotação**: Configure RPM do equipamento",
+            "**Vibração**: Defina nível de vibração em mm/s",
+            "**Pressão**: Ajuste pressão em bar",
+        ]
     )
 
     # ── Apresentação ────────────────────────────────────────────────────────────
@@ -181,16 +207,14 @@ def main():
             use_container_width=True,
         )
 
+    # ── Menu de navegação ───────────────────────────────────────────────────────
+    render_sidebar_navegacao(app_atual=1)
+
     # ── Rodapé ──────────────────────────────────────────────────────────────────
-    st.markdown("---")
-    st.markdown(
-        """
-        <div style="text-align:center; color:#64748b; font-size:0.85rem;">
-            Desenvolvido por <strong>Lenon de Paula</strong> · 
-            <a href="mailto:lenondpaula@gmail.com" style="color:#3b82f6;">lenondpaula@gmail.com</a>
-        </div>
-        """,
-        unsafe_allow_html=True,
+    render_rodape(
+        titulo_app="🔧 Sistema de Precaução Mecânica",
+        subtitulo="Predição inteligente de falhas em equipamentos industriais",
+        tecnologias="RandomForest + Scikit-learn + Streamlit"
     )
 
 

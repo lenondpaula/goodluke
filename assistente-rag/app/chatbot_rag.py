@@ -13,8 +13,10 @@ import streamlit as st
 
 # Adiciona src ao path para imports
 BASE_DIR = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = BASE_DIR.parent
 SRC_DIR = BASE_DIR / "src"
 sys.path.insert(0, str(SRC_DIR))
+sys.path.insert(0, str(PROJECT_ROOT))
 
 from processador_pdf import processar_pdf_upload
 from indexador import (
@@ -22,6 +24,12 @@ from indexador import (
     indexar_documentos,
     buscar_com_scores,
     contar_documentos,
+)
+from shared.components import (  # noqa: E402
+    SHARED_SIDEBAR_CSS,
+    render_sidebar_navegacao,
+    render_rodape,
+    render_instrucoes_uso,
 )
 
 
@@ -589,10 +597,26 @@ def render_app():
     """Função principal do chatbot."""
     
     st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
+    st.markdown(SHARED_SIDEBAR_CSS, unsafe_allow_html=True)
     inicializar_sessao()
     
     st.title("🤖 Assistente Corporativo")
     st.markdown("Faça perguntas sobre seus documentos PDF usando **RAG** (Retrieval-Augmented Generation)")
+    
+    # Instruções de uso
+    render_instrucoes_uso(
+        instrucoes=[
+            "Faça upload de PDFs na sidebar",
+            "Aguarde a indexação dos documentos",
+            "Digite sua pergunta no chat",
+        ],
+        ferramentas_sidebar=[
+            "**Upload PDF**: Envie documentos para indexar",
+            "**Modelo LLM**: Groq (cloud) ou Ollama (local)",
+            "**Fontes**: Veja trechos usados na resposta",
+            "**Limpar**: Reinicie a conversa",
+        ]
+    )
     
     with st.container():
         st.markdown(
@@ -750,17 +774,14 @@ def render_app():
         st.session_state.fontes_ultima_resposta = fontes
         st.rerun()
     
+    # Menu de navegação
+    render_sidebar_navegacao(app_atual=5)
+
     # Footer
-    st.markdown("---")
-    st.markdown(
-        """
-        <div style="text-align:center; color:#64748b; font-size:0.85rem;">
-            Desenvolvido por <strong>Lenon de Paula</strong> · 
-            <a href="mailto:lenondpaula@gmail.com" style="color:#3b82f6;">lenondpaula@gmail.com</a><br>
-            <span style="font-size:0.75rem;">LangChain + ChromaDB + HuggingFace + Ollama</span>
-        </div>
-        """,
-        unsafe_allow_html=True,
+    render_rodape(
+        titulo_app="🤖 Assistente Corporativo RAG",
+        subtitulo="Perguntas e respostas sobre documentos com busca semântica",
+        tecnologias="LangChain + ChromaDB + HuggingFace + Groq/Ollama"
     )
 
 

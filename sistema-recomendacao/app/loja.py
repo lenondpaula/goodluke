@@ -16,10 +16,20 @@ import streamlit as st
 from surprise import dump
 
 BASE_DIR = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = BASE_DIR.parent
 DATA_DIR = BASE_DIR / "data"
 MODEL_PATH = BASE_DIR / "models" / "recommender.pkl"
 PRODUTOS_PATH = DATA_DIR / "produtos.csv"
 AVALIACOES_PATH = DATA_DIR / "avaliacoes.csv"
+
+# Importa componentes compartilhados
+sys.path.insert(0, str(PROJECT_ROOT))
+from shared.components import (  # noqa: E402
+    SHARED_SIDEBAR_CSS,
+    render_sidebar_navegacao,
+    render_rodape,
+    render_instrucoes_uso,
+)
 
 
 def _ensure_paths() -> None:
@@ -103,15 +113,31 @@ def _render_cards(recs: pd.DataFrame) -> None:
 
 
 def render_app() -> None:
+    st.markdown(SHARED_SIDEBAR_CSS, unsafe_allow_html=True)
+    
     produtos, avaliacoes = carregar_dados()
     user_ids = sorted(avaliacoes["user_id"].unique())
 
-    st.sidebar.header("👤 Selecione o usuário")
-    user_id = st.sidebar.selectbox("ID de Usuário", user_ids, index=0)
-    st.sidebar.info("Dica: recomendamos itens de cauda longa (Long Tail) para elevar o ticket médio.")
+    with st.sidebar:
+        st.header("👤 Selecione o usuário")
+        user_id = st.sidebar.selectbox("ID de Usuário", user_ids, index=0)
+        st.sidebar.info("Dica: recomendamos itens de cauda longa (Long Tail) para elevar o ticket médio.")
 
     st.title("🛒 Que tal esse? — Recomendador de Varejo")
     st.markdown("Filtragem colaborativa com SVD para sugerir itens de nicho que aumentam o ticket médio.")
+
+    # Instruções de uso
+    render_instrucoes_uso(
+        instrucoes=[
+            "Selecione um ID de usuário na sidebar",
+            "Veja os produtos já avaliados por este cliente",
+            "Confira as recomendações personalizadas de Long Tail",
+        ],
+        ferramentas_sidebar=[
+            "**ID de Usuário**: Escolha o cliente para receber recomendações",
+            "**Dica**: Itens Long Tail elevam o ticket médio",
+        ]
+    )
 
     ult = _ultimas_avaliacoes(avaliacoes, produtos, user_id)
     recs = _recomendar(produtos, avaliacoes, user_id, n=6)
@@ -139,6 +165,16 @@ def render_app() -> None:
     col1, col2 = st.columns(2)
     col1.metric("Uplift estimado", f"+{uplift_pct}%")
     col2.write("Os itens de cauda longa sugeridos ajudam a destravar estoque e elevar o ticket médio sem depender só dos best-sellers.")
+
+    # Menu de navegação
+    render_sidebar_navegacao(app_atual=3)
+
+    # Rodapé
+    render_rodape(
+        titulo_app="🛒 Que tal esse? — Recomendador",
+        subtitulo="Filtragem colaborativa para descoberta de itens de nicho",
+        tecnologias="SVD (Surprise) + Pandas + Streamlit"
+    )
 
 
 def main():

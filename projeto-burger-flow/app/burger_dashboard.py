@@ -6,6 +6,7 @@ Interface Streamlit para análise de estoque e engenharia de menu
 """
 
 from pathlib import Path
+import sys
 
 import pandas as pd
 import numpy as np
@@ -16,7 +17,17 @@ import streamlit as st
 
 # Diretório base do projeto
 BASE_DIR = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = BASE_DIR.parent
 DATA_DIR = BASE_DIR / "data"
+
+# Importa componentes compartilhados
+sys.path.insert(0, str(PROJECT_ROOT))
+from shared.components import (  # noqa: E402
+    SHARED_SIDEBAR_CSS,
+    render_sidebar_navegacao,
+    render_rodape,
+    render_instrucoes_uso,
+)
 
 # ────────────────────────────────────────────────────────────────────────────────
 # CSS corporativo minimalista (padrão do Hub)
@@ -288,9 +299,23 @@ def render_app():
         initial_sidebar_state="expanded",
     )
     st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
+    st.markdown(SHARED_SIDEBAR_CSS, unsafe_allow_html=True)
     
     st.title("🍔 Burger-Flow Intelligence")
     st.markdown("Dashboard de gestão inteligente para hamburguerias")
+    
+    # Instruções de uso
+    render_instrucoes_uso(
+        instrucoes=[
+            "Analise a previsão de demanda para 7 dias",
+            "Use a Matriz BCG para otimizar o menu",
+            "Simule ajustes de preço e veja o impacto",
+        ],
+        ferramentas_sidebar=[
+            "**Ajuste Preço**: Simule aumento/redução no menu",
+            "**Abas**: Navegue entre Previsão, BCG e Histórico",
+        ]
+    )
     
     # Descrição do sistema
     st.markdown(
@@ -491,6 +516,16 @@ def render_app():
             st.plotly_chart(fig_serie, use_container_width=True)
         else:
             st.info("Execute `python src/gerar_dados_burger.py` para gerar histórico de vendas.")
+
+    # Menu de navegação
+    render_sidebar_navegacao(app_atual=7)
+
+    # Rodapé
+    render_rodape(
+        titulo_app="🍔 Burger-Flow Intelligence",
+        subtitulo="Gestão inteligente de estoque e engenharia de menu",
+        tecnologias="Prophet + Matriz BCG + Plotly + Streamlit"
+    )
 
 
 if __name__ == "__main__":

@@ -17,15 +17,23 @@ from streamlit_folium import st_folium
 
 # Adiciona src ao path para imports
 BASE_DIR = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = BASE_DIR.parent
 SRC_DIR = BASE_DIR / "src"
 DATA_DIR = BASE_DIR / "data"
 sys.path.insert(0, str(SRC_DIR))
+sys.path.insert(0, str(PROJECT_ROOT))
 
 from motor_turismo import (  # type: ignore  # noqa: E402
     recomendar_roteiro,
     gerar_zonas_calor,
     carregar_locais,
     PERFIL_CATEGORIAS,
+)
+from shared.components import (  # noqa: E402
+    SHARED_SIDEBAR_CSS,
+    render_sidebar_navegacao,
+    render_rodape,
+    render_instrucoes_uso,
 )
 
 # ────────────────────────────────────────────────────────────────────────────────
@@ -204,9 +212,25 @@ def render_app():
         initial_sidebar_state="expanded",
     )
     st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
+    st.markdown(SHARED_SIDEBAR_CSS, unsafe_allow_html=True)
     
     st.title("🗺️ PoA-Insight Explorer")
     st.markdown("Turismo inteligente em Porto Alegre com recomendações contextuais")
+    
+    # Instruções de uso
+    render_instrucoes_uso(
+        instrucoes=[
+            "Selecione seu perfil na sidebar",
+            "Configure clima e horário atuais",
+            "Explore o mapa interativo",
+        ],
+        ferramentas_sidebar=[
+            "**Perfil**: Explorador, Natureza, Cultura, Gastronomia ou Festa",
+            "**Clima**: Sol ou Chuva (filtra locais cobertos)",
+            "**Horário**: Manhã, Tarde ou Noite",
+            "**Heatmap**: Visualize concentração de pessoas",
+        ]
+    )
     
     # Descrição do sistema
     st.markdown(
@@ -377,6 +401,16 @@ def render_app():
         for cat in df_todos["Categoria"].unique():
             count = len(df_todos[df_todos["Categoria"] == cat])
             st.caption(f"• {cat}: {count} locais")
+
+    # Menu de navegação
+    render_sidebar_navegacao(app_atual=8)
+
+    # Rodapé
+    render_rodape(
+        titulo_app="🗺️ PoA-Insight Explorer",
+        subtitulo="Turismo inteligente em Porto Alegre com recomendações contextuais",
+        tecnologias="Folium + Streamlit-Folium + Geopy + Streamlit"
+    )
 
 
 if __name__ == "__main__":
