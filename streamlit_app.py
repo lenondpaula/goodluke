@@ -305,20 +305,14 @@ Bem-vindo ao meu laboratório de inovação. Aqui, a **Engenharia de Dados** enc
 Focado na pirâmide da sabedoria: do dado à estratégia.
 """)
 
-# Botões de ação: README e GitHub
-col_readme, col_github = st.columns(2)
-
-with col_readme:
-    with st.expander("📖 Ver README do Projeto"):
-        try:
-            with open("README.md", "r", encoding="utf-8") as f:
-                readme_content = f.read()
-            st.markdown(readme_content)
-        except FileNotFoundError:
-            st.info("README.md não encontrado.")
-
-with col_github:
-    st.link_button("🐙 Ver Portfólio no GitHub", "https://github.com/lenondpaula/goodluke", use_container_width=True)
+# Botão README em linha própria
+with st.expander("📖 Ver README do Projeto"):
+    try:
+        with open("README.md", "r", encoding="utf-8") as f:
+            readme_content = f.read()
+        st.markdown(readme_content)
+    except FileNotFoundError:
+        st.info("README.md não encontrado.")
 
 st.divider()
 
@@ -329,10 +323,10 @@ projetos = [
     {"id": 3, "nome": "Vendedor Automático", "tag": "E-commerce", "desc": "Motor de recomendação focado na cauda longa e aumento de ticket médio.", "page": "pages/3_Sugestao_de_compra.py"},
     {"id": 4, "nome": "Oráculo de Vendas", "tag": "BI Preditivo", "desc": "Previsão de séries temporais para planeamento financeiro robusto.", "page": "pages/4_O_Oraculo_de_Vendas.py"},
     {"id": 5, "nome": "Assistente Corporativo", "tag": "RAG / LLM", "desc": "Chatbot especializado em documentos internos (PDFs) sem alucinações.", "page": "pages/5_O_Assistente_Corporativo.py"},
-    {"id": 6, "nome": "GIG-Master AI", "tag": "Show Business", "desc": "Otimização logística de tours e plano de marketing automatizado.", "page": None},
-    {"id": 7, "nome": "Burger-Flow Intel", "tag": "Franquias", "desc": "Engenharia de menu e previsão de stock para redução de desperdício.", "page": None},
-    {"id": 8, "nome": "PoA-Insight Explorer", "tag": "Smart Cities", "desc": "Guia turístico contextual que reage ao clima e horário de Porto Alegre.", "page": None},
-    {"id": 9, "nome": "Visual-On-Demand", "tag": "Gig Economy", "desc": "Marketplace de fotógrafos com match baseado em estilo visual (IA).", "page": None}
+    {"id": 6, "nome": "GIG-Master AI", "tag": "Show Business", "desc": "Otimização logística de tours e plano de marketing automatizado.", "page": "pages/6_GIG_Master_AI.py"},
+    {"id": 7, "nome": "Burger-Flow Intel", "tag": "Franquias", "desc": "Engenharia de menu e previsão de stock para redução de desperdício.", "page": "pages/7_Burger_Flow_Intelligence.py"},
+    {"id": 8, "nome": "PoA-Insight Explorer", "tag": "Smart Cities", "desc": "Guia turístico contextual que reage ao clima e horário de Porto Alegre.", "page": "pages/8_PoA_Insight_Explorer.py"},
+    {"id": 9, "nome": "Visual-On-Demand", "tag": "Gig Economy", "desc": "Marketplace de fotógrafos com match baseado em estilo visual (IA).", "page": "pages/9_Visual_On_Demand.py"}
 ]
 
 # Grid de Projetos (3 colunas) - Renderizado por LINHAS para ordem correta em mobile
@@ -365,6 +359,11 @@ for row_start in range(0, len(projetos), 3):
 
 st.divider()
 
+# Botão GitHub abaixo da lista de aplicações
+st.link_button("🐙 Ver Portfólio no GitHub", "https://github.com/lenondpaula/goodluke", use_container_width=True)
+
+st.divider()
+
 # Rodapé com Contatos Destacados
 st.markdown("""
 <div class="footer-contact">
@@ -374,7 +373,7 @@ st.markdown("""
     <div style="margin-bottom: 0.8em;">
         <a href="mailto:lenondpaula@gmail.com">📧 lenondpaula@gmail.com</a>
     </div>
-    <div style="margin-bottom: 0.3em;">
+    <div style="margin-bottom: 0.3em; color: #FF4B4B;">
         📱 <strong>+55 (55) 98135-9099</strong>
     </div>
     <div>
