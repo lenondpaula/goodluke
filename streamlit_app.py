@@ -305,36 +305,63 @@ Bem-vindo ao meu laboratório de inovação. Aqui, a **Engenharia de Dados** enc
 Focado na pirâmide da sabedoria: do dado à estratégia.
 """)
 
+# Botões de ação: README e GitHub
+col_readme, col_github = st.columns(2)
+
+with col_readme:
+    with st.expander("📖 Ver README do Projeto"):
+        try:
+            with open("README.md", "r", encoding="utf-8") as f:
+                readme_content = f.read()
+            st.markdown(readme_content)
+        except FileNotFoundError:
+            st.info("README.md não encontrado.")
+
+with col_github:
+    st.link_button("🐙 Ver Portfólio no GitHub", "https://github.com/lenondpaula/goodluke", use_container_width=True)
+
 st.divider()
 
-# Definição dos Projetos (1 a 9)
+# Definição dos Projetos (1 a 9) com páginas correspondentes
 projetos = [
-    {"id": 1, "nome": "Manutenção Preditiva", "tag": "Indústria 4.0", "desc": "Previsão de falhas em máquinas térmicas para redução de downtime."},
-    {"id": 2, "nome": "Análise de Sentimentos", "tag": "NLP", "desc": "Monitorização de marca e feedback de clientes em tempo real."},
-    {"id": 3, "nome": "Vendedor Automático", "tag": "E-commerce", "desc": "Motor de recomendação focado na cauda longa e aumento de ticket médio."},
-    {"id": 4, "nome": "Oráculo de Vendas", "tag": "BI Preditivo", "desc": "Previsão de séries temporais para planeamento financeiro robusto."},
-    {"id": 5, "nome": "Assistente Corporativo", "tag": "RAG / LLM", "desc": "Chatbot especializado em documentos internos (PDFs) sem alucinações."},
-    {"id": 6, "nome": "GIG-Master AI", "tag": "Show Business", "desc": "Otimização logística de tours e plano de marketing automatizado."},
-    {"id": 7, "nome": "Burger-Flow Intel", "tag": "Franquias", "desc": "Engenharia de menu e previsão de stock para redução de desperdício."},
-    {"id": 8, "nome": "PoA-Insight Explorer", "tag": "Smart Cities", "desc": "Guia turístico contextual que reage ao clima e horário de Porto Alegre."},
-    {"id": 9, "nome": "Visual-On-Demand", "tag": "Gig Economy", "desc": "Marketplace de fotógrafos com match baseado em estilo visual (IA)."}
+    {"id": 1, "nome": "Manutenção Preditiva", "tag": "Indústria 4.0", "desc": "Previsão de falhas em máquinas térmicas para redução de downtime.", "page": "pages/1_Sistema_de_Precaucao_Mecanica.py"},
+    {"id": 2, "nome": "Análise de Sentimentos", "tag": "NLP", "desc": "Monitorização de marca e feedback de clientes em tempo real.", "page": "pages/2_Gestor_de_Reputacao_de_Marca.py"},
+    {"id": 3, "nome": "Vendedor Automático", "tag": "E-commerce", "desc": "Motor de recomendação focado na cauda longa e aumento de ticket médio.", "page": "pages/3_Sugestao_de_compra.py"},
+    {"id": 4, "nome": "Oráculo de Vendas", "tag": "BI Preditivo", "desc": "Previsão de séries temporais para planeamento financeiro robusto.", "page": "pages/4_O_Oraculo_de_Vendas.py"},
+    {"id": 5, "nome": "Assistente Corporativo", "tag": "RAG / LLM", "desc": "Chatbot especializado em documentos internos (PDFs) sem alucinações.", "page": "pages/5_O_Assistente_Corporativo.py"},
+    {"id": 6, "nome": "GIG-Master AI", "tag": "Show Business", "desc": "Otimização logística de tours e plano de marketing automatizado.", "page": None},
+    {"id": 7, "nome": "Burger-Flow Intel", "tag": "Franquias", "desc": "Engenharia de menu e previsão de stock para redução de desperdício.", "page": None},
+    {"id": 8, "nome": "PoA-Insight Explorer", "tag": "Smart Cities", "desc": "Guia turístico contextual que reage ao clima e horário de Porto Alegre.", "page": None},
+    {"id": 9, "nome": "Visual-On-Demand", "tag": "Gig Economy", "desc": "Marketplace de fotógrafos com match baseado em estilo visual (IA).", "page": None}
 ]
 
-# Grid de Projetos (3 colunas)
-cols = st.columns(3)
+# Grid de Projetos (3 colunas) - Renderizado por LINHAS para ordem correta em mobile
+# Desktop: 1,2,3 | 4,5,6 | 7,8,9
+# Mobile:  1,2,3,4,5,6,7,8,9 (em sequência)
 
-for i, p in enumerate(projetos):
-    with cols[i % 3]:
-        st.markdown(f"""
-            <div class="project-card">
-                <span class="project-tag">{p['tag']}</span>
-                <div class="project-title">{p['nome']}</div>
-                <p class="project-desc">{p['desc']}</p>
-            </div>
-        """, unsafe_allow_html=True)
-        # O botão de abrir a aplicação
+def render_project_card(p):
+    """Renderiza um card de projeto com botão funcional."""
+    st.markdown(f"""
+        <div class="project-card">
+            <span class="project-tag">{p['tag']}</span>
+            <div class="project-title">{p['nome']}</div>
+            <p class="project-desc">{p['desc']}</p>
+        </div>
+    """, unsafe_allow_html=True)
+    # Botão funcional que redireciona para a página
+    if p['page']:
         if st.button(f"Abrir Aplicação {p['id']}", key=f"btn_{p['id']}"):
-            st.info(f"A carregar o módulo: {p['nome']}...")
+            st.switch_page(p['page'])
+    else:
+        st.button(f"🔒 Em Desenvolvimento", key=f"btn_{p['id']}", disabled=True)
+
+# Renderiza em grupos de 3 (por linha)
+for row_start in range(0, len(projetos), 3):
+    row_projects = projetos[row_start:row_start + 3]
+    cols = st.columns(len(row_projects))
+    for col, p in zip(cols, row_projects):
+        with col:
+            render_project_card(p)
 
 st.divider()
 
