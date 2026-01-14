@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright (c) 2026 Lenon de Paula - https://github.com/lenondpaula
 """
 App 8 — PoA-Insight Explorer
 Turismo inteligente em Porto Alegre com recomendações contextuais

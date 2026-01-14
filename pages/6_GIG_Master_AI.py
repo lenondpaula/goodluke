@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright (c) 2026 Lenon de Paula - https://github.com/lenondpaula
 """
 App 6 — GIG-Master AI
 Planejamento Inteligente de Turnês Musicais

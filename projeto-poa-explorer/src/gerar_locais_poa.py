@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright (c) 2026 Lenon de Paula - https://github.com/lenondpaula
 """
 PoA-Insight Explorer - Gerador de Locais de Porto Alegre
 Base de dados georreferenciada com pontos turísticos reais

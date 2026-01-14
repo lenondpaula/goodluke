@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright (c) 2026 Lenon de Paula - https://github.com/lenondpaula
 """
 App 9 — Visual-On-Demand
 Marketplace Visual de Fotógrafos com Match por IA

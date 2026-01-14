@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright (c) 2026 Lenon de Paula - https://github.com/lenondpaula
 """
 Burger-Flow Intelligence - Dashboard de Gestão
 Interface Streamlit para análise de estoque e engenharia de menu

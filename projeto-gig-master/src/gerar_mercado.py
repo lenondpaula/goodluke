@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright (c) 2026 Lenon de Paula - https://github.com/lenondpaula
 """
 GIG-Master AI - Gerador de Dados de Mercado de Shows
 Simula o "calor" do público em diferentes cidades brasileiras

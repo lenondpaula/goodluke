@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright (c) 2026 Lenon de Paula - https://github.com/lenondpaula
 """
 Processador de PDFs - Assistente Corporativo RAG
 Lê PDFs e divide em chunks para indexação vetorial

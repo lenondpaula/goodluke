@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright (c) 2026 Lenon de Paula - https://github.com/lenondpaula
 """
 Visual-On-Demand — Gerador de Talentos (Fotógrafos)
 Cria base de dados sintética de fotógrafos com estilos visuais distintos

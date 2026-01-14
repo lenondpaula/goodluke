@@ -6,7 +6,7 @@ Este repositório reúne meus protótipos de **Ciência de Dados**, **Machine Le
 
 [![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io)
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)](https://python.org)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-Polyform%20NC-blue.svg)](LICENSE)
 
 ---
 

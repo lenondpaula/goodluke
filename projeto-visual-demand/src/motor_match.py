@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright (c) 2026 Lenon de Paula - https://github.com/lenondpaula
 """
 Visual-On-Demand — Motor de Match Visual
 Algoritmo de recomendação de fotógrafos baseado em estilo visual

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright (c) 2026 Lenon de Paula - https://github.com/lenondpaula
 """
 GIG-Master AI - Motor de Logística e Otimização
 Calcula as melhores rotas e datas para a turnê anual

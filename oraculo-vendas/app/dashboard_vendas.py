@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright (c) 2026 Lenon de Paula - https://github.com/lenondpaula
 """
 Dashboard do Oráculo de Vendas - BI Preditivo
 Painel interativo que mostra vendas históricas e previsão para próximos 30 dias
