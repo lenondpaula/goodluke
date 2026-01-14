@@ -3,67 +3,214 @@ import streamlit as st
 # Configuração da página
 st.set_page_config(page_title="GoodLuke AI Hub", layout="wide", page_icon="🚀")
 
-# CSS para tornar o portfólio "Arrojado"
+# CSS para tornar o portfólio "Arrojado" com responsividade mobile
 st.markdown("""
     <style>
         .main {
             background-color: #0e1117;
         }
+        
+        /* Responsividade geral */
+        @media (max-width: 768px) {
+            .block-container {
+                padding: 1rem !important;
+                max-width: 100% !important;
+            }
+        }
+        
         .stButton>button {
             width: 100%;
             border-radius: 5px;
             height: 3em;
             background-color: #FF4B4B;
             color: white;
+            font-size: 14px;
         }
+        
+        @media (max-width: 480px) {
+            .stButton>button {
+                height: 2.5em;
+                font-size: 12px;
+            }
+        }
+        
         .project-card {
             background-color: #262730;
             padding: 20px;
             border-radius: 10px;
             border-left: 5px solid #FF4B4B;
             margin-bottom: 20px;
-            height: 300px;
+            min-height: 280px;
+            overflow: hidden;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
         }
+        
+        @media (max-width: 768px) {
+            .project-card {
+                padding: 15px;
+                min-height: 260px;
+                margin-bottom: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .project-card {
+                padding: 12px;
+                min-height: 240px;
+                margin-bottom: 10px;
+            }
+        }
+        
         .project-title {
             color: #FF4B4B;
             font-size: 22px;
             font-weight: bold;
             margin-bottom: 10px;
+            word-wrap: break-word;
+            word-break: break-word;
         }
+        
+        @media (max-width: 768px) {
+            .project-title {
+                font-size: 18px;
+                margin-bottom: 8px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .project-title {
+                font-size: 15px;
+                margin-bottom: 6px;
+            }
+        }
+        
         .project-tag {
-            font-size: 12px;
+            font-size: 11px;
             background-color: #31333F;
             padding: 4px 8px;
             border-radius: 15px;
             color: #A3A8B4;
+            display: inline-block;
+            word-wrap: break-word;
+            word-break: break-word;
         }
+        
+        @media (max-width: 480px) {
+            .project-tag {
+                font-size: 9px;
+                padding: 3px 6px;
+            }
+        }
+        
+        .project-desc {
+            color: #FAFAFA;
+            font-size: 14px;
+            flex-grow: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+        
+        @media (max-width: 768px) {
+            .project-desc {
+                font-size: 13px;
+                -webkit-line-clamp: 2;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .project-desc {
+                font-size: 12px;
+                -webkit-line-clamp: 2;
+            }
+        }
+        
         .header-title {
             color: #FF4B4B;
             font-size: 3em;
             font-weight: bold;
             text-align: center;
             margin-bottom: 0.2em;
+            word-wrap: break-word;
         }
+        
+        @media (max-width: 768px) {
+            .header-title {
+                font-size: 2.2em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header-title {
+                font-size: 1.8em;
+            }
+        }
+        
         .header-subtitle {
             color: #FFFFFF;
             font-size: 1.2em;
             text-align: center;
             margin-bottom: 0.3em;
         }
+        
+        @media (max-width: 768px) {
+            .header-subtitle {
+                font-size: 1em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header-subtitle {
+                font-size: 0.85em;
+            }
+        }
+        
         .contact-links {
             text-align: center;
             margin-bottom: 1.5em;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
         }
+        
         .contact-links a {
             color: #FF4B4B;
             text-decoration: none;
-            margin: 0 15px;
             font-weight: bold;
-            font-size: 1.1em;
+            font-size: 1em;
+            white-space: nowrap;
         }
+        
+        @media (max-width: 768px) {
+            .contact-links {
+                gap: 8px;
+            }
+            .contact-links a {
+                font-size: 0.9em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .contact-links {
+                flex-direction: column;
+                gap: 5px;
+                margin-bottom: 1em;
+            }
+            .contact-links a {
+                font-size: 0.85em;
+                display: block;
+            }
+        }
+        
         .contact-links a:hover {
             text-decoration: underline;
         }
+        
         .profile-photo {
             width: 150px;
             height: 150px;
@@ -73,17 +220,59 @@ st.markdown("""
             margin: 0 auto 1em;
             display: block;
         }
+        
+        @media (max-width: 768px) {
+            .profile-photo {
+                width: 120px;
+                height: 120px;
+                border: 3px solid #FF4B4B;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .profile-photo {
+                width: 100px;
+                height: 100px;
+                border: 2px solid #FF4B4B;
+                margin-bottom: 0.8em;
+            }
+        }
+        
         .footer-contact {
             text-align: center;
             color: #FFFFFF;
             margin-top: 2em;
             font-size: 0.95em;
         }
+        
+        @media (max-width: 768px) {
+            .footer-contact {
+                margin-top: 1.5em;
+                font-size: 0.9em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .footer-contact {
+                margin-top: 1em;
+                font-size: 0.8em;
+            }
+        }
+        
         .footer-contact a {
             color: #FF4B4B;
             text-decoration: none;
             margin: 0 10px;
+            white-space: nowrap;
         }
+        
+        @media (max-width: 480px) {
+            .footer-contact a {
+                display: block;
+                margin: 5px 0;
+            }
+        }
+        
         .footer-contact a:hover {
             text-decoration: underline;
         }
@@ -105,7 +294,7 @@ st.markdown("""
 
 st.markdown("""
     <div class="contact-links">
-        <a href="mailto:lenondpaula@gmail.com">📧 lenondpaula@gmail.com</a><br>
+        <a href="mailto:lenondpaula@gmail.com">📧 lenondpaula@gmail.com</a>
         <a href="https://wa.me/5555981359099">💬 +55 (55) 98135-9099</a>
         <a href="https://t.me/+5555981359099">✈️ Telegram</a>
     </div>
@@ -140,7 +329,7 @@ for i, p in enumerate(projetos):
             <div class="project-card">
                 <span class="project-tag">{p['tag']}</span>
                 <div class="project-title">{p['nome']}</div>
-                <p style="color: #FAFAFA; font-size: 14px;">{p['desc']}</p>
+                <p class="project-desc">{p['desc']}</p>
             </div>
         """, unsafe_allow_html=True)
         # O botão de abrir a aplicação
