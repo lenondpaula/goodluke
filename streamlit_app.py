@@ -217,7 +217,7 @@ st.markdown("""
             border-radius: 50%;
             border: 4px solid #FF4B4B;
             object-fit: cover;
-            margin: 0 auto 1em;
+            margin: 2rem auto 1em;
             display: block;
         }
         
