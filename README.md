@@ -105,7 +105,7 @@ Como **Desenvolvedor de Soluções Avançadas**, meus projetos focam em:
 
 ---
 
-### 6) 🎸 GIG-Master AI (Otimização de Turnês) — **Disponível**
+### 6) 🎸 GIG-Master AI (Otimização de Turnês) — **Disponível** 🆕
 | | |
 |---|---|
 | **O que é** | Planejamento inteligente de turnês musicais com análise de viabilidade |
@@ -115,7 +115,7 @@ Como **Desenvolvedor de Soluções Avançadas**, meus projetos focam em:
 
 ---
 
-### 7) 🍔 Burger-Flow Intelligence — **Disponível**
+### 7) 🍔 Burger-Flow Intelligence — **Disponível** 🆕
 | | |
 |---|---|
 | **O que é** | Sistema de gestão inteligente para hamburguerias |
@@ -125,7 +125,7 @@ Como **Desenvolvedor de Soluções Avançadas**, meus projetos focam em:
 
 ---
 
-### 8) 🗺️ PoA-Insight Explorer (Turismo Inteligente) — **Disponível**
+### 8) 🗺️ PoA-Insight Explorer (Turismo Inteligente) — **Disponível** 🆕
 | | |
 |---|---|
 | **O que é** | Plataforma de turismo inteligente para Porto Alegre |
@@ -199,40 +199,140 @@ streamlit run streamlit_app.py
 ```
 
 ### Rodar Apps Individualmente
+
+Cada app pode ser executado de forma independente. Alguns requerem geração de dados e treino de modelo antes:
+
 ```bash
-# App 1 - Manutenção Preditiva
-python gerar_dados.py && python src/train_model.py
+# =============================================================================
+# App 1 - Manutenção Preditiva (RandomForest)
+# =============================================================================
+python gerar_dados.py                    # Gera data/raw/sensor_data.csv
+python src/train_model.py                # Treina models/modelo_falhas.pkl
 streamlit run pages/1_Sistema_de_Precaucao_Mecanica.py
 
-# App 3 - Recomendação
+# =============================================================================
+# App 2 - Análise de Sentimentos (NLP)
+# =============================================================================
+cd analise-sentimentos
+python src/gerador_dados.py              # Gera data/comentarios_social.csv
+python src/analise_motor.py              # Processa e classifica sentimentos
+streamlit run ../pages/2_Gestor_de_Reputacao_de_Marca.py
+
+# =============================================================================
+# App 3 - Sistema de Recomendação (SVD)
+# =============================================================================
 cd sistema-recomendacao
-python src/gerar_dataset.py && python src/treinar_modelo.py
+python src/gerar_dataset.py              # Gera data/produtos.csv e data/avaliacoes.csv
+python src/treinar_modelo.py             # Treina models/svd_model.pkl
+streamlit run ../pages/3_Sugestao_de_compra.py
 
-# App 4 - Oráculo
+# =============================================================================
+# App 4 - Oráculo de Vendas (Prophet)
+# =============================================================================
 cd oraculo-vendas
-python src/gerar_vendas.py && python src/treinar_oraculo.py
+python src/gerar_vendas.py               # Gera data/vendas_historico.csv (3 anos)
+python src/treinar_oraculo.py            # Treina models/prophet_model.pkl
+streamlit run ../pages/4_O_Oraculo_de_Vendas.py
 
-# App 9 - Visual-On-Demand
+# =============================================================================
+# App 5 - Assistente Corporativo (RAG + LLM)
+# =============================================================================
+cd assistente-rag
+# Requer Groq API key em .streamlit/secrets.toml ou Ollama instalado localmente
+# Para Ollama local: ollama pull llama3.2
+streamlit run ../pages/5_O_Assistente_Corporativo.py
+
+# =============================================================================
+# App 6 - GIG-Master AI (Otimização de Turnês)
+# =============================================================================
+cd projeto-gig-master
+python src/gerar_mercado.py              # Gera data/mercado_shows.csv
+python src/motor_logistica.py            # Testa otimização de rotas
+streamlit run ../pages/6_GIG_Master_AI.py
+
+# =============================================================================
+# App 7 - Burger-Flow Intelligence (Gestão de Hamburguerias)
+# =============================================================================
+cd projeto-burger-flow
+python src/gerar_dados_burger.py         # Gera dados de vendas e cardápio
+python src/previsao_estoque.py           # Testa previsão de demanda
+streamlit run ../pages/7_Burger_Flow_Intelligence.py
+
+# =============================================================================
+# App 8 - PoA-Insight Explorer (Turismo Inteligente)
+# =============================================================================
+cd projeto-poa-explorer
+python src/gerar_locais_poa.py           # Gera data/locais_poa.csv (30 pontos)
+streamlit run ../pages/8_PoA_Insight_Explorer.py
+
+# =============================================================================
+# App 9 - Visual-On-Demand (Marketplace de Fotógrafos)
+# =============================================================================
 cd projeto-visual-demand
-python src/gerar_talentos.py
-streamlit run app/visual_market.py
+python src/gerar_talentos.py             # Gera data/talentos.csv (50 fotógrafos)
+python src/motor_match.py                # Testa algoritmo de match visual
+streamlit run ../pages/9_Visual_On_Demand.py
 ```
 
 ---
 
 ## 🧪 Testes
 
-Cada app possui scripts de teste:
+Cada app possui scripts de teste para validar a lógica principal sem precisar abrir o dashboard:
 
 ```bash
-# Testar motor de match (App 9)
-cd projeto-visual-demand && python src/motor_match.py
+# =============================================================================
+# App 1 - Testar modelo de falhas (RandomForest)
+# =============================================================================
+python src/train_model.py                # Retreina e exibe métricas (F1-score, acurácia)
 
-# Testar motor de logística (App 6)
-cd projeto-gig-master && python src/motor_logistica.py
+# =============================================================================
+# App 2 - Testar motor de análise de sentimentos
+# =============================================================================
+cd analise-sentimentos
+python src/analise_motor.py              # Processa comentários e gera classificações
 
-# Testar previsão de estoque (App 7)
-cd projeto-burger-flow && python src/previsao_estoque.py
+# =============================================================================
+# App 3 - Testar modelo de recomendação (SVD)
+# =============================================================================
+cd sistema-recomendacao
+python src/treinar_modelo.py             # Treina SVD e exibe RMSE
+
+# =============================================================================
+# App 4 - Testar previsão Prophet
+# =============================================================================
+cd oraculo-vendas
+python src/treinar_oraculo.py            # Treina Prophet e exibe componentes
+
+# =============================================================================
+# App 5 - Testar indexação RAG (ChromaDB)
+# =============================================================================
+cd assistente-rag
+python src/indexador.py                  # Testa criação de vector store
+
+# =============================================================================
+# App 6 - Testar motor de logística (Greedy)
+# =============================================================================
+cd projeto-gig-master
+python src/motor_logistica.py            # Gera 12 shows otimizados + planos marketing
+
+# =============================================================================
+# App 7 - Testar previsão de estoque (Prophet + BCG)
+# =============================================================================
+cd projeto-burger-flow
+python src/previsao_estoque.py           # Gera previsão 7 dias + classificação BCG
+
+# =============================================================================
+# App 8 - Testar geração de pontos turísticos
+# =============================================================================
+cd projeto-poa-explorer
+python src/gerar_locais_poa.py           # Gera CSV com 30 pontos de Porto Alegre
+
+# =============================================================================
+# App 9 - Testar motor de match visual
+# =============================================================================
+cd projeto-visual-demand
+python src/motor_match.py                # Simula análise de imagem e match de estilo
 ```
 
 ---
