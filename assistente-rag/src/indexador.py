@@ -9,13 +9,21 @@ from pathlib import Path
 from typing import List, Optional
 import sqlite3
 import shutil
+import os
+import tempfile
 
 from langchain_core.documents import Document
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_chroma import Chroma
 
 BASE_DIR = Path(__file__).resolve().parents[1]
-DB_DIR = BASE_DIR / "db_store"
+
+# Usa /tmp no Streamlit Cloud (filesystem readonly), caso contrário usa db_store local
+if os.getenv('STREAMLIT_RUNTIME_ENV') == 'cloud' or not os.access(str(BASE_DIR), os.W_OK):
+    DB_DIR = Path(tempfile.gettempdir()) / "assistente_rag_db"
+else:
+    DB_DIR = BASE_DIR / "db_store"
+
 COLLECTION_NAME = "documentos_corporativos"
 
 # Modelo de embeddings gratuito e leve (roda no CPU)
