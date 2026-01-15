@@ -1,13 +1,84 @@
-# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
-# Copyright (c) 2026 Lenon de Paula - https://github.com/lenondpaula
 import streamlit as st
+import sys
+from pathlib import Path
+
+# Importa componentes compartilhados para sidebar padronizada
+BASE_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(BASE_DIR))
+
+from shared.components import APPS_DO_HUB  # noqa: E402
 
 # Configuração da página
 st.set_page_config(page_title="GoodLuke AI Hub", layout="wide", page_icon="🚀")
 
-# CSS para tornar o portfólio "Arrojado" com responsividade mobile
+# CSS para sidebar + portfólio "Arrojado" com responsividade mobile
 st.markdown("""
     <style>
+        /* ============ SIDEBAR ESTILIZADA ============ */
+        section[data-testid="stSidebar"] {
+            background: linear-gradient(180deg, #0e1117 0%, #1a1a2e 100%);
+        }
+        
+        section[data-testid="stSidebar"] * {
+            color: #FAFAFA !important;
+        }
+        
+        section[data-testid="stSidebar"] h1,
+        section[data-testid="stSidebar"] h2,
+        section[data-testid="stSidebar"] h3 {
+            color: #FFFFFF !important;
+            font-weight: 600;
+        }
+        
+        section[data-testid="stSidebar"] hr {
+            border-color: #FF4B4B;
+            opacity: 0.5;
+        }
+        
+        /* Botões na sidebar */
+        section[data-testid="stSidebar"] button {
+            background: #FF4B4B !important;
+            color: #FFFFFF !important;
+            border: none !important;
+            font-weight: 600 !important;
+            transition: all 0.2s ease;
+        }
+        
+        section[data-testid="stSidebar"] button:hover {
+            background: #e63946 !important;
+            transform: translateY(-1px);
+        }
+        
+        section[data-testid="stSidebar"] button:disabled {
+            background: #333 !important;
+            color: #888 !important;
+        }
+        
+        /* Expander na sidebar */
+        section[data-testid="stSidebar"] .streamlit-expanderHeader {
+            background: #262730;
+            border-radius: 8px;
+            border-left: 3px solid #FF4B4B;
+        }
+        
+        section[data-testid="stSidebar"] .streamlit-expanderHeader:hover {
+            background: #31333F;
+        }
+        
+        section[data-testid="stSidebar"] .streamlit-expanderContent {
+            background: #1a1a2e;
+            border-radius: 0 0 8px 8px;
+        }
+        
+        /* Home button especial */
+        section[data-testid="stSidebar"] .home-title {
+            text-align: center;
+            font-size: 1.5em;
+            color: #FF4B4B !important;
+            margin-bottom: 0.5em;
+        }
+        
+        /* ============ MAIN CONTENT ============ */
         .main {
             background-color: #0e1117;
         }
@@ -281,6 +352,46 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# ============================================================================
+# SIDEBAR PADRONIZADA - Ícone Home + Menu Expansível
+# ============================================================================
+with st.sidebar:
+    # Ícone de casa como "Home" no topo
+    st.markdown('<div class="home-title">🏠</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<p style="text-align: center; font-size: 0.9em; color: #FAFAFA; margin-top: -10px;">GoodLuke AI Hub</p>',
+        unsafe_allow_html=True
+    )
+    
+    st.markdown("---")
+    
+    # Menu expansível com todas as aplicações
+    with st.expander("📱 **Aplicações**", expanded=False):
+        for app in APPS_DO_HUB:
+            label = f"{app['icon']} {app['num']}. {app['nome']}"
+            if st.button(label, key=f"sidebar_app_{app['num']}", use_container_width=True):
+                st.switch_page(app['page'])
+    
+    st.markdown("---")
+    
+    # Info de contato na sidebar
+    st.markdown(
+        """
+        <div style="text-align: center; font-size: 0.85em; color: #A3A8B4; margin-top: 1em;">
+            <div style="color: #FF4B4B; font-weight: bold; margin-bottom: 0.5em;">Lenon de Paula</div>
+            <div>📧 lenondpaula@gmail.com</div>
+            <div style="margin-top: 0.5em;">
+                <a href="https://wa.me/5555981359099" style="color: #FF4B4B; text-decoration: none;">💬 WhatsApp</a>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+# ============================================================================
+# CONTEÚDO PRINCIPAL
+# ============================================================================
+
 # Header de Impacto com Foto e Contato
 st.markdown("""
     <img src="https://github.com/lenondpaula.png" alt="Lenon de Paula" class="profile-photo">
@@ -307,62 +418,36 @@ Bem-vindo ao meu laboratório de inovação. Aqui, a **Engenharia de Dados** enc
 Focado na pirâmide da sabedoria: do dado à estratégia.
 """)
 
-# Botão README em linha própria
-with st.expander("📖 Ver README do Projeto"):
-    try:
-        with open("README.md", "r", encoding="utf-8") as f:
-            readme_content = f.read()
-        st.markdown(readme_content)
-    except FileNotFoundError:
-        st.info("README.md não encontrado.")
-
 st.divider()
 
-# Definição dos Projetos (1 a 9) com páginas correspondentes
+# Definição dos Projetos (1 a 9)
 projetos = [
-    {"id": 1, "nome": "Manutenção Preditiva", "tag": "Indústria 4.0", "desc": "Previsão de falhas em máquinas térmicas para redução de downtime.", "page": "pages/1_Sistema_de_Precaucao_Mecanica.py"},
-    {"id": 2, "nome": "Análise de Sentimentos", "tag": "NLP", "desc": "Monitorização de marca e feedback de clientes em tempo real.", "page": "pages/2_Gestor_de_Reputacao_de_Marca.py"},
-    {"id": 3, "nome": "Vendedor Automático", "tag": "E-commerce", "desc": "Motor de recomendação focado na cauda longa e aumento de ticket médio.", "page": "pages/3_Sugestao_de_compra.py"},
-    {"id": 4, "nome": "Oráculo de Vendas", "tag": "BI Preditivo", "desc": "Previsão de séries temporais para planeamento financeiro robusto.", "page": "pages/4_O_Oraculo_de_Vendas.py"},
-    {"id": 5, "nome": "Assistente Corporativo", "tag": "RAG / LLM", "desc": "Chatbot especializado em documentos internos (PDFs) sem alucinações.", "page": "pages/5_O_Assistente_Corporativo.py"},
-    {"id": 6, "nome": "GIG-Master AI", "tag": "Show Business", "desc": "Otimização logística de tours e plano de marketing automatizado.", "page": "pages/6_GIG_Master_AI.py"},
-    {"id": 7, "nome": "Burger-Flow Intel", "tag": "Franquias", "desc": "Engenharia de menu e previsão de stock para redução de desperdício.", "page": "pages/7_Burger_Flow_Intelligence.py"},
-    {"id": 8, "nome": "PoA-Insight Explorer", "tag": "Smart Cities", "desc": "Guia turístico contextual que reage ao clima e horário de Porto Alegre.", "page": "pages/8_PoA_Insight_Explorer.py"},
-    {"id": 9, "nome": "Visual-On-Demand", "tag": "Gig Economy", "desc": "Marketplace de fotógrafos com match baseado em estilo visual (IA).", "page": "pages/9_Visual_On_Demand.py"}
+    {"id": 1, "nome": "Manutenção Preditiva", "tag": "Indústria 4.0", "desc": "Previsão de falhas em máquinas térmicas para redução de downtime."},
+    {"id": 2, "nome": "Análise de Sentimentos", "tag": "NLP", "desc": "Monitorização de marca e feedback de clientes em tempo real."},
+    {"id": 3, "nome": "Vendedor Automático", "tag": "E-commerce", "desc": "Motor de recomendação focado na cauda longa e aumento de ticket médio."},
+    {"id": 4, "nome": "Oráculo de Vendas", "tag": "BI Preditivo", "desc": "Previsão de séries temporais para planeamento financeiro robusto."},
+    {"id": 5, "nome": "Assistente Corporativo", "tag": "RAG / LLM", "desc": "Chatbot especializado em documentos internos (PDFs) sem alucinações."},
+    {"id": 6, "nome": "GIG-Master AI", "tag": "Show Business", "desc": "Otimização logística de tours e plano de marketing automatizado."},
+    {"id": 7, "nome": "Burger-Flow Intel", "tag": "Franquias", "desc": "Engenharia de menu e previsão de stock para redução de desperdício."},
+    {"id": 8, "nome": "PoA-Insight Explorer", "tag": "Smart Cities", "desc": "Guia turístico contextual que reage ao clima e horário de Porto Alegre."},
+    {"id": 9, "nome": "Visual-On-Demand", "tag": "Gig Economy", "desc": "Marketplace de fotógrafos com match baseado em estilo visual (IA)."}
 ]
 
-# Grid de Projetos (3 colunas) - Renderizado por LINHAS para ordem correta em mobile
-# Desktop: 1,2,3 | 4,5,6 | 7,8,9
-# Mobile:  1,2,3,4,5,6,7,8,9 (em sequência)
+# Grid de Projetos (3 colunas)
+cols = st.columns(3)
 
-def render_project_card(p):
-    """Renderiza um card de projeto com botão funcional."""
-    st.markdown(f"""
-        <div class="project-card">
-            <span class="project-tag">{p['tag']}</span>
-            <div class="project-title">{p['nome']}</div>
-            <p class="project-desc">{p['desc']}</p>
-        </div>
-    """, unsafe_allow_html=True)
-    # Botão funcional que redireciona para a página
-    if p['page']:
+for i, p in enumerate(projetos):
+    with cols[i % 3]:
+        st.markdown(f"""
+            <div class="project-card">
+                <span class="project-tag">{p['tag']}</span>
+                <div class="project-title">{p['nome']}</div>
+                <p class="project-desc">{p['desc']}</p>
+            </div>
+        """, unsafe_allow_html=True)
+        # O botão de abrir a aplicação
         if st.button(f"Abrir Aplicação {p['id']}", key=f"btn_{p['id']}"):
-            st.switch_page(p['page'])
-    else:
-        st.button(f"🔒 Em Desenvolvimento", key=f"btn_{p['id']}", disabled=True)
-
-# Renderiza em grupos de 3 (por linha)
-for row_start in range(0, len(projetos), 3):
-    row_projects = projetos[row_start:row_start + 3]
-    cols = st.columns(len(row_projects))
-    for col, p in zip(cols, row_projects):
-        with col:
-            render_project_card(p)
-
-st.divider()
-
-# Botão GitHub abaixo da lista de aplicações
-st.link_button("🐙 Ver Portfólio no GitHub", "https://github.com/lenondpaula/goodluke", use_container_width=True)
+            st.info(f"A carregar o módulo: {p['nome']}...")
 
 st.divider()
 
@@ -375,7 +460,7 @@ st.markdown("""
     <div style="margin-bottom: 0.8em;">
         <a href="mailto:lenondpaula@gmail.com">📧 lenondpaula@gmail.com</a>
     </div>
-    <div style="margin-bottom: 0.3em; color: #FF4B4B;">
+    <div style="margin-bottom: 0.3em;">
         📱 <strong>+55 (55) 98135-9099</strong>
     </div>
     <div>
