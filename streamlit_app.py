@@ -453,9 +453,12 @@ for i, p in enumerate(projetos):
                 <p class="project-desc">{p['desc']}</p>
             </div>
         """, unsafe_allow_html=True)
-        # O botão de abrir a aplicação
+        # O botão de abrir a aplicação - navega para o app correspondente
         if st.button(f"Abrir Aplicação {p['id']}", key=f"btn_{p['id']}"):
-            st.info(f"A carregar o módulo: {p['nome']}...")
+            # Busca o app correspondente no APPS_DO_HUB
+            app_info = next((app for app in APPS_DO_HUB if app['num'] == p['id']), None)
+            if app_info:
+                st.switch_page(app_info['page'])
 
 st.divider()
 

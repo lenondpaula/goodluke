@@ -39,8 +39,7 @@ from shared.components import (  # noqa: E402
 # CONFIGURAÇÕES
 # ────────────────────────────────────────────────────────────────────────────────
 MAX_FILE_SIZE_MB = 100  # Limite de 100MB por arquivo
-GEMINI_MODEL_DEFAULT = "gemini-1.5-flash"  # Modelo rápido e eficiente do Google
-GEMINI_API_KEY = "AIzaSyC6pihdReWGrWDB19LHqQSc-cHGtm9a0X8"  # API Key do Gemini
+GEMINI_MODEL_DEFAULT = "gemini-1.5-flash-latest"  # Modelo rápido e eficiente do Google
 
 
 # ────────────────────────────────────────────────────────────────────────────────
@@ -90,6 +89,17 @@ section[data-testid="stSidebar"] [data-testid="stFileUploader"] {
 }
 section[data-testid="stSidebar"] [data-testid="stFileUploader"] * {
     color: #e2e8f0 !important;
+}
+section[data-testid="stSidebar"] [data-testid="stFileUploader"] label,
+section[data-testid="stSidebar"] [data-testid="stFileUploader"] div,
+section[data-testid="stSidebar"] [data-testid="stFileUploader"] span,
+section[data-testid="stSidebar"] [data-testid="stFileUploader"] p {
+    color: #e2e8f0 !important;
+}
+/* Textos de caption na sidebar */
+section[data-testid="stSidebar"] [data-testid="stCaptionContainer"],
+section[data-testid="stSidebar"] .st-emotion-cache-1y0t5oj {
+    color: #94a3b8 !important;
 }
 /* Botões na sidebar */
 section[data-testid="stSidebar"] button {
@@ -186,12 +196,8 @@ section[data-testid="stSidebar"] button:hover {
 # FUNÇÕES GEMINI API
 # ────────────────────────────────────────────────────────────────────────────────
 def obter_gemini_api_key() -> str:
-    """Obtém API key do Gemini de constante, secrets ou variável de ambiente."""
+    """Obtém API key do Gemini de secrets ou variável de ambiente."""
     import os
-    
-    # Primeiro tenta usar a constante definida
-    if GEMINI_API_KEY and GEMINI_API_KEY.strip():
-        return GEMINI_API_KEY
     
     # Tenta obter de secrets do Streamlit
     try:
@@ -368,7 +374,7 @@ def render_chat():
 def render_fontes(fontes: list):
     """Renderiza as fontes usadas na última resposta."""
     if not fontes:
-        st.caption("Nenhuma fonte disponível")
+        st.markdown('<p style="color: #94a3b8; font-size: 0.875rem;">Nenhuma fonte disponível</p>', unsafe_allow_html=True)
         return
     
     for i, (doc, score) in enumerate(fontes, 1):
@@ -416,7 +422,7 @@ def render_app():
         ferramentas_sidebar=[
             "**📤 Upload PDF** – Envie documentos para indexar",
             "**📊 Status** – Quantidade de docs indexados",
-            "**⚡ Modelo** – Gemini API (gemini-1.5-flash)",
+            "**⚡ Modelo** – Gemini API (gemini-1.5-flash-latest)",
             "**🗑️ Limpar** – Remove documentos ou conversa",
         ]
     )
@@ -452,7 +458,7 @@ def render_app():
         
         if arquivo_pdf:
             file_size_mb = len(arquivo_pdf.getvalue()) / (1024 * 1024)
-            st.caption(f"📄 {arquivo_pdf.name} ({file_size_mb:.1f}MB)")
+            st.markdown(f'<p style="color: #94a3b8; font-size: 0.875rem; margin-top: 0.5rem;">📄 {arquivo_pdf.name} ({file_size_mb:.1f}MB)</p>', unsafe_allow_html=True)
             
             if st.button("📤 Indexar documento", use_container_width=True):
                 processar_upload(arquivo_pdf)
@@ -479,7 +485,7 @@ def render_app():
         
         if gemini_disponivel:
             st.markdown('<div class="gemini-status gemini-online">✅ Gemini API Conectada</div>', unsafe_allow_html=True)
-            st.caption(f"Modelo: `{GEMINI_MODEL_DEFAULT}`")
+            st.markdown(f'<p style="color: #94a3b8; font-size: 0.875rem; margin-top: 0.5rem;">Modelo: <code>{GEMINI_MODEL_DEFAULT}</code></p>', unsafe_allow_html=True)
         else:
             st.markdown('<div class="gemini-status gemini-offline">❌ Gemini não configurado</div>', unsafe_allow_html=True)
             st.info(
