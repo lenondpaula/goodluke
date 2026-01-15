@@ -28,11 +28,23 @@ def criar_embeddings():
     Cria instância do modelo de embeddings HuggingFace.
     Roda localmente, sem necessidade de API.
     """
-    return HuggingFaceEmbeddings(
-        model_name=MODELO_EMBEDDINGS,
-        model_kwargs={'device': 'cpu'},
-        encode_kwargs={'normalize_embeddings': True}
-    )
+    import streamlit as st
+    
+    @st.cache_resource(show_spinner=False)
+    def _load_embeddings():
+        return HuggingFaceEmbeddings(
+            model_name=MODELO_EMBEDDINGS,
+            model_kwargs={
+                'device': 'cpu',
+                'trust_remote_code': True
+            },
+            encode_kwargs={
+                'normalize_embeddings': True,
+                'batch_size': 32
+            }
+        )
+    
+    return _load_embeddings()
 
 
 def criar_ou_carregar_vectorstore(embeddings=None) -> Chroma:

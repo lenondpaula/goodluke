@@ -3,7 +3,7 @@
 """
 Chatbot RAG - Assistente Corporativo
 Interface Streamlit para perguntas sobre documentos PDF
-Usa busca semântica (ChromaDB) + geração de respostas com Groq API
+Usa busca semântica (ChromaDB) + geração de respostas com Gemini API
 """
 
 from pathlib import Path
@@ -39,7 +39,8 @@ from shared.components import (  # noqa: E402
 # CONFIGURAÇÕES
 # ────────────────────────────────────────────────────────────────────────────────
 MAX_FILE_SIZE_MB = 100  # Limite de 100MB por arquivo
-GROQ_MODEL_DEFAULT = "llama-3.1-8b-instant"  # Modelo rápido e eficiente
+GEMINI_MODEL_DEFAULT = "gemini-1.5-flash"  # Modelo rápido e eficiente do Google
+GEMINI_API_KEY = "AIzaSyC6pihdReWGrWDB19LHqQSc-cHGtm9a0X8"  # API Key do Gemini
 
 
 # ────────────────────────────────────────────────────────────────────────────────
@@ -182,37 +183,41 @@ section[data-testid="stSidebar"] button:hover {
 
 
 # ────────────────────────────────────────────────────────────────────────────────
-# FUNÇÕES GROQ API
+# FUNÇÕES GEMINI API
 # ────────────────────────────────────────────────────────────────────────────────
-def obter_groq_api_key() -> str:
-    """Obtém chave API do Groq de secrets ou variável de ambiente."""
+def obter_gemini_api_key() -> str:
+    """Obtém API key do Gemini de constante, secrets ou variável de ambiente."""
     import os
     
-    # Tenta pegar de secrets do Streamlit primeiro
+    # Primeiro tenta usar a constante definida
+    if GEMINI_API_KEY and GEMINI_API_KEY.strip():
+        return GEMINI_API_KEY
+    
+    # Tenta obter de secrets do Streamlit
     try:
-        if hasattr(st, 'secrets') and 'GROQ_API_KEY' in st.secrets:
-            return st.secrets['GROQ_API_KEY']
+        if hasattr(st, 'secrets') and 'GEMINI_API_KEY' in st.secrets:
+            return st.secrets['GEMINI_API_KEY']
     except Exception:
         pass
     
     # Fallback para variável de ambiente
-    return os.getenv('GROQ_API_KEY', '')
+    return os.getenv('GEMINI_API_KEY', '')
 
 
-def verificar_groq() -> bool:
-    """Verifica se a API do Groq está configurada."""
-    api_key = obter_groq_api_key()
+def verificar_gemini() -> bool:
+    """Verifica se a API do Gemini está configurada."""
+    api_key = obter_gemini_api_key()
     return bool(api_key and api_key.strip())
 
 
-def gerar_resposta_groq(pergunta: str, contextos: list, modelo: str = GROQ_MODEL_DEFAULT) -> str:
-    """Gera resposta usando Groq API."""
+def gerar_resposta_gemini(pergunta: str, contextos: list, modelo: str = GEMINI_MODEL_DEFAULT) -> str:
+    """Gera resposta usando Gemini API."""
     try:
-        from langchain_groq import ChatGroq
+        from langchain_google_genai import ChatGoogleGenerativeAI
         
-        api_key = obter_groq_api_key()
+        api_key = obter_gemini_api_key()
         if not api_key:
-            return "❌ Chave API do Groq não configurada."
+            return "❌ Chave API do Gemini não configurada."
         
         # Monta o contexto
         contexto_texto = "\n\n".join([
@@ -230,11 +235,11 @@ PERGUNTA: {pergunta}
 
 RESPOSTA (seja conciso e objetivo):"""
 
-        llm = ChatGroq(
-            api_key=api_key,
+        llm = ChatGoogleGenerativeAI(
             model=modelo,
+            google_api_key=api_key,
             temperature=0.3,
-            max_tokens=1024,
+            max_output_tokens=1024,
         )
         
         resposta = llm.invoke(prompt)
@@ -245,7 +250,7 @@ RESPOSTA (seja conciso e objetivo):"""
 
 
 def gerar_resposta_sem_llm(pergunta: str, contextos: list) -> str:
-    """Fallback quando Groq não está disponível."""
+    """Fallback quando Gemini não está disponível."""
     if not contextos:
         return "Não encontrei informações relevantes nos documentos para responder sua pergunta."
     
@@ -258,7 +263,7 @@ def gerar_resposta_sem_llm(pergunta: str, contextos: list) -> str:
         resposta += f"> {trecho}\n\n"
     
     resposta += "---\n"
-    resposta += "*ℹ️ Configure a API do Groq para respostas elaboradas por IA.*"
+    resposta += "*ℹ️ Configure a API do Gemini para respostas elaboradas por IA.*"
     
     return resposta
 
@@ -332,10 +337,10 @@ def processar_pergunta(pergunta: str):
     if not resultados:
         return "Não encontrei informações relevantes para sua pergunta.", []
     
-    # Usa Groq se disponível, senão mostra chunks
-    if verificar_groq():
-        with st.spinner(f"⚡ Gerando resposta com Groq..."):
-            resposta = gerar_resposta_groq(pergunta, resultados, GROQ_MODEL_DEFAULT)
+    # Usa Gemini se disponível, senão mostra chunks
+    if verificar_gemini():
+        with st.spinner(f"⚡ Gerando resposta com Gemini..."):
+            resposta = gerar_resposta_gemini(pergunta, resultados, GEMINI_MODEL_DEFAULT)
     else:
         resposta = gerar_resposta_sem_llm(pergunta, resultados)
     
@@ -411,7 +416,7 @@ def render_app():
         ferramentas_sidebar=[
             "**📤 Upload PDF** – Envie documentos para indexar",
             "**📊 Status** – Quantidade de docs indexados",
-            "**⚡ Modelo** – Groq API (llama-3.1-8b-instant)",
+            "**⚡ Modelo** – Gemini API (gemini-1.5-flash)",
             "**🗑️ Limpar** – Remove documentos ou conversa",
         ]
     )
@@ -468,23 +473,23 @@ def render_app():
         
         st.markdown("---")
         
-        # Status do Groq
+        # Status do Gemini
         st.markdown("### ⚡ Modelo de IA")
-        groq_disponivel = verificar_groq()
+        gemini_disponivel = verificar_gemini()
         
-        if groq_disponivel:
-            st.markdown('<div class="groq-status groq-online">✅ Groq API Conectada</div>', unsafe_allow_html=True)
-            st.caption(f"Modelo: `{GROQ_MODEL_DEFAULT}`")
+        if gemini_disponivel:
+            st.markdown('<div class="gemini-status gemini-online">✅ Gemini API Conectada</div>', unsafe_allow_html=True)
+            st.caption(f"Modelo: `{GEMINI_MODEL_DEFAULT}`")
         else:
-            st.markdown('<div class="groq-status groq-offline">❌ Groq não configurado</div>', unsafe_allow_html=True)
+            st.markdown('<div class="gemini-status gemini-offline">❌ Gemini não configurado</div>', unsafe_allow_html=True)
             st.info(
                 """
                 Para respostas por IA:
-                1. Crie conta em [console.groq.com](https://console.groq.com)
+                1. Acesse [Google AI Studio](https://aistudio.google.com/app/apikey)
                 2. Gere uma API key
                 3. Adicione ao `.streamlit/secrets.toml`:
                 ```toml
-                GROQ_API_KEY = "sua_chave"
+                GEMINI_API_KEY = "sua_chave"
                 ```
                 """
             )
@@ -537,7 +542,7 @@ def render_app():
     render_rodape(
         titulo_app="🤖 Assistente Corporativo RAG",
         subtitulo="Perguntas e respostas sobre documentos com busca semântica",
-        tecnologias="LangChain + ChromaDB + HuggingFace + Groq"
+        tecnologias="LangChain + ChromaDB + HuggingFace + Gemini"
     )
 
 

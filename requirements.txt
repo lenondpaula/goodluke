@@ -21,6 +21,7 @@ langchain-chroma
 langchain-huggingface
 langchain-groq
 langchain-ollama
+langchain-google-genai
 pypdf
 chromadb
 sentence-transformers
