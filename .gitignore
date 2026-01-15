@@ -20,5 +20,8 @@ Thumbs.db
 # Logs
 *.log
 
+# Secrets locais (NÃO COMMITAR)
+.streamlit/secrets.toml
+
 # ChromaDB persistente (gerado em runtime)
 assistente-rag/db_store/
