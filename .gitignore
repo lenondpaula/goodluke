@@ -19,3 +19,6 @@ Thumbs.db
 
 # Logs
 *.log
+
+# ChromaDB persistente (gerado em runtime)
+assistente-rag/db_store/

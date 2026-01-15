@@ -7,10 +7,12 @@ Transforma chunks de texto em embeddings e armazena no ChromaDB
 
 from pathlib import Path
 from typing import List, Optional
+import sqlite3
+import shutil
 
 from langchain_core.documents import Document
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_community.vectorstores import Chroma
+from langchain_chroma import Chroma
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 DB_DIR = BASE_DIR / "db_store"
@@ -53,7 +55,29 @@ def criar_ou_carregar_vectorstore(embeddings=None) -> Chroma:
         embedding_function=embeddings,
         persist_directory=str(DB_DIR),
     )
-    
+
+    try:
+        # Força acesso à coleção para validar o schema do DB
+        _ = vectorstore._collection.count()
+    except Exception as exc:
+        mensagem = str(exc).lower()
+        erro_schema = (
+            "no such table: embeddings" in mensagem
+            or "error executing plan" in mensagem
+            or isinstance(exc, sqlite3.OperationalError)
+        )
+        if erro_schema:
+            if DB_DIR.exists():
+                shutil.rmtree(DB_DIR)
+                DB_DIR.mkdir(parents=True, exist_ok=True)
+            vectorstore = Chroma(
+                collection_name=COLLECTION_NAME,
+                embedding_function=embeddings,
+                persist_directory=str(DB_DIR),
+            )
+        else:
+            raise
+
     return vectorstore
 
 
@@ -136,21 +160,37 @@ def buscar_com_scores(query: str, k: int = 3, vectorstore: Optional[Chroma] = No
     """
     if vectorstore is None:
         vectorstore = criar_ou_carregar_vectorstore()
-    
-    if vectorstore._collection.count() == 0:
-        return []
-    
-    resultados = vectorstore.similarity_search_with_score(query, k=k)
-    
-    return resultados
+
+    try:
+        if vectorstore._collection.count() == 0:
+            return []
+        resultados = vectorstore.similarity_search_with_score(query, k=k)
+        return resultados
+    except Exception:
+        # Se o DB estiver inválido, tenta recriar vazio e retorna sem resultados
+        vectorstore = criar_ou_carregar_vectorstore()
+        try:
+            if vectorstore._collection.count() == 0:
+                return []
+            return vectorstore.similarity_search_with_score(query, k=k)
+        except Exception:
+            return []
 
 
 def contar_documentos(vectorstore: Optional[Chroma] = None) -> int:
     """Retorna o número de documentos indexados."""
     if vectorstore is None:
         vectorstore = criar_ou_carregar_vectorstore()
-    
-    return vectorstore._collection.count()
+
+    try:
+        return vectorstore._collection.count()
+    except Exception:
+        # Tenta recriar o DB se estiver corrompido
+        vectorstore = criar_ou_carregar_vectorstore()
+        try:
+            return vectorstore._collection.count()
+        except Exception:
+            return 0
 
 
 def main():
