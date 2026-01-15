@@ -13,19 +13,19 @@ import streamlit as st
 
 SHARED_SIDEBAR_CSS = """
 <style>
-/* Sidebar uniforme - Tema escuro corporativo */
+/* ============ SIDEBAR ESTILIZADA (Padrão Hub) ============ */
 section[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    background: linear-gradient(180deg, #0e1117 0%, #1a1a2e 100%);
 }
 
 section[data-testid="stSidebar"] * {
-    color: #e2e8f0 !important;
+    color: #FAFAFA !important;
 }
 
 section[data-testid="stSidebar"] h1,
 section[data-testid="stSidebar"] h2,
 section[data-testid="stSidebar"] h3 {
-    color: #f8fafc !important;
+    color: #FFFFFF !important;
     font-weight: 600;
 }
 
@@ -35,42 +35,73 @@ section[data-testid="stSidebar"] label {
 }
 
 section[data-testid="stSidebar"] .stSelectbox > div > div {
-    background: #334155;
-    border: 1px solid #475569;
+    background: #262730;
+    border: 1px solid #3a3a4a;
 }
 
 section[data-testid="stSidebar"] .stSlider > div > div {
-    background: #334155;
+    background: #262730;
 }
 
 section[data-testid="stSidebar"] hr {
-    border-color: #334155;
+    border-color: #FF4B4B;
+    opacity: 0.5;
 }
 
 /* Botões na sidebar */
 section[data-testid="stSidebar"] button {
-    background: #3b82f6 !important;
-    color: #ffffff !important;
+    background: #FF4B4B !important;
+    color: #FFFFFF !important;
     border: none !important;
     font-weight: 600 !important;
+    transition: all 0.2s ease;
 }
 
 section[data-testid="stSidebar"] button:hover {
-    background: #2563eb !important;
+    background: #e63946 !important;
+    transform: translateY(-1px);
+}
+
+section[data-testid="stSidebar"] button:disabled {
+    background: #333 !important;
+    color: #888 !important;
 }
 
 /* File uploader na sidebar */
 section[data-testid="stSidebar"] [data-testid="stFileUploader"] {
-    background: #1e293b;
-    border: 2px dashed #475569;
+    background: #1a1a2e;
+    border: 2px dashed #3a3a4a;
     border-radius: 8px;
     padding: 0.75rem;
 }
 
 /* Expander na sidebar */
 section[data-testid="stSidebar"] .streamlit-expanderHeader {
-    background: #1e293b;
+    background: #262730;
     border-radius: 8px;
+    border-left: 3px solid #FF4B4B;
+}
+
+section[data-testid="stSidebar"] .streamlit-expanderHeader:hover {
+    background: #31333F;
+}
+
+section[data-testid="stSidebar"] .streamlit-expanderContent {
+    background: #1a1a2e;
+    border-radius: 0 0 8px 8px;
+}
+
+/* Esconder navegação nativa do Streamlit */
+section[data-testid="stSidebar"] [data-testid="stSidebarNav"] {
+    display: none !important;
+}
+
+/* Home icon style */
+section[data-testid="stSidebar"] .home-title {
+    text-align: center;
+    font-size: 1.5em;
+    color: #FF4B4B !important;
+    margin-bottom: 0.5em;
 }
 </style>
 """
@@ -118,6 +149,66 @@ def render_sidebar_navegacao(app_atual: int = None):
                 
                 if st.button(label, key=f"nav_app_{app['num']}", use_container_width=True, disabled=disabled):
                     st.switch_page(app['page'])
+
+
+def render_sidebar_header():
+    """
+    Renderiza o cabeçalho da sidebar com ícone de Home e título.
+    Deve ser chamado ANTES de qualquer conteúdo específico do app.
+    """
+    st.markdown(SHARED_SIDEBAR_CSS, unsafe_allow_html=True)
+    
+    with st.sidebar:
+        # Ícone de casa como "Home" no topo
+        st.markdown('<div class="home-title">🏠</div>', unsafe_allow_html=True)
+        st.markdown(
+            '<p style="text-align: center; font-size: 0.9em; color: #FAFAFA; margin-top: -10px;">GoodLuke AI Hub</p>',
+            unsafe_allow_html=True
+        )
+        
+        st.markdown("---")
+        
+        # Menu expansível com todas as aplicações
+        with st.expander("📱 **Aplicações**", expanded=False):
+            # Link para Home
+            if st.button("🏠 Home", key="sidebar_home", use_container_width=True):
+                st.switch_page("streamlit_app.py")
+            
+            st.markdown("---")
+            
+            # Links para cada app
+            for app in APPS_DO_HUB:
+                label = f"{app['icon']} {app['num']}. {app['nome']}"
+                if st.button(label, key=f"sidebar_nav_{app['num']}", use_container_width=True):
+                    st.switch_page(app['page'])
+        
+        st.markdown("---")
+
+
+def render_sidebar_footer():
+    """
+    Renderiza o rodapé da sidebar com contato e copyright.
+    Deve ser chamado DEPOIS de qualquer conteúdo específico do app.
+    """
+    with st.sidebar:
+        st.markdown("---")
+        
+        # Info de contato na sidebar
+        st.markdown(
+            """
+            <div style="text-align: center; font-size: 0.85em; color: #A3A8B4; margin-top: 1em;">
+                <div style="color: #FF4B4B; font-weight: bold; margin-bottom: 0.5em;">Lenon de Paula</div>
+                <div>📧 lenondpaula@gmail.com</div>
+                <div style="margin-top: 0.5em;">
+                    <a href="https://wa.me/5555981359099" style="color: #FF4B4B; text-decoration: none;">💬 WhatsApp</a>
+                </div>
+                <div style="margin-top: 1.5em; padding-top: 1em; border-top: 1px solid #333; font-size: 0.9em; color: #666;">
+                    © 2026 Lenon de Paula
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
 
 def render_rodape(

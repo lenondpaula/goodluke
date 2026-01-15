@@ -31,7 +31,8 @@ from motor_turismo import (  # type: ignore  # noqa: E402
 )
 from shared.components import (  # noqa: E402
     SHARED_SIDEBAR_CSS,
-    render_sidebar_navegacao,
+    render_sidebar_header,
+    render_sidebar_footer,
     render_rodape,
     render_instrucoes_uso,
 )
@@ -251,6 +252,11 @@ def render_app():
     # ─────────────────────────────────────────────────────────────────────────
     # SIDEBAR - Controles
     # ─────────────────────────────────────────────────────────────────────────
+    
+    # ── Sidebar Header (Home + Menu Aplicações) ─────────────────────────────────
+    render_sidebar_header()
+
+    # Conteúdo específico do app na sidebar
     with st.sidebar:
         st.header("🎯 Seu Perfil")
         
@@ -295,6 +301,9 @@ def render_app():
         st.markdown("🟠 **Gastronomia** — Comida e bebida")
         st.markdown("🩷 **Vida Noturna** — Bares e festas")
         st.markdown("🟣 **Cultura** — Teatros e patrimônio")
+
+    # ── Sidebar Footer (Contato + Copyright) ────────────────────────────────────
+    render_sidebar_footer()
     
     # ─────────────────────────────────────────────────────────────────────────
     # CONTEÚDO PRINCIPAL
@@ -401,9 +410,6 @@ def render_app():
         for cat in df_todos["Categoria"].unique():
             count = len(df_todos[df_todos["Categoria"] == cat])
             st.caption(f"• {cat}: {count} locais")
-
-    # Menu de navegação
-    render_sidebar_navegacao(app_atual=8)
 
     # Rodapé
     render_rodape(

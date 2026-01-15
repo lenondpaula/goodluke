@@ -78,6 +78,11 @@ st.markdown("""
             margin-bottom: 0.5em;
         }
         
+        /* Esconder navegação nativa do Streamlit */
+        section[data-testid="stSidebar"] [data-testid="stSidebarNav"] {
+            display: none !important;
+        }
+        
         /* ============ MAIN CONTENT ============ */
         .main {
             background-color: #0e1117;
@@ -382,6 +387,9 @@ with st.sidebar:
             <div>📧 lenondpaula@gmail.com</div>
             <div style="margin-top: 0.5em;">
                 <a href="https://wa.me/5555981359099" style="color: #FF4B4B; text-decoration: none;">💬 WhatsApp</a>
+            </div>
+            <div style="margin-top: 1.5em; padding-top: 1em; border-top: 1px solid #333; font-size: 0.9em; color: #666;">
+                © 2026 Lenon de Paula
             </div>
         </div>
         """,

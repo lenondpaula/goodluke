@@ -33,7 +33,8 @@ from motor_match import (  # noqa: E402
 )
 from shared.components import (  # noqa: E402
     SHARED_SIDEBAR_CSS,
-    render_sidebar_navegacao,
+    render_sidebar_header,
+    render_sidebar_footer,
     render_rodape,
     render_instrucoes_uso,
 )
@@ -390,6 +391,12 @@ def render_app():
     
     st.markdown(SHARED_SIDEBAR_CSS, unsafe_allow_html=True)
     
+    # ── Sidebar Header (Home + Menu Aplicações) ─────────────────────────────────
+    render_sidebar_header()
+    
+    # ── Sidebar Footer (Contato + Copyright) ────────────────────────────────────
+    render_sidebar_footer()
+    
     # Inicializar estado
     if "contratado" not in st.session_state:
         st.session_state.contratado = None
@@ -582,9 +589,6 @@ def render_app():
                         <p style='font-size: 0.85rem;'>{desc}</p>
                     </div>
                 """, unsafe_allow_html=True)
-    
-    # Menu de navegação
-    render_sidebar_navegacao(app_atual=9)
 
     # Footer
     render_rodape(

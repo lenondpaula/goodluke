@@ -25,7 +25,8 @@ MODEL_PATH = BASE_DIR / "models" / "prophet_model.pkl"
 sys.path.insert(0, str(PROJECT_ROOT))
 from shared.components import (  # noqa: E402
     SHARED_SIDEBAR_CSS,
-    render_sidebar_navegacao,
+    render_sidebar_header,
+    render_sidebar_footer,
     render_rodape,
     render_instrucoes_uso,
 )
@@ -408,7 +409,10 @@ python src/treinar_oraculo.py   # Treina o modelo
         """)
         st.stop()
     
-    # Sidebar
+    # ── Sidebar Header (Home + Menu Aplicações) ─────────────────────────────────
+    render_sidebar_header()
+
+    # Conteúdo específico do app na sidebar
     with st.sidebar:
         st.header("⚙️ Configurações")
         dias_previsao = st.slider("Dias de previsão", 7, 90, 30, 7)
@@ -416,6 +420,9 @@ python src/treinar_oraculo.py   # Treina o modelo
         st.markdown("---")
         st.caption(f"📊 Dados: {len(df_historico):,} dias")
         st.caption(f"📅 Até: {df_historico['ds'].max().strftime('%d/%m/%Y')}")
+
+    # ── Sidebar Footer (Contato + Copyright) ────────────────────────────────────
+    render_sidebar_footer()
     
     # Gera previsão
     with st.spinner("🔮 Consultando o Oráculo..."):
@@ -476,9 +483,6 @@ python src/treinar_oraculo.py   # Treina o modelo
             mime="text/csv",
             use_container_width=True
         )
-    
-    # Menu de navegação
-    render_sidebar_navegacao(app_atual=4)
 
     # Rodapé
     render_rodape(

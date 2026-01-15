@@ -24,7 +24,8 @@ DATA_DIR = BASE_DIR / "data"
 sys.path.insert(0, str(PROJECT_ROOT))
 from shared.components import (  # noqa: E402
     SHARED_SIDEBAR_CSS,
-    render_sidebar_navegacao,
+    render_sidebar_header,
+    render_sidebar_footer,
     render_rodape,
     render_instrucoes_uso,
 )
@@ -341,7 +342,10 @@ def render_app():
         st.code("cd projeto-burger-flow\npython src/gerar_dados_burger.py\npython src/previsao_estoque.py")
         return
     
-    # Sidebar com controles
+    # ── Sidebar Header (Home + Menu Aplicações) ─────────────────────────────────
+    render_sidebar_header()
+
+    # Conteúdo específico do app na sidebar
     with st.sidebar:
         st.header("⚙️ Configurações")
         
@@ -360,6 +364,9 @@ def render_app():
         st.markdown("🎯 **Oportunidade** — Alta margem, baixo volume")
         st.markdown("🐄 **Vaca Leiteira** — Baixa margem, alto volume")
         st.markdown("🐕 **Cão** — Baixa margem, baixo volume")
+
+    # ── Sidebar Footer (Contato + Copyright) ────────────────────────────────────
+    render_sidebar_footer()
     
     # ─────────────────────────────────────────────────────────────────────────
     # TAB 1: Gestão de Estoque
@@ -516,9 +523,6 @@ def render_app():
             st.plotly_chart(fig_serie, use_container_width=True)
         else:
             st.info("Execute `python src/gerar_dados_burger.py` para gerar histórico de vendas.")
-
-    # Menu de navegação
-    render_sidebar_navegacao(app_atual=7)
 
     # Rodapé
     render_rodape(

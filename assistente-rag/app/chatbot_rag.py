@@ -3,11 +3,12 @@
 """
 Chatbot RAG - Assistente Corporativo
 Interface Streamlit para perguntas sobre documentos PDF
-Usa busca semântica (ChromaDB) + geração de respostas com Ollama
+Usa busca semântica (ChromaDB) + geração de respostas com Groq API
 """
 
 from pathlib import Path
 import sys
+import shutil
 
 import streamlit as st
 
@@ -15,6 +16,7 @@ import streamlit as st
 BASE_DIR = Path(__file__).resolve().parents[1]
 PROJECT_ROOT = BASE_DIR.parent
 SRC_DIR = BASE_DIR / "src"
+DB_DIR = BASE_DIR / "db_store"
 sys.path.insert(0, str(SRC_DIR))
 sys.path.insert(0, str(PROJECT_ROOT))
 
@@ -27,20 +29,17 @@ from indexador import (
 )
 from shared.components import (  # noqa: E402
     SHARED_SIDEBAR_CSS,
-    render_sidebar_navegacao,
+    render_sidebar_header,
+    render_sidebar_footer,
     render_rodape,
     render_instrucoes_uso,
 )
 
-
-def eh_streamlit_cloud() -> bool:
-    """Detecta se está executando no Streamlit Cloud."""
-    import os
-    return (
-        "STREAMLIT_RUNTIME_ENV" in os.environ 
-        or "STREAMLIT_SERVER_HEADLESS" in os.environ
-        or os.path.exists("/.dockerenv")
-    )
+# ────────────────────────────────────────────────────────────────────────────────
+# CONFIGURAÇÕES
+# ────────────────────────────────────────────────────────────────────────────────
+MAX_FILE_SIZE_MB = 100  # Limite de 100MB por arquivo
+GROQ_MODEL_DEFAULT = "llama-3.1-8b-instant"  # Modelo rápido e eficiente
 
 
 # ────────────────────────────────────────────────────────────────────────────────
@@ -91,7 +90,7 @@ section[data-testid="stSidebar"] [data-testid="stFileUploader"] {
 section[data-testid="stSidebar"] [data-testid="stFileUploader"] * {
     color: #e2e8f0 !important;
 }
-/* Botões na sidebar - estilo escuro */
+/* Botões na sidebar */
 section[data-testid="stSidebar"] button {
     background: #3b82f6 !important;
     color: #ffffff !important;
@@ -137,7 +136,7 @@ section[data-testid="stSidebar"] button:hover {
     text-align: center;
     font-size: 1rem;
     font-weight: 700;
-    margin: 1rem 0;
+    margin: 0.5rem 0;
 }
 .status-ok {
     background: #065f46 !important;
@@ -149,202 +148,42 @@ section[data-testid="stSidebar"] button:hover {
     color: #ffffff !important;
     border: 1px solid #fbbf24;
 }
-.ollama-status {
-    padding: 0.75rem;
+.status-danger {
+    background: #991b1b !important;
+    color: #ffffff !important;
+    border: 1px solid #f87171;
+}
+.groq-status {
+    padding: 0.5rem;
     border-radius: 8px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 700;
     text-align: center;
     margin: 0.5rem 0;
 }
-.ollama-online {
+.groq-online {
     background: #166534 !important;
     color: #ffffff !important;
 }
-.ollama-offline {
+.groq-offline {
     background: #991b1b !important;
     color: #ffffff !important;
+}
+/* Botão de limpeza (vermelho) */
+.btn-danger {
+    background: #dc2626 !important;
+    border: 1px solid #b91c1c !important;
+}
+.btn-danger:hover {
+    background: #b91c1c !important;
 }
 </style>
 """
 
-# Configuração padrão do Ollama
-OLLAMA_URL = "http://localhost:11434"
-OLLAMA_MODEL = "llama3.2"
 
-# Configuração do Groq (primário)
-GROQ_MODEL_DEFAULT = "llama-3.1-70b-versatile"
-GROQ_MODELS = [
-    "llama-3.1-70b-versatile",
-    "llama-3.1-8b-instant",
-    "mixtral-8x7b-32768",
-    "gemma2-9b-it",
-]
-
-
-def ollama_instalado() -> bool:
-    """Verifica se o Ollama está instalado no sistema."""
-    import shutil
-    return shutil.which("ollama") is not None
-
-
-def instalar_ollama():
-    """Instala o Ollama via script oficial."""
-    import subprocess
-    
-    with st.status("🔧 Instalando Ollama...", expanded=True) as status:
-        st.write("📥 Baixando instalador...")
-        
-        try:
-            # Usa o script oficial de instalação
-            result = subprocess.run(
-                ["curl", "-fsSL", "https://ollama.ai/install.sh"],
-                capture_output=True,
-                text=True,
-                timeout=60
-            )
-            
-            if result.returncode != 0:
-                status.update(label="❌ Erro ao baixar", state="error")
-                st.error(f"Erro: {result.stderr}")
-                return False
-            
-            st.write("⚙️ Executando instalação...")
-            
-            # Executa o script de instalação
-            install_result = subprocess.run(
-                ["sh", "-c", result.stdout],
-                capture_output=True,
-                text=True,
-                timeout=300
-            )
-            
-            if install_result.returncode == 0:
-                status.update(label="✅ Ollama instalado!", state="complete")
-                st.write("✅ Instalação concluída!")
-                return True
-            else:
-                status.update(label="❌ Erro na instalação", state="error")
-                st.error(f"Erro: {install_result.stderr}")
-                return False
-                
-        except subprocess.TimeoutExpired:
-            status.update(label="❌ Timeout", state="error")
-            st.error("⏰ Tempo limite excedido. Tente novamente.")
-            return False
-        except Exception as e:
-            status.update(label="❌ Erro", state="error")
-            st.error(f"Erro: {str(e)}")
-            return False
-
-
-def baixar_modelo_ollama(modelo: str = OLLAMA_MODEL):
-    """Baixa um modelo do Ollama."""
-    import subprocess
-    
-    with st.status(f"📦 Baixando modelo {modelo}...", expanded=True) as status:
-        st.write(f"Este processo pode demorar alguns minutos...")
-        
-        try:
-            result = subprocess.run(
-                ["ollama", "pull", modelo],
-                capture_output=True,
-                text=True,
-                timeout=600  # 10 minutos para modelos grandes
-            )
-            
-            if result.returncode == 0:
-                status.update(label=f"✅ Modelo {modelo} pronto!", state="complete")
-                return True
-            else:
-                status.update(label="❌ Erro ao baixar modelo", state="error")
-                st.error(f"Erro: {result.stderr}")
-                return False
-                
-        except subprocess.TimeoutExpired:
-            status.update(label="❌ Timeout", state="error")
-            st.error("⏰ Tempo limite. O modelo pode ser muito grande.")
-            return False
-        except Exception as e:
-            status.update(label="❌ Erro", state="error")
-            st.error(f"Erro: {str(e)}")
-            return False
-
-
-def iniciar_ollama():
-    """Instala (se necessário) e inicia o Ollama."""
-    import subprocess
-    import time
-    
-    # Passo 1: Verificar se está instalado
-    if not ollama_instalado():
-        st.info("🔧 Ollama não encontrado. Iniciando instalação...")
-        
-        if not instalar_ollama():
-            return
-        
-        # Recarrega para atualizar PATH
-        time.sleep(1)
-    
-    # Passo 2: Iniciar o serviço
-    try:
-        with st.spinner("🚀 Iniciando serviço Ollama..."):
-            subprocess.Popen(
-                ["ollama", "serve"],
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-                start_new_session=True
-            )
-            
-            # Aguarda o serviço iniciar
-            time.sleep(3)
-        
-        if verificar_ollama():
-            # Passo 3: Verificar se tem modelos
-            modelos = listar_modelos_ollama()
-            
-            if not modelos:
-                st.info(f"📦 Nenhum modelo encontrado. Baixando {OLLAMA_MODEL}...")
-                if baixar_modelo_ollama(OLLAMA_MODEL):
-                    st.success("✅ Tudo pronto! Ollama configurado.")
-                    time.sleep(1)
-                    st.rerun()
-            else:
-                st.success("✅ Ollama iniciado com sucesso!")
-                time.sleep(1)
-                st.rerun()
-        else:
-            st.warning("⏳ Ollama iniciando... Aguarde e atualize a página.")
-            
-    except FileNotFoundError:
-        st.error("❌ Ollama ainda não está no PATH. Reinicie o terminal/aplicação.")
-    except Exception as e:
-        st.error(f"❌ Erro ao iniciar Ollama: {str(e)}")
-
-
-def verificar_ollama() -> bool:
-    """Verifica se o Ollama está rodando localmente."""
-    try:
-        import requests
-        response = requests.get(f"{OLLAMA_URL}/api/tags", timeout=2)
-        return response.status_code == 200
-    except Exception:
-        return False
-
-
-def listar_modelos_ollama() -> list:
-    """Lista modelos disponíveis no Ollama."""
-    try:
-        import requests
-        response = requests.get(f"{OLLAMA_URL}/api/tags", timeout=5)
-        if response.status_code == 200:
-            data = response.json()
-            return [m["name"] for m in data.get("models", [])]
-    except Exception:
-        pass
-    return []
-
-
+# ────────────────────────────────────────────────────────────────────────────────
+# FUNÇÕES GROQ API
+# ────────────────────────────────────────────────────────────────────────────────
 def obter_groq_api_key() -> str:
     """Obtém chave API do Groq de secrets ou variável de ambiente."""
     import os
@@ -367,9 +206,7 @@ def verificar_groq() -> bool:
 
 
 def gerar_resposta_groq(pergunta: str, contextos: list, modelo: str = GROQ_MODEL_DEFAULT) -> str:
-    """
-    Gera resposta usando Groq API (primário).
-    """
+    """Gera resposta usando Groq API."""
     try:
         from langchain_groq import ChatGroq
         
@@ -404,43 +241,11 @@ RESPOSTA (seja conciso e objetivo):"""
         return resposta.content.strip()
         
     except Exception as e:
-        return f"❌ Erro ao gerar resposta com Groq: {str(e)}"
-
-
-def gerar_resposta_ollama(pergunta: str, contextos: list, modelo: str = OLLAMA_MODEL) -> str:
-    """
-    Gera resposta usando Ollama local (fallback secundário).
-    """
-    try:
-        from langchain_ollama import OllamaLLM
-        
-        # Monta o contexto
-        contexto_texto = "\n\n".join([
-            f"Trecho {i+1} (de {doc.metadata.get('fonte', 'documento')}):\n{doc.page_content}"
-            for i, (doc, score) in enumerate(contextos)
-        ])
-        
-        # Prompt otimizado para RAG
-        prompt = f"""Você é um assistente corporativo inteligente. Use APENAS as informações do contexto abaixo para responder à pergunta. Se a informação não estiver no contexto, diga que não encontrou a informação nos documentos.
-
-CONTEXTO:
-{contexto_texto}
-
-PERGUNTA: {pergunta}
-
-RESPOSTA (seja conciso e objetivo):"""
-
-        llm = OllamaLLM(model=modelo, base_url=OLLAMA_URL)
-        resposta = llm.invoke(prompt)
-        
-        return resposta.strip()
-        
-    except Exception as e:
-        return f"❌ Erro ao gerar resposta com Ollama: {str(e)}"
+        return f"❌ Erro ao gerar resposta: {str(e)}"
 
 
 def gerar_resposta_sem_llm(pergunta: str, contextos: list) -> str:
-    """Fallback quando Ollama não está disponível."""
+    """Fallback quando Groq não está disponível."""
     if not contextos:
         return "Não encontrei informações relevantes nos documentos para responder sua pergunta."
     
@@ -453,9 +258,24 @@ def gerar_resposta_sem_llm(pergunta: str, contextos: list) -> str:
         resposta += f"> {trecho}\n\n"
     
     resposta += "---\n"
-    resposta += "*ℹ️ Ollama não detectado. Para respostas elaboradas, inicie: `ollama serve`*"
+    resposta += "*ℹ️ Configure a API do Groq para respostas elaboradas por IA.*"
     
     return resposta
+
+
+# ────────────────────────────────────────────────────────────────────────────────
+# FUNÇÕES DE GERENCIAMENTO
+# ────────────────────────────────────────────────────────────────────────────────
+def limpar_base_documentos():
+    """Remove todos os documentos indexados."""
+    try:
+        if DB_DIR.exists():
+            shutil.rmtree(DB_DIR)
+            st.session_state.vectorstore = None
+            return True
+    except Exception as e:
+        st.error(f"Erro ao limpar base: {str(e)}")
+    return False
 
 
 def inicializar_sessao():
@@ -466,12 +286,6 @@ def inicializar_sessao():
         st.session_state.vectorstore = None
     if "fontes_ultima_resposta" not in st.session_state:
         st.session_state.fontes_ultima_resposta = []
-    if "modo_llm" not in st.session_state:
-        st.session_state.modo_llm = "auto"
-    if "modelo_groq" not in st.session_state:
-        st.session_state.modelo_groq = GROQ_MODEL_DEFAULT
-    if "modelo_ollama" not in st.session_state:
-        st.session_state.modelo_ollama = OLLAMA_MODEL
 
 
 def carregar_vectorstore():
@@ -487,6 +301,12 @@ def processar_upload(arquivo_pdf):
     if arquivo_pdf is None:
         return
     
+    # Verifica tamanho do arquivo
+    file_size_mb = len(arquivo_pdf.getvalue()) / (1024 * 1024)
+    if file_size_mb > MAX_FILE_SIZE_MB:
+        st.error(f"❌ Arquivo muito grande ({file_size_mb:.1f}MB). Máximo: {MAX_FILE_SIZE_MB}MB")
+        return
+    
     with st.spinner(f"📄 Processando {arquivo_pdf.name}..."):
         chunks = processar_pdf_upload(arquivo_pdf.getvalue(), arquivo_pdf.name)
         
@@ -498,14 +318,8 @@ def processar_upload(arquivo_pdf):
         st.success(f"✅ {len(chunks)} trechos indexados de '{arquivo_pdf.name}'!")
 
 
-def processar_pergunta(pergunta: str, modo_llm: str = "auto", modelo: str = None):
-    """Processa pergunta do usuário e gera resposta.
-    
-    Args:
-        pergunta: Pergunta do usuário
-        modo_llm: "groq", "ollama", "sem_llm", ou "auto" (tenta Groq → Ollama → sem LLM)
-        modelo: Nome do modelo (para Groq ou Ollama)
-    """
+def processar_pergunta(pergunta: str):
+    """Processa pergunta do usuário e gera resposta."""
     vectorstore = carregar_vectorstore()
     
     num_docs = contar_documentos(vectorstore)
@@ -518,38 +332,19 @@ def processar_pergunta(pergunta: str, modo_llm: str = "auto", modelo: str = None
     if not resultados:
         return "Não encontrei informações relevantes para sua pergunta.", []
     
-    # Sistema de fallback inteligente
-    if modo_llm == "auto":
-        # Prioridade: Groq (rápido e grátis) → Ollama (local) → Sem LLM
-        if verificar_groq():
-            with st.spinner(f"⚡ Gerando resposta com Groq ({modelo or GROQ_MODEL_DEFAULT})..."):
-                resposta = gerar_resposta_groq(pergunta, resultados, modelo or GROQ_MODEL_DEFAULT)
-                if not resposta.startswith("❌"):
-                    return resposta, resultados
-        
-        if verificar_ollama():
-            with st.spinner(f"🦙 Gerando resposta com Ollama ({modelo or OLLAMA_MODEL})..."):
-                resposta = gerar_resposta_ollama(pergunta, resultados, modelo or OLLAMA_MODEL)
-                if not resposta.startswith("❌"):
-                    return resposta, resultados
-        
-        # Fallback final: sem LLM
-        return gerar_resposta_sem_llm(pergunta, resultados), resultados
-    
-    elif modo_llm == "groq" and verificar_groq():
-        with st.spinner(f"⚡ Gerando resposta com Groq ({modelo or GROQ_MODEL_DEFAULT})..."):
-            resposta = gerar_resposta_groq(pergunta, resultados, modelo or GROQ_MODEL_DEFAULT)
-    
-    elif modo_llm == "ollama" and verificar_ollama():
-        with st.spinner(f"🦙 Gerando resposta com Ollama ({modelo or OLLAMA_MODEL})..."):
-            resposta = gerar_resposta_ollama(pergunta, resultados, modelo or OLLAMA_MODEL)
-    
+    # Usa Groq se disponível, senão mostra chunks
+    if verificar_groq():
+        with st.spinner(f"⚡ Gerando resposta com Groq..."):
+            resposta = gerar_resposta_groq(pergunta, resultados, GROQ_MODEL_DEFAULT)
     else:
         resposta = gerar_resposta_sem_llm(pergunta, resultados)
     
     return resposta, resultados
 
 
+# ────────────────────────────────────────────────────────────────────────────────
+# RENDERIZAÇÃO
+# ────────────────────────────────────────────────────────────────────────────────
 def render_chat():
     """Renderiza histórico de chat."""
     for msg in st.session_state.mensagens:
@@ -593,6 +388,9 @@ def render_fontes(fontes: list):
         )
 
 
+# ────────────────────────────────────────────────────────────────────────────────
+# APP PRINCIPAL
+# ────────────────────────────────────────────────────────────────────────────────
 def render_app():
     """Função principal do chatbot."""
     
@@ -606,15 +404,15 @@ def render_app():
     # Instruções de uso
     render_instrucoes_uso(
         instrucoes=[
-            "Faça upload de PDFs na sidebar",
+            "Faça upload de PDFs na sidebar (máx. 100MB)",
             "Aguarde a indexação dos documentos",
             "Digite sua pergunta no chat",
         ],
         ferramentas_sidebar=[
-            "**Upload PDF**: Envie documentos para indexar",
-            "**Modelo LLM**: Groq (cloud) ou Ollama (local)",
-            "**Fontes**: Veja trechos usados na resposta",
-            "**Limpar**: Reinicie a conversa",
+            "**📤 Upload PDF** – Envie documentos para indexar",
+            "**📊 Status** – Quantidade de docs indexados",
+            "**⚡ Modelo** – Groq API (llama-3.1-8b-instant)",
+            "**🗑️ Limpar** – Remove documentos ou conversa",
         ]
     )
     
@@ -623,7 +421,7 @@ def render_app():
             """
             <div style="background:#f1f5f9; border-left:4px solid #8b5cf6; padding:1rem 1.25rem; border-radius:6px; margin-bottom:1.5rem;">
                 <strong>O que é RAG?</strong><br>
-                <em>Retrieval-Augmented Generation</em> combina busca semântica com geração de texto.
+                <em>Retrieval-Augmented Generation</em> combina busca semântica com IA generativa.
                 O sistema encontra trechos relevantes nos seus documentos e usa como contexto para responder.<br><br>
                 <strong>Como usar</strong><br>
                 1. Faça upload de um PDF na barra lateral<br>
@@ -634,121 +432,93 @@ def render_app():
             unsafe_allow_html=True,
         )
     
-    # Sidebar
+    # ── Sidebar Header (Home + Menu Aplicações) ─────────────────────────────────
+    render_sidebar_header()
+
+    # ── Conteúdo específico do app na sidebar ───────────────────────────────────
     with st.sidebar:
-        st.header("📁 Documentos")
+        st.markdown("### 📁 Documentos")
         
-        arquivo_pdf = st.file_uploader("Upload PDF", type=["pdf"])
+        arquivo_pdf = st.file_uploader(
+            "Upload PDF (máx. 100MB)",
+            type=["pdf"],
+            help=f"Tamanho máximo: {MAX_FILE_SIZE_MB}MB"
+        )
         
         if arquivo_pdf:
+            file_size_mb = len(arquivo_pdf.getvalue()) / (1024 * 1024)
+            st.caption(f"📄 {arquivo_pdf.name} ({file_size_mb:.1f}MB)")
+            
             if st.button("📤 Indexar documento", use_container_width=True):
                 processar_upload(arquivo_pdf)
         
         st.markdown("---")
         
+        # Status da base
+        st.markdown("### 📊 Status da Base")
         vectorstore = carregar_vectorstore()
         num_docs = contar_documentos(vectorstore)
         
-        st.subheader("📊 Status da Base")
         st.metric("Documentos indexados", num_docs)
         
         if num_docs > 0:
-            st.markdown('<div class="status-card status-ok">✅ Pronto</div>', unsafe_allow_html=True)
+            st.markdown('<div class="status-card status-ok">✅ Pronto para perguntas</div>', unsafe_allow_html=True)
         else:
             st.markdown('<div class="status-card status-warning">⚠️ Base vazia</div>', unsafe_allow_html=True)
         
         st.markdown("---")
         
-        # Configuração de LLM
-        st.subheader("🤖 Modelo de Linguagem")
-        
-        # Status dos provedores
+        # Status do Groq
+        st.markdown("### ⚡ Modelo de IA")
         groq_disponivel = verificar_groq()
-        ollama_disponivel = verificar_ollama()
         
-        col1, col2 = st.columns(2)
-        with col1:
-            if groq_disponivel:
-                st.markdown('<div class="ollama-status ollama-online">⚡ Groq OK</div>', unsafe_allow_html=True)
-            else:
-                st.markdown('<div class="ollama-status ollama-offline">⚡ Groq -</div>', unsafe_allow_html=True)
-        with col2:
-            if ollama_disponivel:
-                st.markdown('<div class="ollama-status ollama-online">🦙 Ollama OK</div>', unsafe_allow_html=True)
-            else:
-                st.markdown('<div class="ollama-status ollama-offline">🦙 Ollama -</div>', unsafe_allow_html=True)
-        
-        st.markdown("")
-        
-        # Seletor de modo
-        opcoes_modo = {
-            "🎯 Automático (Groq → Ollama)": "auto",
-            "⚡ Groq API (Cloud)": "groq",
-            "🦙 Ollama (Local)": "ollama",
-            "📚 Sem LLM (apenas chunks)": "sem_llm",
-        }
-        
-        modo_label = st.selectbox(
-            "Modo de resposta",
-            options=list(opcoes_modo.keys()),
-            index=0,
-        )
-        st.session_state.modo_llm = opcoes_modo[modo_label]
-        
-        # Configuração específica por modo
-        if st.session_state.modo_llm in ["auto", "groq"]:
-            if groq_disponivel:
-                idx = GROQ_MODELS.index(st.session_state.modelo_groq) if st.session_state.modelo_groq in GROQ_MODELS else 0
-                st.session_state.modelo_groq = st.selectbox(
-                    "Modelo Groq",
-                    GROQ_MODELS,
-                    index=idx,
-                    help="llama-3.1-70b é o mais capaz, 8b é o mais rápido"
-                )
-            else:
-                st.info(
-                    """
-                    ⚡ **Groq não configurado**
-                    
-                    Para usar Groq (grátis e rápido):
-                    1. Crie conta em [console.groq.com](https://console.groq.com)
-                    2. Gere uma API key
-                    3. Adicione ao `.streamlit/secrets.toml`:
-                    ```toml
-                    GROQ_API_KEY = "sua_chave_aqui"
-                    ```
-                    """
-                )
-        
-        if st.session_state.modo_llm in ["auto", "ollama"]:
-            if ollama_disponivel:
-                modelos = listar_modelos_ollama()
-                if modelos:
-                    idx = modelos.index(st.session_state.modelo_ollama) if st.session_state.modelo_ollama in modelos else 0
-                    st.session_state.modelo_ollama = st.selectbox("Modelo Ollama", modelos, index=idx)
-            elif not eh_streamlit_cloud():
-                st.caption("Ollama offline")
-                if ollama_instalado():
-                    btn_label = "🚀 Iniciar Ollama"
-                else:
-                    btn_label = "📥 Instalar Ollama"
-                
-                if st.button(btn_label, use_container_width=True, key="btn_start_ollama"):
-                    iniciar_ollama()
+        if groq_disponivel:
+            st.markdown('<div class="groq-status groq-online">✅ Groq API Conectada</div>', unsafe_allow_html=True)
+            st.caption(f"Modelo: `{GROQ_MODEL_DEFAULT}`")
+        else:
+            st.markdown('<div class="groq-status groq-offline">❌ Groq não configurado</div>', unsafe_allow_html=True)
+            st.info(
+                """
+                Para respostas por IA:
+                1. Crie conta em [console.groq.com](https://console.groq.com)
+                2. Gere uma API key
+                3. Adicione ao `.streamlit/secrets.toml`:
+                ```toml
+                GROQ_API_KEY = "sua_chave"
+                ```
+                """
+            )
         
         st.markdown("---")
         
-        st.subheader("📚 Fontes")
+        # Fontes da última resposta
+        st.markdown("### 📚 Fontes Utilizadas")
         render_fontes(st.session_state.fontes_ultima_resposta)
         
         st.markdown("---")
         
-        if st.button("🗑️ Limpar conversa", use_container_width=True):
-            st.session_state.mensagens = []
-            st.session_state.fontes_ultima_resposta = []
-            st.rerun()
+        # Ações de limpeza
+        st.markdown("### 🗑️ Gerenciamento")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            if st.button("💬 Limpar Chat", use_container_width=True, help="Limpa histórico de conversa"):
+                st.session_state.mensagens = []
+                st.session_state.fontes_ultima_resposta = []
+                st.rerun()
+        
+        with col2:
+            if num_docs > 0:
+                if st.button("📁 Limpar Base", use_container_width=True, help="Remove todos os documentos indexados"):
+                    if limpar_base_documentos():
+                        st.success("✅ Base limpa!")
+                        st.rerun()
+
+    # ── Sidebar Footer (Contato + Copyright) ────────────────────────────────────
+    render_sidebar_footer()
     
-    # Chat
+    # ── Chat ────────────────────────────────────────────────────────────────────
     st.markdown("---")
     render_chat()
     
@@ -757,31 +527,17 @@ def render_app():
     if pergunta:
         st.session_state.mensagens.append({"role": "user", "content": pergunta})
         
-        # Determina qual modelo usar baseado no modo
-        modelo_usado = None
-        if st.session_state.modo_llm in ["auto", "groq"]:
-            modelo_usado = st.session_state.modelo_groq
-        elif st.session_state.modo_llm == "ollama":
-            modelo_usado = st.session_state.modelo_ollama
-        
-        resposta, fontes = processar_pergunta(
-            pergunta,
-            modo_llm=st.session_state.modo_llm,
-            modelo=modelo_usado
-        )
+        resposta, fontes = processar_pergunta(pergunta)
         
         st.session_state.mensagens.append({"role": "assistant", "content": resposta})
         st.session_state.fontes_ultima_resposta = fontes
         st.rerun()
-    
-    # Menu de navegação
-    render_sidebar_navegacao(app_atual=5)
 
     # Footer
     render_rodape(
         titulo_app="🤖 Assistente Corporativo RAG",
         subtitulo="Perguntas e respostas sobre documentos com busca semântica",
-        tecnologias="LangChain + ChromaDB + HuggingFace + Groq/Ollama"
+        tecnologias="LangChain + ChromaDB + HuggingFace + Groq"
     )
 
 

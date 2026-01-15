@@ -14,6 +14,8 @@ sys.path.insert(0, str(BASE_DIR))
 from shared.components import (  # noqa: E402
     SHARED_SIDEBAR_CSS,
     render_sidebar_navegacao,
+    render_sidebar_header,
+    render_sidebar_footer,
     render_rodape,
     render_instrucoes_uso,
 )
@@ -142,12 +144,19 @@ def layout():
             unsafe_allow_html=True,
         )
 
+    # ── Sidebar Header (Home + Menu Aplicações) ─────────────────────────────────
+    render_sidebar_header()
+
+    # ── Conteúdo específico do App ──────────────────────────────────────────────
     with st.sidebar:
-        st.header("Parâmetros")
+        st.header("⚙️ Parâmetros")
         temperatura = st.slider("Temperatura (°C)", 40.0, 120.0, 70.0, 0.5)
         rotacao = st.slider("Rotação (RPM)", 1200, 2600, 1800, 50)
         vibracao = st.slider("Vibração (mm/s)", 0.0, 80.0, 30.0, 0.5)
         pressao = st.slider("Pressão (bar)", 6.0, 20.0, 12.0, 0.5)
+
+    # ── Sidebar Footer (Contato + Copyright) ────────────────────────────────────
+    render_sidebar_footer()
 
     return {
         "temperatura": temperatura,
@@ -206,9 +215,6 @@ def main():
             features.T.rename(columns={0: "Valor"}),
             use_container_width=True,
         )
-
-    # ── Menu de navegação ───────────────────────────────────────────────────────
-    render_sidebar_navegacao(app_atual=1)
 
     # ── Rodapé ──────────────────────────────────────────────────────────────────
     render_rodape(

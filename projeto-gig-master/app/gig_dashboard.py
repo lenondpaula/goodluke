@@ -28,7 +28,8 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from shared.components import (  # noqa: E402
     SHARED_SIDEBAR_CSS,
-    render_sidebar_navegacao,
+    render_sidebar_header,
+    render_sidebar_footer,
     render_rodape,
     render_instrucoes_uso,
 )
@@ -596,7 +597,10 @@ def render_app():
         st.error("Dados não encontrados. Por favor, gere os dados primeiro.")
         return
     
-    # Sidebar
+    # ── Sidebar Header (Home + Menu Aplicações) ─────────────────────────────────
+    render_sidebar_header()
+
+    # Conteúdo específico do app na sidebar
     with st.sidebar:
         st.markdown("### ⚙️ Configurações")
         
@@ -635,6 +639,9 @@ def render_app():
         st.metric("Lucro Total", f"R$ {df_plano['Lucro Potencial (R$)'].sum():,.0f}")
         st.metric("Distância Total", f"{df_plano['Distância do Anterior (km)'].sum():,.0f} km")
         st.metric("ROI Médio", f"{df_plano['ROI (%)'].mean():.1f}%")
+
+    # ── Sidebar Footer (Contato + Copyright) ────────────────────────────────────
+    render_sidebar_footer()
     
     # KPIs principais
     col1, col2, col3, col4 = st.columns(4)
@@ -764,9 +771,6 @@ def render_app():
             exibir_plano_marketing(planos_marketing, cidade_selecionada)
         else:
             st.warning("Planos de marketing não encontrados.")
-    
-    # Menu de navegação
-    render_sidebar_navegacao(app_atual=6)
 
     # Footer
     render_rodape(

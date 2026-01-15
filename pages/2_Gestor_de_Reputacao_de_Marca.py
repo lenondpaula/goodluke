@@ -35,7 +35,8 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from shared.components import (  # noqa: E402
     SHARED_SIDEBAR_CSS,
-    render_sidebar_navegacao,
+    render_sidebar_header,
+    render_sidebar_footer,
     render_rodape,
     render_instrucoes_uso,
 )
@@ -530,7 +531,10 @@ def main():
         st.error("❌ Não foi possível carregar os dados.")
         st.stop()
     
-    # Sidebar com filtros
+    # ── Sidebar Header (Home + Menu Aplicações) ─────────────────────────────────
+    render_sidebar_header()
+
+    # Sidebar com filtros específicos do app
     with st.sidebar:
         st.header("🎛️ Filtros")
         
@@ -573,6 +577,9 @@ def main():
         if st.button("🔄 Regenerar Dados", use_container_width=True):
             st.cache_data.clear()
             st.rerun()
+
+    # ── Sidebar Footer (Contato + Copyright) ────────────────────────────────────
+    render_sidebar_footer()
     
     # Aplica filtros
     df_filtrado = df.copy()
@@ -643,9 +650,6 @@ def main():
             use_container_width=True
         )
     
-    # ── Menu de navegação ───────────────────────────────────────────────────────
-    render_sidebar_navegacao(app_atual=2)
-
     # ── Rodapé ──────────────────────────────────────────────────────────────────
     render_rodape(
         titulo_app="📊 Gestor de Reputação de Marca",
