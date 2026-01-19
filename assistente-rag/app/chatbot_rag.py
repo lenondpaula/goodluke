@@ -258,7 +258,6 @@ RESPOSTA (seja conciso e objetivo):"""
                 google_api_key=api_key,
                 temperature=0.3,
                 max_output_tokens=1024,
-                api_version="v1",
             )
             resposta = llm.invoke(prompt)
             return resposta.content.strip()
