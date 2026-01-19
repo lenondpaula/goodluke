@@ -18,8 +18,15 @@ from langchain_chroma import Chroma
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 
-# Usa /tmp no Streamlit Cloud (filesystem readonly), caso contrário usa db_store local
-if os.getenv('STREAMLIT_RUNTIME_ENV') == 'cloud' or not os.access(str(BASE_DIR), os.W_OK):
+# Detecta Streamlit Cloud: filesystem é readonly exceto /tmp
+# Variáveis que indicam ambiente cloud: HOME=/home/adminuser ou mount path /mount/src
+_is_cloud = (
+    os.getenv("HOME") == "/home/adminuser"
+    or str(BASE_DIR).startswith("/mount/src")
+    or not os.access(str(BASE_DIR), os.W_OK)
+)
+
+if _is_cloud:
     DB_DIR = Path(tempfile.gettempdir()) / "assistente_rag_db"
 else:
     DB_DIR = BASE_DIR / "db_store"
