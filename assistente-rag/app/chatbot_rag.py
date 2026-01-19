@@ -40,12 +40,12 @@ from shared.components import (  # noqa: E402
 # CONFIGURAÇÕES
 # ────────────────────────────────────────────────────────────────────────────────
 MAX_FILE_SIZE_MB = 100  # Limite de 100MB por arquivo
-GEMINI_MODEL_DEFAULT = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
+GEMINI_MODEL_DEFAULT = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
 GEMINI_MODEL_FALLBACKS = [
     GEMINI_MODEL_DEFAULT,
-    "gemini-1.5-flash-002",
-    "gemini-1.5-pro",
-    "gemini-1.0-pro",
+    "gemini-2.5-flash",
+    "gemini-2.5-pro",
+    "gemini-flash-latest",
 ]
 
 
