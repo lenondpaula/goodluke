@@ -441,24 +441,24 @@ projetos = [
     {"id": 9, "nome": "Visual-On-Demand", "tag": "Gig Economy", "desc": "Marketplace de fotógrafos com match baseado em estilo visual (IA)."}
 ]
 
-# Grid de Projetos (3 colunas)
-cols = st.columns(3)
-
-for i, p in enumerate(projetos):
-    with cols[i % 3]:
-        st.markdown(f"""
-            <div class="project-card">
-                <span class="project-tag">{p['tag']}</span>
-                <div class="project-title">{p['nome']}</div>
-                <p class="project-desc">{p['desc']}</p>
-            </div>
-        """, unsafe_allow_html=True)
-        # O botão de abrir a aplicação - navega para o app correspondente
-        if st.button(f"Abrir Aplicação {p['id']}", key=f"btn_{p['id']}"):
-            # Busca o app correspondente no APPS_DO_HUB
-            app_info = next((app for app in APPS_DO_HUB if app['num'] == p['id']), None)
-            if app_info:
-                st.switch_page(app_info['page'])
+# Grid de Projetos (3 colunas) em ordem de leitura (1→2→3, 4→5→6...)
+for row_start in range(0, len(projetos), 3):
+    row_items = projetos[row_start:row_start + 3]
+    cols = st.columns(3)
+    for col, p in zip(cols, row_items):
+        with col:
+            st.markdown(f"""
+                <div class="project-card">
+                    <span class="project-tag">{p['tag']}</span>
+                    <div class="project-title">{p['nome']}</div>
+                    <p class="project-desc">{p['desc']}</p>
+                </div>
+            """, unsafe_allow_html=True)
+            # Botão que abre a aplicação correspondente
+            if st.button(f"Abrir Aplicação {p['id']}", key=f"btn_{p['id']}"):
+                app_info = next((app for app in APPS_DO_HUB if app['num'] == p['id']), None)
+                if app_info:
+                    st.switch_page(app_info['page'])
 
 st.divider()
 

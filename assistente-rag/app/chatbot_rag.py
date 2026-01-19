@@ -7,6 +7,7 @@ Usa busca semântica (ChromaDB) + geração de respostas com Gemini API
 """
 
 from pathlib import Path
+import os
 import sys
 import shutil
 
@@ -39,7 +40,13 @@ from shared.components import (  # noqa: E402
 # CONFIGURAÇÕES
 # ────────────────────────────────────────────────────────────────────────────────
 MAX_FILE_SIZE_MB = 100  # Limite de 100MB por arquivo
-GEMINI_MODEL_DEFAULT = "gemini-1.5-flash-latest"  # Modelo rápido e eficiente do Google
+GEMINI_MODEL_DEFAULT = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
+GEMINI_MODEL_FALLBACKS = [
+    GEMINI_MODEL_DEFAULT,
+    "gemini-1.5-flash-002",
+    "gemini-1.5-pro",
+    "gemini-1.0-pro",
+]
 
 
 # ────────────────────────────────────────────────────────────────────────────────
@@ -82,19 +89,20 @@ section[data-testid="stSidebar"] label {
 }
 /* File uploader - fundo escuro com texto claro */
 section[data-testid="stSidebar"] [data-testid="stFileUploader"] {
-    background: #1e293b;
-    border: 2px dashed #475569;
-    border-radius: 8px;
+    background: #111827;
+    border: 2px dashed #93c5fd;
+    border-radius: 10px;
     padding: 1rem;
+    box-shadow: 0 0 0 1px #0b1224 inset;
 }
 section[data-testid="stSidebar"] [data-testid="stFileUploader"] * {
-    color: #e2e8f0 !important;
+    color: #f8fafc !important;
 }
 section[data-testid="stSidebar"] [data-testid="stFileUploader"] label,
 section[data-testid="stSidebar"] [data-testid="stFileUploader"] div,
 section[data-testid="stSidebar"] [data-testid="stFileUploader"] span,
 section[data-testid="stSidebar"] [data-testid="stFileUploader"] p {
-    color: #e2e8f0 !important;
+    color: #f8fafc !important;
 }
 /* Textos de caption na sidebar */
 section[data-testid="stSidebar"] [data-testid="stCaptionContainer"],
@@ -125,20 +133,21 @@ section[data-testid="stSidebar"] button:hover {
     border: 1px solid #e2e8f0;
 }
 .fonte-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
+    background: #0f172a;
+    border: 1px solid #1e293b;
     border-radius: 8px;
     padding: 0.75rem;
     margin-bottom: 0.5rem;
     font-size: 0.85rem;
+    color: #e2e8f0;
 }
 .fonte-header {
-    font-weight: 600;
-    color: var(--primary);
+    font-weight: 700;
+    color: #93c5fd;
     margin-bottom: 0.25rem;
 }
 .fonte-trecho {
-    color: var(--secondary);
+    color: #cbd5e1;
     font-size: 0.8rem;
 }
 .status-card {
@@ -217,22 +226,19 @@ def verificar_gemini() -> bool:
 
 
 def gerar_resposta_gemini(pergunta: str, contextos: list, modelo: str = GEMINI_MODEL_DEFAULT) -> str:
-    """Gera resposta usando Gemini API."""
-    try:
-        from langchain_google_genai import ChatGoogleGenerativeAI
-        
-        api_key = obter_gemini_api_key()
-        if not api_key:
-            return "❌ Chave API do Gemini não configurada."
-        
-        # Monta o contexto
-        contexto_texto = "\n\n".join([
-            f"Trecho {i+1} (de {doc.metadata.get('fonte', 'documento')}):\n{doc.page_content}"
-            for i, (doc, score) in enumerate(contextos)
-        ])
-        
-        # Prompt otimizado para RAG
-        prompt = f"""Você é um assistente corporativo inteligente. Use APENAS as informações do contexto abaixo para responder à pergunta. Se a informação não estiver no contexto, diga que não encontrou a informação nos documentos.
+    """Gera resposta usando Gemini API com fallback de modelo."""
+    from langchain_google_genai import ChatGoogleGenerativeAI
+
+    api_key = obter_gemini_api_key()
+    if not api_key:
+        return "❌ Chave API do Gemini não configurada."
+
+    contexto_texto = "\n\n".join([
+        f"Trecho {i+1} (de {doc.metadata.get('fonte', 'documento')}):\n{doc.page_content}"
+        for i, (doc, score) in enumerate(contextos)
+    ])
+
+    prompt = f"""Você é um assistente corporativo inteligente. Use APENAS as informações do contexto abaixo para responder à pergunta. Se a informação não estiver no contexto, diga que não encontrou a informação nos documentos.
 
 CONTEXTO:
 {contexto_texto}
@@ -241,18 +247,26 @@ PERGUNTA: {pergunta}
 
 RESPOSTA (seja conciso e objetivo):"""
 
-        llm = ChatGoogleGenerativeAI(
-            model=modelo,
-            google_api_key=api_key,
-            temperature=0.3,
-            max_output_tokens=1024,
-        )
-        
-        resposta = llm.invoke(prompt)
-        return resposta.content.strip()
-        
-    except Exception as e:
-        return f"❌ Erro ao gerar resposta: {str(e)}"
+    modelos_tentar = [modelo] if modelo else []
+    modelos_tentar.extend([m for m in GEMINI_MODEL_FALLBACKS if m not in modelos_tentar])
+
+    erros = []
+    for modelo_nome in modelos_tentar:
+        try:
+            llm = ChatGoogleGenerativeAI(
+                model=modelo_nome,
+                google_api_key=api_key,
+                temperature=0.3,
+                max_output_tokens=1024,
+                api_version="v1",
+            )
+            resposta = llm.invoke(prompt)
+            return resposta.content.strip()
+        except Exception as exc:  # Keep trying other models when one fails
+            erros.append(f"{modelo_nome}: {exc}")
+            continue
+
+    return "❌ Erro ao gerar resposta. Modelos testados: " + " | ".join(erros)
 
 
 def gerar_resposta_sem_llm(pergunta: str, contextos: list) -> str:
@@ -422,7 +436,7 @@ def render_app():
         ferramentas_sidebar=[
             "**📤 Upload PDF** – Envie documentos para indexar",
             "**📊 Status** – Quantidade de docs indexados",
-            "**⚡ Modelo** – Gemini API (gemini-1.5-flash-latest)",
+            f"**⚡ Modelo** – Gemini API ({GEMINI_MODEL_DEFAULT})",
             "**🗑️ Limpar** – Remove documentos ou conversa",
         ]
     )
