@@ -1,6 +1,6 @@
 # 🚀 Portfólio | Hub de Criação (Streamlit)
 
-Este repositório reúne meus protótipos de **Ciência de Dados**, **Machine Learning** e **NLP**, publicados em uma homepage (índice) e organizados como aplicações independentes dentro de um único projeto.
+Este repositório reúne meus protótipos de Ciência de Dados, Machine Learning e NLP, publicados em uma homepage (índice) e organizados como aplicações independentes dentro de um único projeto.
 
 > **Deploy:** configure o Streamlit Cloud com o arquivo principal `streamlit_app.py`.
 
@@ -142,6 +142,21 @@ Como **Desenvolvedor de Soluções Avançadas**, meus projetos focam em:
 | **Diferencial** | "Shazam para fotógrafos" — upload de foto de inspiração encontra estilo similar |
 | **Stack** | Python, Streamlit, Pillow, Scikit-learn, Faker |
 | **Funcionalidades** | Análise de imagem (luminosidade, saturação), 4 estilos visuais, precificação dinâmica, match score |
+
+---
+
+## 🎓 Formação Acadêmica
+
+- **Pós-graduação em Ciência de Dados e IA** – Centro Universitário Internacional (Uninter)
+- **Pós-graduação em Políticas Públicas e Gestão Governamental** – Centro Universitário Internacional (Uninter)
+- **Bacharelado em Comunicação Social - Jornalismo** – Universidade Federal de Santa Maria (UFSM)
+
+---
+
+## 📫 Vamos nos conectar?
+
+[![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/lenonmpaula/)
+[![Email](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:lenondpaula@gmail.com)
 
 ---
 
@@ -337,19 +352,4 @@ python src/motor_match.py                # Simula análise de imagem e match de 
 
 ---
 
-## 🎓 Formação Acadêmica
-
-- **Pós-graduação em Ciência de Dados e IA** – Centro Universitário Internacional (Uninter)
-- **Pós-graduação em Políticas Públicas e Gestão Governamental** – Centro Universitário Internacional (Uninter)
-- **Bacharelado em Comunicação Social - Jornalismo** – Universidade Federal de Santa Maria (UFSM)
-
----
-
-## 📫 Vamos nos conectar?
-
-[![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/lenonmpaula/)
-[![Email](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:lenondpaula@gmail.com)
-
----
-
-*"A tecnologia e o dado só fazem sentido quando servem para contar uma verdade ou resolver um problema humano."*
+*"A tecnologia e o dado só fazem sentido quando servem para contar uma verdade ou resolver um problema humano."

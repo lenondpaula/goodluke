@@ -361,8 +361,8 @@ st.markdown("""
 # SIDEBAR PADRONIZADA - Ícone Home + Menu Expansível
 # ============================================================================
 with st.sidebar:
-    # Ícone de casa como "Home" no topo
-    st.markdown('<div class="home-title">🏠</div>', unsafe_allow_html=True)
+    # Ícone de laboratório como "Home" no topo
+    st.markdown('<div class="home-title">🧪</div>', unsafe_allow_html=True)
     st.markdown(
         '<p style="text-align: center; font-size: 0.9em; color: #FAFAFA; margin-top: -10px;">GoodLuke AI Hub</p>',
         unsafe_allow_html=True
@@ -417,13 +417,76 @@ st.markdown("""
     <div class="contact-links">
         <a href="mailto:lenondpaula@gmail.com">📧 lenondpaula@gmail.com</a>
         <a href="https://wa.me/5555981359099">💬 +55 (55) 98135-9099</a>
-        <a href="https://t.me/+5555981359099">✈️ Telegram</a>
+        <a href="https://t.me/+5555981359099">📲 Telegram</a>
+    </div>
+    <div class="contact-links">
+        <a href="https://www.linkedin.com/in/lenonmpaula/">🔗 LinkedIn</a>
+        <a href="https://github.com/lenondpaula">🐙 GitHub</a>
     </div>
 """, unsafe_allow_html=True)
 
 st.markdown("""
 Bem-vindo ao meu laboratório de inovação. Aqui, a **Engenharia de Dados** encontra a **IA Generativa** para criar soluções que não apenas processam informação, mas geram valor de negócio real. 
 Focado na pirâmide da sabedoria: do dado à estratégia.
+""")
+
+# Menu expansível com README resumido
+with st.expander("📖 **Sobre este portfólio (README)**", expanded=False):
+    st.markdown("""
+## 🚀 Sobre Mim
+
+- 🎓 **Especialista em Ciência de Dados e IA** e em **Políticas Públicas e Gestão Governamental** (Uninter).
+- ✍️ **Jornalista de formação**, com vasta experiência em traduzir temas complexos para o grande público.
+- 🛠️ **Foco Atual:** Desenvolvimento de soluções avançadas utilizando Python, R e Inteligência Artificial para análise de dados governamentais e sociais.
+- 🏛️ Atuo na **Secretaria de Comunicação da Prefeitura de Santa Maria (RS)**, unindo estratégia pública e análise de dados.
+
+---
+
+## 🛠️ Tecnologias e Ferramentas
+
+### 📊 Ciência de Dados & IA
+Python · R · Pandas · Scikit-Learn · Power BI
+
+### 💻 Desenvolvimento & Banco de Dados
+SQL · Git · Docker
+
+---
+
+## 📈 O que estou desenvolvendo?
+
+Como **Desenvolvedor de Soluções Avançadas**, meus projetos focam em:
+- **Análise Preditiva:** Modelos de Machine Learning aplicados a dados públicos.
+- **Processamento de Linguagem Natural (NLP):** Extração de tendências em grandes volumes de textos jornalísticos e documentos oficiais.
+- **Dashboards Inteligentes:** Visualização de dados para suporte à tomada de decisão em gestão pública.
+- **ETL Automático:** Pipelines de dados para integração de bases governamentais.
+
+---
+
+## 🧩 Protótipos do Hub (9 Apps)
+
+| # | App | Descrição | Stack |
+|---|-----|-----------|-------|
+| 1 | 🔧 Sistema de Precaução Mecânica | Manutenção preditiva com ML | RandomForest, Joblib |
+| 2 | 📊 Gestor de Reputação de Marca | Monitor de reputação com NLP | TextBlob, NLTK |
+| 3 | 🛒 Sistema de Recomendação | Motor para e-commerce | SVD (Surprise) |
+| 4 | 🔮 Oráculo de Vendas | BI Preditivo com séries temporais | Prophet |
+| 5 | 🤖 Assistente Corporativo | Chatbot RAG para PDFs | LangChain, ChromaDB |
+| 6 | 🎸 GIG-Master AI | Otimização de turnês | Algoritmo Greedy |
+| 7 | 🍔 Burger-Flow Intelligence | Gestão de hamburguerias | Prophet, BCG Matrix |
+| 8 | 🗺️ PoA-Insight Explorer | Turismo inteligente | Folium, GeoPy |
+| 9 | 📸 Visual-On-Demand | Marketplace de fotógrafos | Match visual com IA |
+
+---
+
+## 🎓 Formação Acadêmica
+
+- **Pós-graduação em Ciência de Dados e IA** – Centro Universitário Internacional (Uninter)
+- **Pós-graduação em Políticas Públicas e Gestão Governamental** – Centro Universitário Internacional (Uninter)
+- **Bacharelado em Comunicação Social - Jornalismo** – Universidade Federal de Santa Maria (UFSM)
+
+---
+
+*"A tecnologia e o dado só fazem sentido quando servem para contar uma verdade ou resolver um problema humano."*
 """)
 
 st.divider()
@@ -471,12 +534,14 @@ st.markdown("""
     <div style="margin-bottom: 0.8em;">
         <a href="mailto:lenondpaula@gmail.com">📧 lenondpaula@gmail.com</a>
     </div>
-    <div style="margin-bottom: 0.3em;">
-        📱 <strong>+55 (55) 98135-9099</strong>
+    <div style="margin-bottom: 0.3em; color: #A3A8B4;">
+        📱 <strong style="color: #FF4B4B;">+55 (55) 98135-9099</strong>
     </div>
     <div>
         <a href="https://wa.me/5555981359099">💬 WhatsApp</a> |
-        <a href="https://t.me/+5555981359099">✈️ Telegram</a>
+        <a href="https://t.me/+5555981359099">📲 Telegram</a> |
+        <a href="https://www.linkedin.com/in/lenonmpaula/">🔗 LinkedIn</a> |
+        <a href="https://github.com/lenondpaula">🐙 GitHub</a>
     </div>
     <hr style="opacity: 0.3; margin-top: 1em;">
     <small>Desenvolvido com <b>IA-Augmented Engineering</b>. Foco em arquitetura, curadoria e resultados rápidos.</small>
