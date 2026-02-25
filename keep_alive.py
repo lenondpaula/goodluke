@@ -1,4 +1,4 @@
-"""Keep Streamlit app alive with headless Selenium."""
+"""Keep Streamlit apps alive with headless Selenium."""
 
 from __future__ import annotations
 
@@ -8,11 +8,18 @@ from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
 
-TARGET_URL = "https://goodluke.streamlit.app/"
-WAIT_SECONDS = 10
+TARGET_URLS = [
+    "https://goodluke.streamlit.app/",
+    "https://civitas-radar.streamlit.app/",
+]
+WAIT_SECONDS = 15
+WAKE_TIMEOUT = 30
 SCREENSHOT_PATH = "keep_alive_screenshot.png"
 
 
@@ -28,22 +35,44 @@ def build_driver() -> webdriver.Chrome:
     return webdriver.Chrome(service=service, options=options)
 
 
+def wake_up_app(driver: webdriver.Chrome, url: str) -> None:
+    """Visit the URL and click the Streamlit wake-up button if the app is sleeping."""
+    print(f"Visiting: {url}")
+    driver.set_page_load_timeout(60)
+    driver.get(url)
+    time.sleep(WAIT_SECONDS)
+
+    # Streamlit shows a wake-up button when the app is sleeping.
+    # The button text is typically "Yes, get this app back up!"
+    try:
+        wake_button = WebDriverWait(driver, WAKE_TIMEOUT).until(
+            EC.element_to_be_clickable(
+                (By.XPATH, "//*[contains(text(), 'Yes, get this app back up')]")
+            )
+        )
+        wake_button.click()
+        print(f"  Wake-up button clicked for {url}. Waiting for app to start…")
+        time.sleep(WAIT_SECONDS * 2)
+    except Exception:
+        # Button not found – app is already awake
+        print(f"  App appears to be awake already: {url}")
+
+    timestamp = datetime.utcnow().strftime("%Y%m%d-%H%M%S")
+    app_name = url.split("//")[1].split(".")[0]
+    screenshot_file = SCREENSHOT_PATH.replace(".png", f"-{app_name}-{timestamp}.png")
+    driver.save_screenshot(screenshot_file)
+    print(f"  Screenshot saved: {screenshot_file}")
+
+
 def run() -> None:
     driver: webdriver.Chrome | None = None
     try:
         driver = build_driver()
-        driver.set_page_load_timeout(60)
-        driver.get(TARGET_URL)
-        time.sleep(WAIT_SECONDS)
-
-        timestamp = datetime.utcnow().strftime("%Y%m%d-%H%M%S")
-        screenshot_file = SCREENSHOT_PATH.replace(
-            ".png", f"-{timestamp}.png"
-        )
-        driver.save_screenshot(screenshot_file)
-        print(f"Screenshot saved: {screenshot_file}")
-    except Exception as exc:
-        print(f"Keep-alive failed: {exc}")
+        for url in TARGET_URLS:
+            try:
+                wake_up_app(driver, url)
+            except Exception as exc:
+                print(f"Keep-alive failed for {url}: {exc}")
     finally:
         if driver is not None:
             try:
