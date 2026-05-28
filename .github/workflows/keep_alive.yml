@@ -20,6 +20,7 @@ jobs:
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
+          # Selenium Manager gerencia browser/driver automaticamente desde Selenium 4.6+.
           pip install "selenium>=4.27.1,<5"
 
       - name: Run keep-alive

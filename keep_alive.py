@@ -23,6 +23,7 @@ SCREENSHOT_PATH = "keep_alive_screenshot.png"
 
 def build_driver() -> webdriver.Chrome:
     options = Options()
+    # "--headless=new" evita o modo legada e melhora estabilidade em runners atuais.
     options.add_argument("--headless=new")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
